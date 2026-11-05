@@ -7,4 +7,4 @@ playwright-report/
 test-results/
 *.md
 .impeccable/
-client/.impeccable/
+frontend/.impeccable/

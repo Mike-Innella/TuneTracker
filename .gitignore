@@ -23,7 +23,6 @@ deploy.env
 .claude/settings.local.json
 .vercel/
 data/src/generated/
-server/generated/
 data/supabase/.branches/
 data/supabase/.temp/
 graphify-out/

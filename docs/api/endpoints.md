@@ -2,7 +2,7 @@
 
 TuneTracker has no public REST API. The browser talks to Next.js through **Server Actions** (typed,
 CSRF-protected by Next) and a few **Route Handlers**. Every entrypoint verifies the Supabase session
-server-side and delegates to `@tunetracker/server`, which enforces authorization.
+server-side and delegates to `@tunetracker/backend`, which enforces authorization.
 
 ## Route handlers
 
@@ -11,7 +11,7 @@ server-side and delegates to `@tunetracker/server`, which enforces authorization
 | `GET /api/health` | none | Liveness probe (`{ ok: true }`) for Docker/CI; touches no external service |
 | `GET /auth/confirm?token_hash&type&next` | none (token) | Verifies email-confirmation / recovery links, sets the session, redirects to a same-origin `next` |
 
-## Server Actions (`client/src/features/*/actions.ts`)
+## Server Actions (`frontend/src/features/*/actions.ts`)
 
 | Module | Actions | Required role |
 |---|---|---|
@@ -25,7 +25,7 @@ server-side and delegates to `@tunetracker/server`, which enforces authorization
 | profile | updateProfile, setAvatar, setTheme, changePassword | self |
 | notifications | markNotificationsRead | self |
 
-All inputs are validated with the Zod schemas in `shared/src/schemas`. Results are
+All inputs are validated with the Zod schemas in `packages/shared/src/schemas`. Results are
 `{ ok: true, data } | { ok: false, error, fieldErrors? }`.
 
 ## Upload protocol

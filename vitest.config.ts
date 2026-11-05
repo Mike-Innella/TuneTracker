@@ -4,7 +4,7 @@ import { defineConfig } from 'vitest/config';
 
 const r = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 // `server-only` throws outside React Server bundles; tests import server code directly.
-const alias = { 'server-only': r('./scripts/empty-module.ts'), '@': r('./client/src') };
+const alias = { 'server-only': r('./infrastructure/scripts/empty-module.ts'), '@': r('./frontend/src') };
 
 export default defineConfig({
   test: {
@@ -14,7 +14,7 @@ export default defineConfig({
         test: {
           name: 'unit',
           environment: 'node',
-          include: ['shared/**/*.test.ts', 'server/tests/unit/**/*.test.ts'],
+          include: ['packages/shared/**/*.test.ts', 'backend/tests/unit/**/*.test.ts'],
         },
       },
       {
@@ -22,9 +22,9 @@ export default defineConfig({
         test: {
           name: 'integration',
           environment: 'node',
-          include: ['server/tests/integration/**/*.test.ts'],
-          globalSetup: ['server/tests/integration/global-setup.ts'],
-          setupFiles: ['server/tests/integration/setup.ts'],
+          include: ['backend/tests/integration/**/*.test.ts'],
+          globalSetup: ['backend/tests/integration/global-setup.ts'],
+          setupFiles: ['backend/tests/integration/setup.ts'],
           fileParallelism: false,
           testTimeout: 20_000,
           hookTimeout: 60_000,
@@ -36,8 +36,8 @@ export default defineConfig({
         test: {
           name: 'client',
           environment: 'jsdom',
-          include: ['client/src/**/*.test.tsx'],
-          setupFiles: ['client/src/test-setup.ts'],
+          include: ['frontend/src/**/*.test.tsx'],
+          setupFiles: ['frontend/src/test-setup.ts'],
         },
       },
     ],

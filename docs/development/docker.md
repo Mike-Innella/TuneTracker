@@ -1,6 +1,6 @@
 # Docker
 
-One Dockerfile (`docker/client.Dockerfile`) with these targets:
+One Dockerfile (`infrastructure/docker/frontend.Dockerfile`) with these targets:
 
 | Target | Use |
 |---|---|
@@ -19,7 +19,7 @@ npm run supabase:start                       # Auth + Storage on the host
 docker compose -f compose.yaml -f compose.dev.yaml up --build -d
 ```
 
-`client/`, `server/`, `shared/` and the Prisma schema are bind-mounted; edits reload live.
+`frontend/`, `backend/`, `packages/shared/` and the Prisma schema are bind-mounted; edits reload live.
 Postgres data persists in the `tunetracker2_pgdata` volume. The one-shot `migrate` service applies
 migrations before the app starts.
 
@@ -27,7 +27,7 @@ migrations before the app starts.
 
 ```bash
 docker compose up --build -d
-node scripts/verify-docker-prod.mjs   # health, non-root uid, migrations, rendered page
+node infrastructure/scripts/verify-docker-prod.mjs   # health, non-root uid, migrations, rendered page
 ```
 
 `NEXT_PUBLIC_*` values are inlined at build time (build args from `.env`). Server secrets are

@@ -6,12 +6,12 @@
   links). Sessions are HTTP-only cookies managed by `@supabase/ssr`; `proxy.ts` refreshes them.
 - Every page and action re-verifies with `supabase.auth.getUser()` (a round-trip to Auth), never by
   decoding the cookie alone.
-- The service-role key exists only on the server (`server/src/auth/supabase.ts`); it is used for
+- The service-role key exists only on the server (`backend/src/auth/supabase.ts`); it is used for
   storage signing/verification, not for data access.
 
 ## Authorization
 
-- Single rule table (`server/src/authorization/permissions.ts`): viewer < editor < owner.
+- Single rule table (`backend/src/authorization/permissions.ts`): viewer < editor < owner.
 - `authorizeProject/Task/Column` resolve the resource's project from the database, then check the
   actor's role — client-supplied ownership is never trusted (IDOR prevention, covered by tests that
   move a task into another project's column).
@@ -22,7 +22,7 @@
 
 ## Input & output
 
-- All inputs validated by Zod schemas in `shared/`. Links must be `http(s)`; `javascript:`/`data:`
+- All inputs validated by Zod schemas in `packages/shared/`. Links must be `http(s)`; `javascript:`/`data:`
   URLs are rejected. User text renders as text (React escaping), never as HTML.
 - JSON-LD on the homepage escapes `<`.
 - Security headers: CSP (`frame-ancestors 'none'`, `object-src 'none'`, Supabase-only media/connect),

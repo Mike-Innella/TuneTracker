@@ -7,7 +7,7 @@ All notable changes to this project are documented here. The format follows
 ## [2.0.0] - Unreleased
 
 ### Added
-- Next.js App Router application on a `client/` `server/` `data/` `shared/` npm-workspaces monorepo.
+- Next.js App Router application on a `frontend/` `backend/` `data/` `packages/shared/` npm-workspaces monorepo.
 - Supabase Auth: sign-up with email verification, login, logout, password reset.
 - Customisable Kanban boards: columns, ordered tasks, drag-and-drop (pointer, touch, keyboard), labels,
   checklists, comments, attachments with audio playback, assignees, priorities, due dates, BPM/key.

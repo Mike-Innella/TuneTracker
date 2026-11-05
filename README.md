@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="client/public/branding/logo-mark.svg" width="96" alt="TuneTracker logo" />
+  <img src="frontend/public/branding/logo-mark.svg" width="96" alt="TuneTracker logo" />
 </p>
 
 <h1 align="center">TuneTracker 2.0</h1>
@@ -32,11 +32,11 @@ Next.js 16 (App Router, Server Actions) · React 19 · TypeScript strict · Tail
 ## Repository layout
 
 ```text
-client/   Next.js app (routes, UI, Server Actions, route handlers)
-server/   server-only services: auth, authorization, projects, board, tasks, community, media…
+frontend/   Next.js app (routes, UI, Server Actions, route handlers)
+backend/   server-only services: auth, authorization, projects, board, tasks, community, media…
 data/     Prisma schema + migrations, Supabase config/storage migrations, db client
-shared/   Zod schemas, constants, shared types
-docker/   multi-stage Dockerfile (dev + production)
+packages/shared/   Zod schemas, constants, shared types
+infrastructure/   multi-stage Dockerfile (dev + production)
 tests/e2e Playwright end-to-end suite
 docs/     architecture, API, development, deployment, security, brand
 ```
@@ -76,7 +76,7 @@ Confirmation and reset emails arrive in Mailpit at http://127.0.0.1:54324.
 - [Local setup](docs/development/local-setup.md) · [Docker](docs/development/docker.md) · [Contributing](docs/development/contributing.md)
 - [Vercel](docs/deployment/vercel.md) · [Supabase](docs/deployment/supabase.md)
 - [Security model](docs/security/security-model.md)
-- [Design system](client/DESIGN.md) · [Product](client/PRODUCT.md)
+- [Design system](frontend/DESIGN.md) · [Product](frontend/PRODUCT.md)
 
 ## History
 

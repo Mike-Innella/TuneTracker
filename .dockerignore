@@ -15,5 +15,5 @@ data/supabase/.branches
 .remember
 GATES.md
 *.png
-!client/public/**/*.png
-!client/src/app/*.png
+!frontend/public/**/*.png
+!frontend/src/app/*.png
