@@ -28,3 +28,5 @@ data/supabase/.branches/
 data/supabase/.temp/
 graphify-out/
 output/
+legacy/
+GATES.md

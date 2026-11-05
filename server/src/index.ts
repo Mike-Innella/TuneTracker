@@ -1,30 +1,22 @@
-import "dotenv/config";
-import http from "http";
-import app from "./app";
-import { prisma } from "./lib/prisma";
-import { env } from "./lib/env";
+import 'server-only';
 
-const PORT = env.port;
+export { AppError, runAction, toActionError } from './lib/errors';
+export { rateLimit } from './lib/rate-limit';
+export { getAuthUser, getCurrentProfile, requireActor, requireProfile, ensureProfile } from './auth/session';
+export { supabaseServer } from './auth/supabase';
+export { can, type ProjectAction } from './authorization/permissions';
+export { authorizeProject } from './authorization/projects';
+export { publicUrl } from './storage';
 
-const server = http.createServer(app);
+export * as projects from './services/projects';
+export * as boards from './services/boards';
+export * as tasks from './services/tasks';
+export * as collaboration from './services/collaboration';
+export * as community from './services/community';
+export * as media from './services/media';
+export * as profiles from './services/profiles';
+export * as notifications from './services/notifications';
+export * as dashboard from './services/dashboard';
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-async function shutdown(signal: string) {
-  console.log(`[shutdown] ${signal} received`);
-  server.close(async () => {
-    try {
-      await prisma.$disconnect();
-      console.log("[shutdown] prisma disconnected");
-    } catch (e) {
-      console.error("[shutdown] prisma disconnect error", e);
-    } finally {
-      process.exit(0);
-    }
-  });
-}
-
-process.on("SIGINT", () => void shutdown("SIGINT"));
-process.on("SIGTERM", () => void shutdown("SIGTERM"));
+export type { Board, BoardTask } from './services/boards';
+export type { FeedPost } from './services/community';
