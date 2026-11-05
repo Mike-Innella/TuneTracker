@@ -104,7 +104,11 @@ test('collaboration: owner invites, viewer is read-only, editor can change the b
 
   // viewer: sees it, but no editing affordances
   await viewerPage.goto(boardUrl);
-  await expect(viewerPage.locator('[data-task-title="Editor task"]')).toBeVisible();
+  await expect(
+    viewerPage.locator(
+      '[data-testid=board-column][data-column-title="To do"] [data-task-title="Editor task"]',
+    ),
+  ).toBeVisible();
   await expect(viewerPage.getByRole('button', { name: 'Add task' })).toHaveCount(0);
   await expect(viewerPage.getByRole('button', { name: /Column actions/ })).toHaveCount(0);
 

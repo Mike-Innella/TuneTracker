@@ -5,7 +5,7 @@ import { community, requireProfile } from '@tunetracker/server';
 import { Button } from '@/components/ui/button';
 import { EmptyState, PageHeader } from '@/components/layout/page-header';
 import { PostCard, POST_TYPE_LABEL } from '@/components/community/post-card';
-import { cn } from '@/lib/utils';
+import { TabLinks } from '@/components/ui/tab-links';
 
 export const metadata: Metadata = { title: 'Community' };
 
@@ -39,29 +39,15 @@ export default async function CommunityPage({
           </Button>
         }
       />
-      <nav
-        aria-label="Post type"
-        className="-mx-4 mb-6 flex gap-1 overflow-x-auto border-b border-border px-4"
-      >
-        {FILTERS.map(([key, label]) => {
-          const active = (validType ?? '') === key;
-          return (
-            <Link
-              key={key}
-              href={`/community${key ? `?type=${key}` : ''}`}
-              aria-current={active ? 'page' : undefined}
-              className={cn(
-                '-mb-px shrink-0 border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap',
-                active
-                  ? 'border-electric text-foreground'
-                  : 'border-transparent text-muted-foreground hover:text-foreground',
-              )}
-            >
-              {label}
-            </Link>
-          );
-        })}
-      </nav>
+      <TabLinks
+        label="Post type"
+        className="-mx-4 mb-6 px-4"
+        items={FILTERS.map(([key, label]) => ({
+          href: `/community${key ? `?type=${key}` : ''}`,
+          label,
+          active: (validType ?? '') === key,
+        }))}
+      />
 
       {posts.length === 0 ? (
         <EmptyState

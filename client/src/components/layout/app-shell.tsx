@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LogOut, Plus } from 'lucide-react';
+import { AnimateIcon } from '@animate-ui/react/icons';
+import { LogOutIcon } from '@/components/animate-ui/icons/log-out';
+import { PlusIcon } from '@/components/animate-ui/icons/plus';
+import { NavHighlight, NavHighlightItem } from '@/components/ui/nav-highlight';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import {
@@ -52,30 +55,44 @@ export function AppShell({
         <div className="px-2">
           <Logo href="/dashboard" size={30} />
         </div>
-        <nav aria-label="Main" className="mt-10 grid gap-1">
-          {NAV.map(({ href, label, icon: Icon }) => {
-            const active = isActive(path, href);
-            return (
-              <Link
-                key={href}
-                href={href}
-                aria-current={active ? 'page' : undefined}
-                className={cn(
-                  'group flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
-                  active && 'bg-accent text-foreground',
-                )}
-              >
-                <Icon className={cn('size-4', active && 'text-electric')} aria-hidden />
-                {label}
-              </Link>
-            );
-          })}
+        <nav aria-label="Main" className="mt-10">
+          <NavHighlight
+            value={NAV.find((n) => isActive(path, n.href))?.href ?? null}
+            className="inset-0 rounded-md bg-accent"
+          >
+            <ul className="grid gap-1">
+              {NAV.map(({ href, label, icon: Icon }) => {
+                const active = isActive(path, href);
+                return (
+                  <NavHighlightItem key={href} value={href}>
+                    <li>
+                      <AnimateIcon animateOnHover asChild>
+                        <Link
+                          href={href}
+                          aria-current={active ? 'page' : undefined}
+                          className={cn(
+                            'relative z-10 flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground',
+                            active && 'text-foreground',
+                          )}
+                        >
+                          <Icon className={cn('size-4', active && 'text-electric')} aria-hidden />
+                          {label}
+                        </Link>
+                      </AnimateIcon>
+                    </li>
+                  </NavHighlightItem>
+                );
+              })}
+            </ul>
+          </NavHighlight>
         </nav>
-        <Button asChild className="mt-8">
-          <Link href="/projects?new=1">
-            <Plus aria-hidden /> New project
-          </Link>
-        </Button>
+        <AnimateIcon animateOnHover asChild>
+          <Button asChild className="mt-8">
+            <Link href="/projects?new=1">
+              <PlusIcon aria-hidden /> New project
+            </Link>
+          </Button>
+        </AnimateIcon>
         <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-4">
           <AccountMenu me={me} />
           <ThemeToggle />
@@ -110,23 +127,31 @@ export function AppShell({
         data-testid="mobile-nav"
         className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden"
       >
-        {NAV.map(({ href, label, icon: Icon }) => {
-          const active = isActive(path, href);
-          return (
-            <Link
-              key={href}
-              href={href}
-              aria-current={active ? 'page' : undefined}
-              className={cn(
-                'flex h-16 flex-col items-center justify-center gap-1 text-[0.68rem] font-medium text-muted-foreground',
-                active && 'text-foreground',
-              )}
-            >
-              <Icon className={cn('size-5', active && 'text-electric')} aria-hidden />
-              {label}
-            </Link>
-          );
-        })}
+        <NavHighlight
+          value={NAV.find((n) => isActive(path, n.href))?.href ?? null}
+          className="inset-x-3 top-1.5 h-1 rounded-full bg-electric"
+        >
+          {NAV.map(({ href, label, icon: Icon }) => {
+            const active = isActive(path, href);
+            return (
+              <NavHighlightItem key={href} value={href}>
+                <AnimateIcon animateOnTap asChild>
+                  <Link
+                    href={href}
+                    aria-current={active ? 'page' : undefined}
+                    className={cn(
+                      'relative z-10 flex h-16 flex-col items-center justify-center gap-1 text-[0.68rem] font-medium text-muted-foreground',
+                      active && 'text-foreground',
+                    )}
+                  >
+                    <Icon className={cn('size-5', active && 'text-electric')} aria-hidden />
+                    {label}
+                  </Link>
+                </AnimateIcon>
+              </NavHighlightItem>
+            );
+          })}
+        </NavHighlight>
       </nav>
     </div>
   );
@@ -166,7 +191,7 @@ function AccountMenu({ me, compact }: { me: Me; compact?: boolean }) {
         <form action={signOut}>
           <DropdownMenuItem asChild>
             <button type="submit" className="w-full" data-testid="logout">
-              <LogOut aria-hidden /> Log out
+              <LogOutIcon animateOnHover aria-hidden /> Log out
             </button>
           </DropdownMenuItem>
         </form>

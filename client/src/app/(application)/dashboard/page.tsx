@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, CalendarClock, FolderKanban, Music4, Plus, Upload, Users } from 'lucide-react';
 import { dashboard, requireProfile } from '@tunetracker/server';
+import { CountingNumber } from '@animate-ui/react/primitives/texts/counting-number';
 import { Button } from '@/components/ui/button';
 import { EmptyState, PageHeader, SectionHeading } from '@/components/layout/page-header';
 import { ProgressLine } from '@/components/dashboard/progress-line';
@@ -56,7 +57,9 @@ export default async function DashboardPage() {
           <div key={label} className="flex items-baseline gap-3">
             <dt className="type-role text-muted-foreground">{label}</dt>
             <span className="credit-leader hidden sm:block" aria-hidden />
-            <dd className="type-figure text-xl">{value}</dd>
+            <dd className="text-xl">
+              <CountingNumber number={value} inView className="type-figure tabular-nums" />
+            </dd>
           </div>
         ))}
       </dl>

@@ -21,7 +21,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { motion } from 'motion/react';
+import { Effect } from '@animate-ui/react/primitives/effects/effect';
 import type { BoardTask } from '@tunetracker/server';
 import { TaskCard } from '@/components/kanban/task-card';
 import { applyMove, findTask, type Col } from '@/components/kanban/board-state';
@@ -172,14 +172,15 @@ function DemoColumn({ col, index }: { col: Col<BoardTask>; index: number }) {
       </h3>
       <SortableContext items={col.tasks.map((x) => x.id)} strategy={verticalListSortingStrategy}>
         {col.tasks.map((task, i) => (
-          <motion.div
+          <Effect
             key={task.id}
-            initial={{ y: 10, opacity: 0.35 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.15 + index * 0.08 + i * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            fade={{ initialOpacity: 0.35 }}
+            slide={{ direction: 'up', offset: 10 }}
+            blur={{ initialBlur: 2 }}
+            delay={150 + index * 80 + i * 60}
           >
             <DemoTask task={task} columnId={col.id} />
-          </motion.div>
+          </Effect>
         ))}
       </SortableContext>
     </section>

@@ -1,9 +1,15 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Button as PressButton } from '@animate-ui/react/primitives/buttons/button';
+import { motionTokens } from '@animate-ui/react/utils/motion';
 import { Pause, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatDuration } from '@/lib/format';
+
+const HIDDEN = { opacity: 0, scale: motionTokens.scale.icon, filter: motionTokens.blur.icon };
+const SHOWN = { opacity: 1, scale: 1, filter: 'blur(0px)' };
 
 /**
  * Native <audio> with designed controls. One player at a time: starting one pauses the others.
@@ -54,19 +60,31 @@ export function AudioPlayer({
       className={cn('flex items-center gap-3 rounded-md border border-border bg-stock-2 p-2.5', className)}
       data-testid="audio-player"
     >
-      <button
+      <PressButton
         type="button"
         onClick={toggle}
         disabled={!!error}
         aria-label={playing ? `Pause ${title}` : `Play ${title}`}
-        className="action-gradient grid size-10 shrink-0 place-items-center rounded-full shadow-(--shadow-sheet) transition-transform active:scale-95 disabled:opacity-50"
+        className="action-gradient grid size-10 shrink-0 place-items-center overflow-hidden rounded-full shadow-(--shadow-sheet) disabled:opacity-50"
       >
-        {playing ? (
-          <Pause className="size-4" aria-hidden />
-        ) : (
-          <Play className="size-4 translate-x-px" aria-hidden />
-        )}
-      </button>
+        {/* swap: the icons trade places through a light blur (Animate UI swap tokens) */}
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={playing ? 'pause' : 'play'}
+            className="grid place-items-center"
+            initial={HIDDEN}
+            animate={SHOWN}
+            exit={{ ...HIDDEN, transition: motionTokens.transition.swap }}
+            transition={motionTokens.transition.swap}
+          >
+            {playing ? (
+              <Pause className="size-4" aria-hidden />
+            ) : (
+              <Play className="size-4 translate-x-px" aria-hidden />
+            )}
+          </motion.span>
+        </AnimatePresence>
+      </PressButton>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium">{title}</p>
         {error ? (

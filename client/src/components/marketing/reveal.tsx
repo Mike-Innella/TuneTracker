@@ -1,10 +1,10 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { Effect } from '@animate-ui/react/primitives/effects/effect';
 
 /**
- * The "needle drop": rows settle into place once as they enter. Content starts mostly visible,
- * so nothing is hidden if JS is slow; reduced motion is honoured globally via MotionConfig.
+ * The "needle drop": rows fade up out of a light blur once, as they scroll into view
+ * (Animate UI Effect, page-recipe values; movement drops under reduced motion).
  */
 export function Reveal({
   as = 'div',
@@ -17,16 +17,17 @@ export function Reveal({
   className?: string;
   children: React.ReactNode;
 }) {
-  const Tag = as === 'li' ? motion.li : motion.div;
+  const Tag = as;
   return (
-    <Tag
-      className={className}
-      initial={{ opacity: 0.4, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-10% 0px' }}
-      transition={{ delay: index * 0.06, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    <Effect
+      asChild
+      inView
+      fade
+      slide={{ direction: 'up', offset: 12 }}
+      blur={{ initialBlur: 2 }}
+      delay={index * 80}
     >
-      {children}
-    </Tag>
+      <Tag className={className}>{children}</Tag>
+    </Effect>
   );
 }

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { LogoMark } from '@/components/brand/logo';
 import { DemoBoard } from '@/components/marketing/demo-board';
 import { Reveal } from '@/components/marketing/reveal';
+import { Effects } from '@animate-ui/react/primitives/effects/effect';
 
 export const metadata: Metadata = {
   title: { absolute: 'TuneTracker 2.0 — A workspace for music projects' },
@@ -55,24 +56,32 @@ export default function HomePage() {
             <h1 className="type-title text-[clamp(2.4rem,11vw,4.25rem)] lg:text-[clamp(2.75rem,4.4vw,4.75rem)]">
               TuneTracker <span className="text-electric not-italic">2.0</span>
             </h1>
-            <p className="type-role mt-5 text-base tracking-[0.2em] text-foreground">
-              Create · Collaborate · Share
-            </p>
-            <p className="mt-6 max-w-md text-lg text-muted-foreground">
-              Plan every song on a board shaped like your workflow, bring collaborators in with real roles,
-              and share demos for feedback when you’re ready.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Button asChild size="lg">
-                <Link href="/signup">
-                  Get Started <ArrowRight aria-hidden />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="#board">Learn More</Link>
-              </Button>
-            </div>
-            <p className="type-role mt-6 text-ink-soft">Free for music creatives</p>
+            {/* first viewport: start dimmed, never hidden, so the offer and action read before hydration */}
+            <Effects
+              holdDelay={100}
+              fade={{ initialOpacity: 0.4 }}
+              slide={{ direction: 'up', offset: 16 }}
+              blur={{ initialBlur: 2 }}
+            >
+              <p className="type-role mt-5 text-base tracking-[0.2em] text-foreground">
+                Create · Collaborate · Share
+              </p>
+              <p className="mt-6 max-w-md text-lg text-muted-foreground">
+                Plan every song on a board shaped like your workflow, bring collaborators in with real roles,
+                and share demos for feedback when you’re ready.
+              </p>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Button asChild size="lg">
+                  <Link href="/signup">
+                    Get Started <ArrowRight aria-hidden />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="#board">Learn More</Link>
+                </Button>
+              </div>
+              <p className="type-role mt-6 text-ink-soft">Free for music creatives</p>
+            </Effects>
           </div>
           <div className="relative lg:col-span-7">
             <div className="neon-bloom -top-28 -left-20 size-[30rem]" aria-hidden />
