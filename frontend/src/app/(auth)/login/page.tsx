@@ -12,7 +12,13 @@ export default async function LoginPage({
   return (
     <LoginForm
       next={next}
-      notice={error === 'link' ? 'That link is invalid or has expired. Try again.' : undefined}
+      notice={
+        error === 'link'
+          ? 'That link is invalid or has expired. Try again.'
+          : error === 'suspended'
+            ? 'This account has been suspended by a moderator. Contact support if you think this is a mistake.'
+            : undefined
+      }
     />
   );
 }

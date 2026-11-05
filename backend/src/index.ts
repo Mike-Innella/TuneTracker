@@ -18,6 +18,9 @@ export * as media from './services/media';
 export * as profiles from './services/profiles';
 export * as notifications from './services/notifications';
 export * as dashboard from './services/dashboard';
+export * as follows from './services/follows';
+export * as account from './services/account';
+export * as moderation from './services/moderation';
 
 export type { Board, BoardTask } from './services/boards';
 export type { FeedPost } from './services/community';
