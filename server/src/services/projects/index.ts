@@ -8,7 +8,7 @@ import {
 } from '@tunetracker/shared';
 import { authorizeProject, getRole } from '../../authorization/projects';
 import { parse, notFound } from '../../lib/errors';
-import { publicUrl } from '../../storage';
+import { publicUrl, removeObjects } from '../../storage';
 import { logActivity } from '../activity';
 
 /** Progress = share of live tasks sitting in the board's last column. */
@@ -118,9 +118,27 @@ export async function setArchived(actorId: string, projectId: string, archived: 
   });
 }
 
+/** Deletes the project and its private files; media still used by published posts is kept. */
 export async function deleteProject(actorId: string, projectId: string) {
   await authorizeProject(projectId, actorId, 'manage');
-  await db().project.delete({ where: { id: projectId } });
+  const orphans = await db().mediaAsset.findMany({
+    where: {
+      OR: [{ projectId }, { task: { projectId } }],
+      audioPosts: { none: {} },
+      imagePosts: { none: {} },
+    },
+    select: { id: true, bucket: true, path: true },
+  });
+  for (const bucket of new Set(orphans.map((o) => o.bucket))) {
+    await removeObjects(
+      bucket,
+      orphans.filter((o) => o.bucket === bucket).map((o) => o.path),
+    );
+  }
+  await db().$transaction([
+    db().mediaAsset.deleteMany({ where: { id: { in: orphans.map((o) => o.id) } } }),
+    db().project.delete({ where: { id: projectId } }),
+  ]);
 }
 
 /** Public view: only fields the owner explicitly made public. Never tasks or private media. */

@@ -141,6 +141,33 @@ describe('community', () => {
   });
 });
 
+describe('project deletion', () => {
+  it('removes private task files but keeps media used by posts', async () => {
+    const me = await makeProfile('owner');
+    const p = await projects.createProject(me.id, { title: 'Doomed' });
+    const kept = await media.requestUpload(me.id, {
+      kind: 'AUDIO',
+      fileName: 'k.mp3',
+      mimeType: 'audio/mpeg',
+      sizeBytes: 10,
+      projectId: p.id,
+    });
+    await media.completeUpload(me.id, { assetId: kept.assetId });
+    await community.createPost(me.id, { title: 't', body: 'b', audioId: kept.assetId });
+    const gone = await media.requestUpload(me.id, {
+      kind: 'FILE',
+      fileName: 'notes.pdf',
+      mimeType: 'application/pdf',
+      sizeBytes: 10,
+      projectId: p.id,
+    });
+    await projects.deleteProject(me.id, p.id);
+    expect(await db().mediaAsset.findUnique({ where: { id: gone.assetId } })).toBeNull();
+    expect(await db().mediaAsset.findUnique({ where: { id: kept.assetId } })).not.toBeNull();
+    expect(await db().project.findUnique({ where: { id: p.id } })).toBeNull();
+  });
+});
+
 describe('profiles', () => {
   it('updates profile fields and links, rejects taken usernames, respects privacy', async () => {
     const me = await makeProfile('me');
