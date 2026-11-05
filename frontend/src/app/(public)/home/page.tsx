@@ -35,7 +35,7 @@ export default async function HomePage() {
   const empty = fresh.tracks.length === 0 && samples.tracks.length === 0;
 
   return (
-    <div className="mx-auto grid max-w-6xl gap-12">
+    <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)] gap-12">
       <header className="relative">
         <div className="neon-bloom -top-24 -left-16 size-80" aria-hidden />
         <h1 className="type-title relative text-4xl sm:text-5xl">
@@ -88,7 +88,7 @@ export default async function HomePage() {
             </SectionHeading>
             <TrackGrid tracks={fresh.tracks} />
           </section>
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+          <div className="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
             <section aria-labelledby="trending">
               <SectionHeading action={<More href="/discover?sort=trending">More trending</More>}>
                 <span id="trending">Trending</span>

@@ -9,7 +9,7 @@ const credits = [
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid min-h-dvh lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+    <div className="grid min-h-dvh grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
       <aside className="relative hidden overflow-hidden border-r border-border bg-stock lg:flex lg:flex-col lg:justify-between lg:p-12">
         <div className="neon-bloom -top-24 -left-24 size-[28rem]" aria-hidden />
         <Logo />
