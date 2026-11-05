@@ -25,6 +25,7 @@ import { motion } from 'motion/react';
 import type { BoardTask } from '@tunetracker/server';
 import { TaskCard } from '@/components/kanban/task-card';
 import { applyMove, findTask, type Col } from '@/components/kanban/board-state';
+import { LogoMark } from '@/components/brand/logo';
 import { cn } from '@/lib/utils';
 
 // Synthetic demonstration data — labelled as a demo in the UI.
@@ -120,9 +121,12 @@ export function DemoBoard() {
     <figure className="relative" aria-label="Interactive demo board with example tasks">
       <div className="sheet relative overflow-hidden p-4 shadow-(--shadow-lift) sm:p-5">
         <figcaption className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
-          <span>
-            <span className="type-title block text-xl">Midnight Drive</span>
-            <span className="type-role text-muted-foreground">Production · 3 collaborators</span>
+          <span className="flex items-center gap-3">
+            <LogoMark size={40} className="drop-shadow-[0_0_18px_rgb(58_107_255/0.55)]" />
+            <span>
+              <span className="type-title block text-xl">Midnight Drive</span>
+              <span className="type-role text-muted-foreground">Production · 3 collaborators</span>
+            </span>
           </span>
           <span className="type-role rounded-full border border-rule px-2.5 py-1 text-ink-soft">
             Demo board — try dragging

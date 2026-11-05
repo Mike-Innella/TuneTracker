@@ -23,21 +23,18 @@ export function ProjectArtwork({
       />
     );
   }
-  let hash = 0;
-  for (const ch of title) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
-  const angle = hash % 360;
+  // Unlit sleeve: navy stock, hairline frame, initials set like a catalogue number.
   return (
     <span
       aria-hidden
       className={cn(
-        'type-title grid shrink-0 place-items-center rounded-md border border-border text-sm text-white',
+        'type-title relative grid shrink-0 place-items-center overflow-hidden rounded-md border border-rule bg-stock-2 text-sm text-foreground',
         className,
       )}
-      style={{
-        backgroundImage: `linear-gradient(${angle}deg, #0b1440 0%, #2f5cf0 55%, #8a3cf0 100%)`,
-      }}
     >
+      <span className="absolute inset-x-1.5 top-1.5 h-px bg-rule" />
       {title.slice(0, 2).toUpperCase()}
+      <span className="absolute inset-x-1.5 bottom-1.5 h-px bg-rule" />
     </span>
   );
 }

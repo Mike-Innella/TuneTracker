@@ -76,7 +76,7 @@ export function CreateProjectDialog() {
                   >
                     <span className="block text-sm font-semibold">{t.name}</span>
                     <span className="mt-0.5 block truncate text-xs text-muted-foreground">
-                      {t.columns.join(' → ')}
+                      {t.columns.join(' · ')}
                     </span>
                   </button>
                 );

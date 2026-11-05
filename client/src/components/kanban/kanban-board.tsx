@@ -228,7 +228,7 @@ export function KanbanBoard({ board }: { board: Board }) {
         }}
       >
         <div
-          className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-6 md:snap-none lg:-mx-8 lg:px-8"
+          className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-6 md:snap-none lg:-mx-8 lg:px-8"
           data-testid="board"
         >
           <SortableContext items={columnIds} strategy={horizontalListSortingStrategy}>

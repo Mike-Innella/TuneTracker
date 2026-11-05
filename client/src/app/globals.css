@@ -131,11 +131,11 @@
   html {
     @apply font-sans;
     -webkit-tap-highlight-color: transparent;
-    text-rendering: optimizeLegibility;
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: 'ss01', 'cv11';
+    /* Archivo's fi/fl ligatures leave a gap at the wdth axis default in Chromium */
+    font-variant-ligatures: no-common-ligatures;
     caret-color: var(--electric);
     accent-color: var(--electric);
   }

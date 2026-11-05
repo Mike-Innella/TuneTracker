@@ -1,34 +1,42 @@
 import Link from 'next/link';
 import { Logo } from '@/components/brand/logo';
 
+const LINKS = [
+  ['The board', '/#board'],
+  ['Community', '/#community'],
+  ['About', '/about'],
+  ['Sign up', '/signup'],
+  ['Log in', '/login'],
+] as const;
+
+/** Liner-notes back page: who it's for on the left, the index on the right, catalogue line below. */
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-stock">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[minmax(0,1fr)_auto]">
-        <div>
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-12">
+        <div className="md:col-span-5">
           <Logo />
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">
             A workspace for music projects. Free for producers, DJs, vocalists, songwriters, engineers and
             every other music creative.
           </p>
         </div>
-        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-12 gap-y-3 text-sm">
-          <Link href="/about" className="text-muted-foreground hover:text-foreground">
-            About
-          </Link>
-          <Link href="/signup" className="text-muted-foreground hover:text-foreground">
-            Sign up
-          </Link>
-          <Link href="/#board" className="text-muted-foreground hover:text-foreground">
-            Features
-          </Link>
-          <Link href="/login" className="text-muted-foreground hover:text-foreground">
-            Log in
-          </Link>
+        <nav aria-label="Footer" className="md:col-span-5 md:col-start-8">
+          <ul className="grid gap-2.5">
+            {LINKS.map(([label, href]) => (
+              <li key={href} className="flex items-baseline gap-3">
+                <Link href={href} className="text-sm hover:text-electric">
+                  {label}
+                </Link>
+                <span className="credit-leader" aria-hidden />
+              </li>
+            ))}
+          </ul>
         </nav>
       </div>
-      <div className="mx-auto max-w-7xl px-5 pb-8 sm:px-8">
-        <p className="type-role text-ink-soft">TuneTracker 2.0 · Create. Collaborate. Share.</p>
+      <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-2 border-t border-border px-5 py-6 sm:px-8">
+        <p className="type-role text-ink-soft">TuneTracker 2.0 · Create · Collaborate · Share</p>
+        <p className="type-figure text-xs text-ink-soft">TT-2.0</p>
       </div>
     </footer>
   );
