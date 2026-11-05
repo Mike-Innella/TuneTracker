@@ -17,7 +17,10 @@ test('no horizontal overflow and navigation reachable at every directive breakpo
   await createProject(page, 'Responsive Check', 'Release');
   const board = new URL(page.url()).pathname;
   const pages = [
-    '/dashboard',
+    '/home',
+    '/discover',
+    '/studio',
+    '/studio/upload',
     '/projects',
     board,
     board.replace(/\/board$/, ''),

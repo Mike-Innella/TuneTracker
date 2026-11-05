@@ -89,13 +89,13 @@ test('collaboration: owner invites, viewer is read-only, editor can change the b
   await expect(page.getByTestId('pending-invites')).toContainText(editor.username);
 
   // each invitee is notified and must accept before getting access
-  await editorPage.goto('/dashboard');
+  await editorPage.goto('/studio');
   await editorPage.getByRole('button', { name: /Notifications, 1 unread/ }).click();
   await expect(editorPage.getByText(/You.re invited to “Team Album”/)).toBeVisible();
   await editorPage.keyboard.press('Escape');
   await editorPage.getByTestId('invitation').getByRole('button', { name: 'Accept' }).click();
   await expect(editorPage).toHaveURL(/\/board$/);
-  await viewerPage.goto('/dashboard');
+  await viewerPage.goto('/studio');
   await viewerPage.getByTestId('invitation').getByRole('button', { name: 'Accept' }).click();
   await expect(viewerPage).toHaveURL(/\/board$/);
 
@@ -108,11 +108,12 @@ test('collaboration: owner invites, viewer is read-only, editor can change the b
 
   // viewer: sees it, but no editing affordances
   await viewerPage.goto(boardUrl);
+  // visible only: while React streams a Suspense segment, a hidden copy can sit in the DOM
   await expect(
-    viewerPage.locator(
-      '[data-testid=board-column][data-column-title="To do"] [data-task-title="Editor task"]',
-    ),
-  ).toBeVisible();
+    viewerPage
+      .locator('[data-testid=board-column][data-column-title="To do"] [data-task-title="Editor task"]')
+      .filter({ visible: true }),
+  ).toHaveCount(1);
   await expect(viewerPage.getByRole('button', { name: 'Add task' })).toHaveCount(0);
   await expect(viewerPage.getByRole('button', { name: /Column actions/ })).toHaveCount(0);
 

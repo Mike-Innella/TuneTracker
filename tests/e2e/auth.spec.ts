@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { confirmLinkFor, logIn, signUp, signUpAndConfirm, uniqueUser } from './helpers';
 
-test('registration requires email verification, then login, dashboard and logout work', async ({ page }) => {
+test('registration requires email verification, then login, Home, Studio and logout work', async ({
+  page,
+}) => {
   const user = uniqueUser('auth');
   await signUp(page, user);
 
@@ -13,16 +15,19 @@ test('registration requires email verification, then login, dashboard and logout
   await expect(page.locator('form [role=alert]')).toContainText('Confirm your email');
 
   await page.goto(await confirmLinkFor(user.email));
-  await expect(page).toHaveURL(/\/dashboard/);
+  await expect(page).toHaveURL(/\/home$/);
   await expect(page.getByRole('heading', { level: 1 })).toContainText(user.displayName.split(' ')[0]!);
+  // the old dashboard URL now opens Studio
+  await page.goto('/dashboard');
+  await expect(page).toHaveURL(/\/studio$/);
   await expect(page.getByTestId('dashboard-stats')).toContainText('Active projects');
 
   await page.getByTestId('account-menu').first().click();
   await page.getByTestId('logout').click();
   await expect(page).toHaveURL(/\/$/);
 
-  await page.goto('/dashboard');
-  await expect(page).toHaveURL(/\/login\?next=%2Fdashboard/);
+  await page.goto('/studio');
+  await expect(page).toHaveURL(/\/login\?next=%2Fstudio/);
 
   await logIn(page, user);
 });
@@ -38,7 +43,7 @@ test('wrong password shows a clear error', async ({ page }) => {
 });
 
 test('unauthenticated visitors are kept out of app routes', async ({ page }) => {
-  for (const path of ['/dashboard', '/projects', '/community/new', '/profile', '/settings']) {
+  for (const path of ['/studio', '/studio/upload', '/projects', '/community/new', '/profile', '/settings']) {
     await page.goto(path);
     await expect(page).toHaveURL(/\/login/);
   }
@@ -62,7 +67,7 @@ test('password reset sends a recovery link that lets the user set a new password
   await expect(page).toHaveURL(/\/reset-password/);
   await page.getByLabel('New password').fill('a-brand-new-password');
   await page.getByRole('button', { name: 'Save password' }).click();
-  await expect(page).toHaveURL(/\/dashboard/);
+  await expect(page).toHaveURL(/\/studio$/);
   await page.context().clearCookies();
   await logIn(page, { ...user, password: 'a-brand-new-password' });
 });

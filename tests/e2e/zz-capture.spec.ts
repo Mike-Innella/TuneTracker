@@ -36,7 +36,9 @@ test('capture', async ({ page }) => {
       await page.evaluate((t) => localStorage.setItem('theme', t), theme);
       for (const [path, slug] of [
         [boardUrl, 'board'],
-        ['/dashboard', 'dashboard'],
+        ['/home', 'home'],
+        ['/discover', 'discover'],
+        ['/studio', 'studio'],
         ['/projects', 'projects'],
       ]) {
         await page.goto(path);
@@ -68,7 +70,7 @@ test('capture', async ({ page }) => {
       await page.evaluate((t) => localStorage.setItem('theme', t), theme);
       await page.goto('/');
       await settle();
-      await page.screenshot({ path: `${dir}/home-${name}-${theme}.png`, fullPage: true });
+      await page.screenshot({ path: `${dir}/landing-${name}-${theme}.png`, fullPage: true });
     }
   }
   for (const theme of ['dark', 'light']) {

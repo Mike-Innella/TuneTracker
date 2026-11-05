@@ -32,7 +32,7 @@ test('follow: an artist gains a follower, gets notified, and appears in the Foll
   await expect(fan.page.getByTestId('post-card')).toHaveCount(1);
   await expect(fan.page.getByTestId('post-card')).toContainText('Fresh demo');
 
-  await artist.page.goto('/dashboard');
+  await artist.page.goto('/studio');
   await artist.page.getByRole('button', { name: /Notifications, 1 unread/ }).click();
   await expect(artist.page.getByText('followed you')).toBeVisible();
 });
@@ -55,12 +55,12 @@ test('collaboration request: invitee must accept; declined invites grant nothing
   // pending is not membership
   expect((await yes.page.goto(boardUrl))?.status()).toBe(404);
 
-  await yes.page.goto('/dashboard');
+  await yes.page.goto('/studio');
   await yes.page.getByTestId('invitation').getByRole('button', { name: 'Accept' }).click();
   await expect(yes.page).toHaveURL(/\/board$/);
   await expect(yes.page.getByTestId('project-title')).toHaveText('Request Album');
 
-  await no.page.goto('/dashboard');
+  await no.page.goto('/studio');
   await no.page.getByTestId('invitation').getByRole('button', { name: 'Decline' }).click();
   await expect(no.page.getByTestId('invitation')).toHaveCount(0);
   expect((await no.page.goto(boardUrl))?.status()).toBe(404);
@@ -86,7 +86,7 @@ test('collaboration request by email: a new person signs up from the invite and 
   await expect(guest).toHaveURL(/\/reset-password/);
   await guest.getByLabel('New password').fill(invitee.password);
   await guest.getByRole('button', { name: 'Save password' }).click();
-  await expect(guest).toHaveURL(/\/dashboard/);
+  await expect(guest).toHaveURL(/\/studio$/);
   await guest.getByTestId('invitation').getByRole('button', { name: 'Accept' }).click();
   await expect(guest.getByTestId('project-title')).toHaveText('Email Album');
 });
@@ -161,7 +161,7 @@ test('moderation: reports reach moderators only; removing content and suspending
     .click();
   await expect(mod.page.getByText('Account suspended')).toBeVisible();
   // the Auth ban ends the session at once; signing in again explains why
-  await author.page.goto('/dashboard');
+  await author.page.goto('/studio');
   await expect(author.page).toHaveURL(/\/login/);
   await author.page.getByLabel('Email').fill(author.user.email);
   await author.page.getByLabel('Password').fill(author.user.password);
