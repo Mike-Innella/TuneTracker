@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import { test } from '@playwright/test';
 import { createProject, signUpAndConfirm, uniqueUser } from './helpers';
 
@@ -7,7 +8,8 @@ const dir = process.env.CAPTURE_DIR!;
 
 test('capture', async ({ page }) => {
   test.setTimeout(180_000);
-  await signUpAndConfirm(page, uniqueUser('vis'));
+  const user = await signUpAndConfirm(page, uniqueUser('vis'));
+  execSync('npm run db:seed', { env: { ...process.env, SEED_USERNAME: user.username }, stdio: 'ignore' });
   await createProject(page, 'Midnight Drive', 'Production');
   const add = async (col: string, t: string) => {
     const c = page.locator(`[data-testid=board-column][data-column-title="${col}"]`);
@@ -21,6 +23,10 @@ test('capture', async ({ page }) => {
   for (const t of ['Bassline with sidechain', 'Drum groove — 124 BPM']) await add('Drafting', t);
   await add('Arrangement', 'Build the second drop');
   await add('Done', 'Reference track list');
+  await page.goto('/projects');
+  await page.getByRole('link', { name: /Midnight Drive \(demo\)/ }).click();
+  await page.waitForURL(/\/board$/);
+  const boardUrl = new URL(page.url()).pathname;
   for (const [w, h, name] of [
     [1440, 900, 'desktop'],
     [390, 844, 'mobile'],
@@ -29,7 +35,7 @@ test('capture', async ({ page }) => {
     for (const theme of ['dark', 'light']) {
       await page.evaluate((t) => localStorage.setItem('theme', t), theme);
       for (const [path, slug] of [
-        [page.url().replace(/\?.*/, ''), 'board'],
+        [boardUrl, 'board'],
         ['/dashboard', 'dashboard'],
         ['/projects', 'projects'],
       ]) {
@@ -43,6 +49,28 @@ test('capture', async ({ page }) => {
     }
   }
   await page.context().clearCookies();
+  // settle scroll-triggered reveals before full-page captures
+  const settle = async () => {
+    const h = await page.evaluate(() => document.body.scrollHeight);
+    for (let y = 0; y < h; y += 500) {
+      await page.evaluate((v) => window.scrollTo(0, v), y);
+      await page.waitForTimeout(60);
+    }
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(700);
+  };
+  for (const [w, h, name] of [
+    [1440, 900, 'desktop'],
+    [390, 844, 'mobile'],
+  ] as const) {
+    await page.setViewportSize({ width: w, height: h });
+    for (const theme of ['dark', 'light']) {
+      await page.evaluate((t) => localStorage.setItem('theme', t), theme);
+      await page.goto('/');
+      await settle();
+      await page.screenshot({ path: `${dir}/home-${name}-${theme}.png`, fullPage: true });
+    }
+  }
   for (const theme of ['dark', 'light']) {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.evaluate((t) => localStorage.setItem('theme', t), theme);

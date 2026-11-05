@@ -19,10 +19,8 @@ export function ProgressLine({
       aria-valuenow={value}
       className={cn('h-1 w-full overflow-hidden rounded-full bg-muted', className)}
     >
-      <div
-        className="h-full rounded-full"
-        style={{ width: `${value}%`, backgroundImage: 'var(--gradient-light)' }}
-      />
+      {/* solid at rest: the logo light is reserved for drags and primary actions */}
+      <div className="h-full rounded-full bg-foreground/70" style={{ width: `${value}%` }} />
     </div>
   );
 }

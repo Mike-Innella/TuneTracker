@@ -17,7 +17,7 @@ const PRINCIPLES = [
 export default function AboutPage() {
   return (
     <article className="mx-auto max-w-3xl px-5 py-20 sm:px-8">
-      <h1 className="type-title text-5xl sm:text-6xl">About TuneTracker</h1>
+      <h1 className="type-title text-[clamp(2rem,10vw,3.75rem)]">About TuneTracker</h1>
       <p className="mt-8 text-lg leading-relaxed">
         Music projects sprawl across voice memos, chat threads, DAW sessions and notes apps. TuneTracker gives
         music creatives one place to organise projects, run their production workflow on a Kanban board,

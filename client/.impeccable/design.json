@@ -1,0 +1,762 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-05T11:07:20+00:00",
+  "title": "Design System: TuneTracker 2.0",
+  "extensions": {
+    "colorMeta": {
+      "midnight-ground": {
+        "role": "neutral",
+        "displayName": "Midnight Ground",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-stock": {
+        "role": "neutral",
+        "displayName": "Midnight Booklet Stock",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-stock-2": {
+        "role": "neutral",
+        "displayName": "Midnight Recessed Stock",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-accent": {
+        "role": "neutral",
+        "displayName": "Midnight Accent Wash",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-ink": {
+        "role": "neutral",
+        "displayName": "Midnight Ink",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-ink-muted": {
+        "role": "neutral",
+        "displayName": "Midnight Muted Ink",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-ink-soft": {
+        "role": "neutral",
+        "displayName": "Midnight Soft Ink",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-border": {
+        "role": "neutral",
+        "displayName": "Midnight Border",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-rule": {
+        "role": "neutral",
+        "displayName": "Midnight Rule",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-primary": {
+        "role": "primary",
+        "displayName": "Midnight Electric Blue",
+        "tonalRamp": [
+          "oklch(15% 0.11 266)",
+          "oklch(25% 0.154 266)",
+          "oklch(35% 0.187 266)",
+          "oklch(48% 0.22 266)",
+          "oklch(60% 0.22 266)",
+          "oklch(72% 0.176 266)",
+          "oklch(84% 0.11 266)",
+          "oklch(95% 0.044 266)"
+        ]
+      },
+      "midnight-cyan": {
+        "role": "secondary",
+        "displayName": "Midnight Neon Cyan",
+        "tonalRamp": [
+          "oklch(15% 0.07 205)",
+          "oklch(25% 0.098 205)",
+          "oklch(35% 0.119 205)",
+          "oklch(48% 0.14 205)",
+          "oklch(60% 0.14 205)",
+          "oklch(72% 0.112 205)",
+          "oklch(84% 0.07 205)",
+          "oklch(95% 0.028 205)"
+        ]
+      },
+      "midnight-indigo": {
+        "role": "secondary",
+        "displayName": "Midnight Indigo",
+        "tonalRamp": [
+          "oklch(15% 0.1 277)",
+          "oklch(25% 0.14 277)",
+          "oklch(35% 0.17 277)",
+          "oklch(48% 0.2 277)",
+          "oklch(60% 0.2 277)",
+          "oklch(72% 0.16 277)",
+          "oklch(84% 0.1 277)",
+          "oklch(95% 0.04 277)"
+        ]
+      },
+      "midnight-violet": {
+        "role": "secondary",
+        "displayName": "Midnight Controlled Violet",
+        "tonalRamp": [
+          "oklch(15% 0.11 295)",
+          "oklch(25% 0.154 295)",
+          "oklch(35% 0.187 295)",
+          "oklch(48% 0.22 295)",
+          "oklch(60% 0.22 295)",
+          "oklch(72% 0.176 295)",
+          "oklch(84% 0.11 295)",
+          "oklch(95% 0.044 295)"
+        ]
+      },
+      "midnight-success": {
+        "role": "semantic",
+        "displayName": "Midnight Success",
+        "tonalRamp": [
+          "oklch(15% 0.07 163)",
+          "oklch(25% 0.098 163)",
+          "oklch(35% 0.119 163)",
+          "oklch(48% 0.14 163)",
+          "oklch(60% 0.14 163)",
+          "oklch(72% 0.112 163)",
+          "oklch(84% 0.07 163)",
+          "oklch(95% 0.028 163)"
+        ]
+      },
+      "midnight-warning": {
+        "role": "semantic",
+        "displayName": "Midnight Warning",
+        "tonalRamp": [
+          "oklch(15% 0.08 75)",
+          "oklch(25% 0.112 75)",
+          "oklch(35% 0.136 75)",
+          "oklch(48% 0.16 75)",
+          "oklch(60% 0.16 75)",
+          "oklch(72% 0.128 75)",
+          "oklch(84% 0.08 75)",
+          "oklch(95% 0.032 75)"
+        ]
+      },
+      "midnight-destructive": {
+        "role": "semantic",
+        "displayName": "Midnight Destructive",
+        "tonalRamp": [
+          "oklch(15% 0.1 15)",
+          "oklch(25% 0.14 15)",
+          "oklch(35% 0.17 15)",
+          "oklch(48% 0.2 15)",
+          "oklch(60% 0.2 15)",
+          "oklch(72% 0.16 15)",
+          "oklch(84% 0.1 15)",
+          "oklch(95% 0.04 15)"
+        ]
+      },
+      "day-ground": {
+        "role": "neutral",
+        "displayName": "Day Ground",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "day-stock": {
+        "role": "neutral",
+        "displayName": "Day Booklet Stock",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "day-stock-2": {
+        "role": "neutral",
+        "displayName": "Day Recessed Stock",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "day-accent": {
+        "role": "neutral",
+        "displayName": "Day Accent Wash",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "day-ink": {
+        "role": "neutral",
+        "displayName": "Day Ink",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "day-ink-muted": {
+        "role": "neutral",
+        "displayName": "Day Muted Ink",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "day-ink-soft": {
+        "role": "neutral",
+        "displayName": "Day Soft Ink",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "day-border": {
+        "role": "neutral",
+        "displayName": "Day Border",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "day-rule": {
+        "role": "neutral",
+        "displayName": "Day Rule",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "day-primary": {
+        "role": "primary",
+        "displayName": "Day Electric Blue",
+        "tonalRamp": [
+          "oklch(15% 0.11 266)",
+          "oklch(25% 0.154 266)",
+          "oklch(35% 0.187 266)",
+          "oklch(48% 0.22 266)",
+          "oklch(60% 0.22 266)",
+          "oklch(72% 0.176 266)",
+          "oklch(84% 0.11 266)",
+          "oklch(95% 0.044 266)"
+        ]
+      },
+      "day-cyan": {
+        "role": "secondary",
+        "displayName": "Day Neon Cyan",
+        "tonalRamp": [
+          "oklch(15% 0.07 205)",
+          "oklch(25% 0.098 205)",
+          "oklch(35% 0.119 205)",
+          "oklch(48% 0.14 205)",
+          "oklch(60% 0.14 205)",
+          "oklch(72% 0.112 205)",
+          "oklch(84% 0.07 205)",
+          "oklch(95% 0.028 205)"
+        ]
+      },
+      "day-indigo": {
+        "role": "secondary",
+        "displayName": "Day Indigo",
+        "tonalRamp": [
+          "oklch(15% 0.1 277)",
+          "oklch(25% 0.14 277)",
+          "oklch(35% 0.17 277)",
+          "oklch(48% 0.2 277)",
+          "oklch(60% 0.2 277)",
+          "oklch(72% 0.16 277)",
+          "oklch(84% 0.1 277)",
+          "oklch(95% 0.04 277)"
+        ]
+      },
+      "day-violet": {
+        "role": "secondary",
+        "displayName": "Day Controlled Violet",
+        "tonalRamp": [
+          "oklch(15% 0.11 295)",
+          "oklch(25% 0.154 295)",
+          "oklch(35% 0.187 295)",
+          "oklch(48% 0.22 295)",
+          "oklch(60% 0.22 295)",
+          "oklch(72% 0.176 295)",
+          "oklch(84% 0.11 295)",
+          "oklch(95% 0.044 295)"
+        ]
+      },
+      "day-success": {
+        "role": "semantic",
+        "displayName": "Day Success",
+        "tonalRamp": [
+          "oklch(15% 0.07 163)",
+          "oklch(25% 0.098 163)",
+          "oklch(35% 0.119 163)",
+          "oklch(48% 0.14 163)",
+          "oklch(60% 0.14 163)",
+          "oklch(72% 0.112 163)",
+          "oklch(84% 0.07 163)",
+          "oklch(95% 0.028 163)"
+        ]
+      },
+      "day-warning": {
+        "role": "semantic",
+        "displayName": "Day Warning",
+        "tonalRamp": [
+          "oklch(15% 0.08 75)",
+          "oklch(25% 0.112 75)",
+          "oklch(35% 0.136 75)",
+          "oklch(48% 0.16 75)",
+          "oklch(60% 0.16 75)",
+          "oklch(72% 0.128 75)",
+          "oklch(84% 0.08 75)",
+          "oklch(95% 0.032 75)"
+        ]
+      },
+      "day-destructive": {
+        "role": "semantic",
+        "displayName": "Day Destructive",
+        "tonalRamp": [
+          "oklch(15% 0.1 15)",
+          "oklch(25% 0.14 15)",
+          "oklch(35% 0.17 15)",
+          "oklch(48% 0.2 15)",
+          "oklch(60% 0.2 15)",
+          "oklch(72% 0.16 15)",
+          "oklch(84% 0.1 15)",
+          "oklch(95% 0.04 15)"
+        ]
+      },
+      "midnight-popover": {
+        "role": "neutral",
+        "displayName": "Midnight Popover Stock",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      },
+      "midnight-ring": {
+        "role": "primary",
+        "displayName": "Midnight Focus Ring",
+        "tonalRamp": [
+          "oklch(15% 0.09 262)",
+          "oklch(25% 0.126 262)",
+          "oklch(35% 0.153 262)",
+          "oklch(48% 0.18 262)",
+          "oklch(60% 0.18 262)",
+          "oklch(72% 0.144 262)",
+          "oklch(84% 0.09 262)",
+          "oklch(95% 0.036 262)"
+        ]
+      },
+      "midnight-electric": {
+        "role": "primary",
+        "displayName": "Midnight Electric (text accent)",
+        "tonalRamp": [
+          "oklch(15% 0.1 264)",
+          "oklch(25% 0.14 264)",
+          "oklch(35% 0.17 264)",
+          "oklch(48% 0.2 264)",
+          "oklch(60% 0.2 264)",
+          "oklch(72% 0.16 264)",
+          "oklch(84% 0.1 264)",
+          "oklch(95% 0.04 264)"
+        ]
+      },
+      "on-action": {
+        "role": "neutral",
+        "displayName": "On-Action White",
+        "tonalRamp": [
+          "oklch(15% 0.03 268)",
+          "oklch(25% 0.042 268)",
+          "oklch(35% 0.051 268)",
+          "oklch(48% 0.06 268)",
+          "oklch(60% 0.06 268)",
+          "oklch(72% 0.048 268)",
+          "oklch(84% 0.03 268)",
+          "oklch(95% 0.012 268)"
+        ]
+      }
+    },
+    "themes": {
+      "default": "dark (.dark class, midnight-* tokens)",
+      "light": ":root (day-* tokens)",
+      "source": "src/app/globals.css custom properties: --background, --stock, --stock-2, --card, --popover, --primary, --muted, --muted-foreground, --ink-soft, --accent, --border, --rule, --input, --ring, --cyan, --electric, --indigo, --violet, --success, --warning, --destructive"
+    },
+    "gradients": [
+      {
+        "name": "gradient-light",
+        "dark": "linear-gradient(115deg, #2ee6ff 0%, #3a6bff 45%, #b34dff 100%)",
+        "light": "linear-gradient(115deg, #0ea5c6 0%, #2447d8 45%, #7c3aed 100%)",
+        "purpose": "The logo light: lifted-card border, live playback and upload fills, waveform played portion."
+      },
+      {
+        "name": "gradient-action",
+        "dark": "linear-gradient(115deg, #2f5cf0 0%, #4a3fe0 55%, #7a35e8 100%)",
+        "light": "linear-gradient(115deg, #2447d8 0%, #4338ca 55%, #6d28d9 100%)",
+        "purpose": "Background of default (primary) buttons and the play button; white text."
+      }
+    ],
+    "typographyMeta": {
+      "display": {
+        "displayName": "Sleeve Title",
+        "purpose": "Hero title only. .type-title: font-stretch 125%, 800 italic. Mobile clamp(2.4rem, 11vw, 4.25rem)."
+      },
+      "headline": {
+        "displayName": "Section Title",
+        "purpose": "Marketing section titles; 2.25rem below 640px."
+      },
+      "title": {
+        "displayName": "Page Title",
+        "purpose": "App page headers; same style at 1.25-1.875rem for sheet, post and board titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose; body sets font-variant-ligatures: no-common-ligatures and text-rendering: geometricPrecision."
+      },
+      "label": {
+        "displayName": "Credit Role",
+        "purpose": ".type-role: condensed caps for roles, column and section headings, captions, credits lines."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": ".type-figure: every musician-facing number in tabular mono."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-sheet",
+        "dark": "0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 32px -16px rgb(0 0 0 / 0.7)",
+        "light": "0 1px 2px rgb(11 18 48 / 0.06), 0 8px 24px -8px rgb(11 18 48 / 0.14)",
+        "purpose": "Resting sheets, task cards, default buttons."
+      },
+      {
+        "name": "shadow-lift",
+        "dark": "0 2px 6px rgb(0 0 0 / 0.5), 0 24px 48px -16px rgb(58 107 255 / 0.55)",
+        "light": "0 2px 4px rgb(11 18 48 / 0.08), 0 18px 40px -12px rgb(36 71 216 / 0.35)",
+        "purpose": "Lifted drag card, primary-button hover, hero demo board."
+      },
+      {
+        "name": "neon-bloom",
+        "value": "radial-gradient(closest-side, rgb(46 230 255 / calc(0.22 * var(--glow))), transparent 70%), radial-gradient(closest-side, rgb(164 107 255 / calc(0.2 * var(--glow))), transparent 75%); filter: blur(24px)",
+        "purpose": "Bloom behind a focal element, never on text. --glow is 1 dark, 0.35 light."
+      },
+      {
+        "name": "mark-glow",
+        "value": "drop-shadow(0 0 18px rgb(58 107 255 / 0.55)) to drop-shadow(0 0 32px rgb(58 107 255 / 0.45))",
+        "purpose": "Logo mark at display sizes."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All state transitions (200ms) and the needle-drop reveal."
+      },
+      {
+        "name": "needle-drop",
+        "value": "y 10px to 0, opacity 0.35-0.4 to 1, 0.5-0.6s, 60ms stagger, once",
+        "purpose": "Entry of tracklist rows and demo-board tasks."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation/transition durations 0.01ms",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wordmark-hide",
+        "value": "359px"
+      },
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default action: the action gradient, white text, lift on hover.",
+      "html": "<button class=\"ds-btn-primary\">Get Started <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 1px solid transparent; border-radius: 6px; background-image: var(--gradient-action); color: #fff; font: 600 0.875rem/1 var(--font-archivo, Archivo, sans-serif); box-shadow: var(--shadow-sheet); cursor: pointer; transition: box-shadow 200ms cubic-bezier(0.16,1,0.3,1), filter 200ms cubic-bezier(0.16,1,0.3,1), transform 200ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary:hover { box-shadow: var(--shadow-lift); filter: brightness(1.1); } .ds-btn-primary:focus-visible { outline: none; border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent); } .ds-btn-primary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action beside a primary.",
+      "html": "<button class=\"ds-btn-outline\">Learn More</button>",
+      "css": ".ds-btn-outline { height: 40px; padding: 0 16px; border: 1px solid var(--input); border-radius: 6px; background: color-mix(in oklab, var(--input) 30%, var(--background)); color: var(--foreground); font: 600 0.875rem/1 var(--font-archivo, Archivo, sans-serif); cursor: pointer; transition: background-color 200ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-outline:hover { background: color-mix(in oklab, var(--input) 50%, var(--background)); } .ds-btn-outline:focus-visible { outline: none; border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Tertiary action; no fill until hover.",
+      "html": "<button class=\"ds-btn-ghost\">Log in</button>",
+      "css": ".ds-btn-ghost { height: 40px; padding: 0 16px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--foreground); font: 600 0.875rem/1 var(--font-archivo, Archivo, sans-serif); cursor: pointer; transition: background-color 200ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-ghost:hover { background: color-mix(in oklab, var(--muted) 50%, transparent); } .ds-btn-ghost:focus-visible { outline: none; border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent); }"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "40px field on stock with a ring on focus.",
+      "html": "<input class=\"ds-input\" placeholder=\"Song title\" />",
+      "css": ".ds-input { height: 40px; width: 100%; padding: 4px 12px; border: 1px solid var(--input); border-radius: 6px; background: color-mix(in oklab, var(--input) 30%, var(--stock)); color: var(--foreground); font: 400 0.875rem/1.4 var(--font-archivo, Archivo, sans-serif); transition: border-color 150ms, box-shadow 150ms; } .ds-input::placeholder { color: var(--muted-foreground); } .ds-input:focus-visible { outline: none; border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent); }"
+    },
+    {
+      "name": "App Sidebar Nav",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "40px rows; active is accent wash with an electric icon.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-item is-active\" aria-current=\"page\" href=\"#\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"9\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"5\" rx=\"1\"/><rect x=\"14\" y=\"12\" width=\"7\" height=\"9\" rx=\"1\"/><rect x=\"3\" y=\"16\" width=\"7\" height=\"5\" rx=\"1\"/></svg>Dashboard</a><a class=\"ds-nav-item\" href=\"#\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>Projects</a></nav>",
+      "css": ".ds-nav { display: grid; gap: 4px; width: 16.5rem; padding: 24px 16px; background: var(--stock); border-right: 1px solid var(--border); } .ds-nav-item { display: flex; align-items: center; gap: 12px; height: 40px; padding: 0 12px; border-radius: 6px; color: var(--muted-foreground); font: 500 0.875rem/1 var(--font-archivo, Archivo, sans-serif); text-decoration: none; transition: background-color 150ms, color 150ms; } .ds-nav-item:hover { background: var(--muted); color: var(--foreground); } .ds-nav-item.is-active { background: var(--accent); color: var(--foreground); } .ds-nav-item.is-active svg { color: var(--electric); } .ds-nav-item:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }"
+    },
+    {
+      "name": "Task Card",
+      "kind": "card",
+      "refersTo": "task-card",
+      "description": "A board entry: semibold title, label chip, credits-style meta with quiet priority and mono figures.",
+      "html": "<div class=\"ds-task\"><span class=\"ds-task-title\">Sidechain the bass to the kick</span><span class=\"ds-chip\"><i style=\"background:#a46bff\"></i>FX</span><div class=\"ds-task-meta\"><span class=\"ds-role ds-warn\">High</span><span class=\"ds-figure\">2/3</span><span class=\"ds-figure\">118 BPM · F#m</span></div></div>",
+      "css": ".ds-task { display: grid; gap: 8px; max-width: 16rem; padding: 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); color: var(--card-foreground); box-shadow: var(--shadow-sheet); transition: border-color 200ms, box-shadow 200ms; } .ds-task:hover { border-color: var(--rule); } .ds-task-title { font: 600 0.875rem/1.35 var(--font-archivo, Archivo, sans-serif); } .ds-chip { display: inline-flex; width: fit-content; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px; background: var(--muted); font: 600 0.64rem/1.2 var(--font-archivo, Archivo, sans-serif); font-stretch: 75%; letter-spacing: 0.08em; text-transform: uppercase; } .ds-chip i { width: 6px; height: 6px; border-radius: 9999px; } .ds-task-meta { display: flex; flex-wrap: wrap; gap: 6px 12px; color: var(--muted-foreground); font-size: 0.75rem; } .ds-role { font: 600 0.64rem/1.2 var(--font-archivo, Archivo, sans-serif); font-stretch: 75%; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); } .ds-warn { color: var(--warning); } .ds-figure { font-family: var(--font-jetbrains, 'JetBrains Mono', monospace); font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Lifted Task Card",
+      "kind": "custom",
+      "refersTo": "task-card",
+      "description": "The moving edge: logo light through the border, lift shadow, slight rotation.",
+      "html": "<div class=\"ds-task-lifted\">Chord loop in F#m</div>",
+      "css": ".ds-task-lifted { max-width: 16rem; padding: 12px; border: 1px solid transparent; border-radius: 6px; background: linear-gradient(var(--card), var(--card)) padding-box, var(--gradient-light) border-box; color: var(--card-foreground); box-shadow: var(--shadow-lift); transform: rotate(-1.5deg); cursor: grabbing; font: 600 0.875rem/1.35 var(--font-archivo, Archivo, sans-serif); }"
+    },
+    {
+      "name": "Credits Block",
+      "kind": "custom",
+      "refersTo": "sheet",
+      "description": "Role, dotted leader, value, between rule hairlines.",
+      "html": "<dl class=\"ds-credits\"><div><dt>Produced by</dt><span aria-hidden=\"true\"></span><dd>You</dd></div><div><dt>Tempo · key</dt><span aria-hidden=\"true\"></span><dd class=\"ds-fig\">124 BPM · F#m</dd></div></dl>",
+      "css": ".ds-credits { display: grid; gap: 12px; margin: 0; padding: 24px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); color: var(--foreground); font: 400 0.875rem/1.4 var(--font-archivo, Archivo, sans-serif); } .ds-credits div { display: flex; align-items: baseline; gap: 12px; } .ds-credits dt { flex-shrink: 0; color: var(--muted-foreground); font-weight: 600; font-size: 0.72rem; font-stretch: 75%; letter-spacing: 0.08em; text-transform: uppercase; } .ds-credits span { flex: 1; min-width: 1.5rem; border-bottom: 1px dotted var(--rule); transform: translateY(-0.3em); } .ds-credits dd { margin: 0; text-align: right; } .ds-fig { font-family: var(--font-jetbrains, 'JetBrains Mono', monospace); font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Status Pill",
+      "kind": "chip",
+      "refersTo": "status-pill",
+      "description": "Electric role-type pill for a post's intent.",
+      "html": "<span class=\"ds-pill\">Feedback</span>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid color-mix(in oklab, var(--electric) 50%, transparent); border-radius: 9999px; color: var(--electric); font: 600 0.72rem/1.2 var(--font-archivo, Archivo, sans-serif); font-stretch: 75%; letter-spacing: 0.08em; text-transform: uppercase; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Liner Notes",
+    "overview": "Every project reads like the credits page of the record it will become. The ground is midnight-navy booklet stock; the type is set like an album's credits: heavy expanded italic titles that echo the poster wordmark, condensed caps for roles, tabular mono for every number (track number, BPM, key, duration, date). Information is arranged as credits, with a role on the left, a dotted leader, and the name on the right, held between hairline rules rather than inside boxed cards.\n\nThe logo's cyan-to-blue-to-violet gradient is the only light source in the world. It appears in four places: primary actions, the moving edge of a drag (the lifted card's border and its drop slot), live in-motion fills (audio playback and upload progress), and soft blooms placed behind a focal element. Everything at rest stays navy. Density is calm on marketing and comfortable-compact in the app; the board is the centrepiece and the rest of the interface supports it.\n\nDark is the default (\"midnight booklet\"). The light theme is a designed day sleeve, not an inversion: cool white stock, navy ink and the same gradient, with blooms dimmed to 35%. Both themes ship every token below; frontmatter keys are prefixed `midnight-` and `day-` and map one-to-one onto the same CSS custom properties (`--background`, `--stock`, `--rule`, `--electric` and so on) in `src/app/globals.css`, which is the normative source.",
+    "keyCharacteristics": [
+      "Credits layout: role, dotted leader, name, between hairline rules.",
+      "One light source: the logo gradient, reserved for actions, motion and blooms.",
+      "Three type voices from two families: expanded heavy italic titles, condensed caps roles, tabular mono figures.",
+      "Dark default plus a fully designed day sleeve.",
+      "One staggered \"needle drop\" reveal; no scattered hover effects.",
+      "All icons are lucide line icons. No emoji anywhere, including reactions."
+    ],
+    "rules": [
+      {
+        "name": "The One Light Rule",
+        "body": "The logo gradient is the only light. Use it for primary actions, the moving edge of a drag, live in-motion fills and blooms. Progress rules at rest, priority labels, chips and headings stay solid and quiet.",
+        "section": "colors"
+      },
+      {
+        "name": "The At-Rest Navy Rule",
+        "body": "A static progress bar is solid ink at 70% on a muted track. Colour arrives only with motion or intent.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Numeric Voice Rule",
+        "body": "Every number that a musician reads (BPM, key, time, count, date) is set in tabular mono. Prose numbers such as \"50 MB\" in a sentence stay in body type.",
+        "section": "typography"
+      },
+      {
+        "name": "The Clean Glyph Rule",
+        "body": "Body text turns off common ligatures (`font-variant-ligatures: no-common-ligatures`) and uses `text-rendering: geometricPrecision`. Archivo's fi/fl ligatures and hinting open visible gaps at the width-axis default on Chromium and Linux. Keep both settings on any new root.",
+        "section": "typography"
+      },
+      {
+        "name": "The Credits Line Rule",
+        "body": "Titles are never preceded by a kicker or eyebrow. If a title needs a supporting line, it sits below the title as a credits line in role type.",
+        "section": "typography"
+      },
+      {
+        "name": "The Credits Block Rule",
+        "body": "Group facts as credits: role, dotted leader (`1px dotted` in the rule color, lifted 0.3em), value right-aligned, rows between a rule-coloured top and bottom hairline. Use this before reaching for a grid of cards.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat-At-Rest Rule",
+        "body": "Resting surfaces get the sheet shadow at most. Lift belongs to motion and hover on primary actions.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** reserve the logo gradient for primary actions, the moving edge of a drag, live playback/upload fills and blooms behind a focal element.",
+      "**Do** set every musician-facing number (BPM, key, time, count, date) in tabular JetBrains Mono.",
+      "**Do** present facts as credits: role, dotted leader, value, between rule hairlines.",
+      "**Do** place a title's supporting line below it in role type, as a credits line.",
+      "**Do** show the logo mark beside the title it labels (the demo board, the closing panel), with its blue glow at display sizes.",
+      "**Do** keep `font-variant-ligatures: no-common-ligatures` and `text-rendering: geometricPrecision` on body text.",
+      "**Do** design both themes for every new surface: midnight booklet and day sleeve.",
+      "**Do** use lucide line icons at 12 to 16px for meta and 16px in buttons."
+    ],
+    "donts": [
+      "**Don't** put a kicker or eyebrow above a title.",
+      "**Don't** fill progress rules, priority labels, chips or headings with the gradient at rest; static progress is solid ink at 70%.",
+      "**Don't** put a neon bloom behind or on top of text.",
+      "**Don't** use emoji, including for reactions; use lucide icons.",
+      "**Don't** add decorative hover motion (scale, translate, staggered effects); hover changes colour, border or shadow only, and the needle-drop entry is the only choreographed motion.",
+      "**Don't** use semantic colours as fills; warning, destructive and success colour text only."
+    ]
+  }
+}

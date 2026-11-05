@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write # create the GitHub Release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Verify tag matches package version
+        run: |
+          pkg="v$(node -p "require('./package.json').version")"
+          test "$pkg" = "${GITHUB_REF_NAME}" || { echo "tag ${GITHUB_REF_NAME} != package.json ${pkg}"; exit 1; }
+      - name: Create release with changelog section
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes=$(awk -v v="${GITHUB_REF_NAME#v}" '$0 ~ "^## \\[?"v {f=1; next} /^## / && f {exit} f' CHANGELOG.md)
+          gh release create "${GITHUB_REF_NAME}" --title "TuneTracker ${GITHUB_REF_NAME}" --notes "${notes:-See CHANGELOG.md}" --verify-tag

@@ -8,8 +8,8 @@ import { formatDate } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
 const PRIORITY: Record<string, { label: string; className: string }> = {
-  LOW: { label: 'Low', className: 'text-muted-foreground' },
-  MEDIUM: { label: 'Medium', className: 'text-electric' },
+  LOW: { label: 'Low', className: 'text-ink-soft' },
+  MEDIUM: { label: 'Medium', className: 'text-ink-soft' },
   HIGH: { label: 'High', className: 'text-warning' },
   URGENT: { label: 'Urgent', className: 'text-destructive' },
 };

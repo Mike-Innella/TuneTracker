@@ -181,7 +181,7 @@ export function PostComposer({
               ) : (
                 <Music aria-hidden />
               )}
-              {progress?.kind === 'AUDIO' ? `Uploading ${progress.pct}%` : 'Upload a track, demo or sample'}
+              {progress?.kind === 'AUDIO' ? `Uploading ${progress.pct}%` : 'Upload audio'}
             </Button>
             {progress?.kind === 'AUDIO' && (
               <div

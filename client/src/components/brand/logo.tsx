@@ -30,15 +30,18 @@ export function Logo({
   href = '/',
   size = 32,
   version = true,
+  compact = false,
 }: {
   href?: string;
   size?: number;
+  /** hide the wordmark on very narrow phones (<360px) so the bar never overflows */
+  compact?: boolean;
   version?: boolean;
 }) {
   return (
     <Link href={href} className="inline-flex items-center gap-2.5 rounded-md" aria-label="TuneTracker home">
       <LogoMark size={size} />
-      <Wordmark version={version} />
+      <Wordmark version={version} className={compact ? 'max-[359px]:sr-only' : undefined} />
     </Link>
   );
 }

@@ -69,20 +69,20 @@ and server.
 | # | Legacy feature | State | 2.0 migration approach | Verification |
 |---|---|---|---|---|
 | 1 | Email/password register/login/logout | Works (custom JWT) | **Replaced** by Supabase Auth (adds verification + reset) | e2e `auth.spec.ts` |
-| 2 | Protected routes | Works (client-side guard) | Replaced by server-side session check in `(application)` layout + per-action authorization | e2e unauthorized-access test |
-| 3 | Profile: display name, image, social links | Works | Preserved & extended: username, bio, specialties, location, links; avatar in Supabase Storage | e2e profile test |
-| 4 | Public user profile dialog | Works | Replaced by `/artists/[username]` page | e2e profile test |
-| 5 | Projects CRUD + visibility | Works | Preserved; adds archive, status, deadline, artwork, templates, collaborators | integration `projects.test.ts`, e2e |
-| 6 | Kanban (4 status columns, drag to change status) | Works, fixed columns | **Replaced** by customisable columns + persistent ordered tasks (dnd-kit) | integration `board.test.ts`, e2e drag test |
+| 2 | Protected routes | Works (client-side guard) | Replaced by server-side session check in `(application)` layout + per-action authorization | e2e `auth.spec.ts` + `profile.spec.ts` (404 for strangers) |
+| 3 | Profile: display name, image, social links | Works | Preserved & extended: username, bio, specialties, location, links; avatar in Supabase Storage | e2e `profile.spec.ts` |
+| 4 | Public user profile dialog | Works | Replaced by `/artists/[username]` page | e2e `profile.spec.ts` |
+| 5 | Projects CRUD + visibility | Works | Preserved; adds archive, status, deadline, artwork, templates, collaborators | integration `board.test.ts`, e2e `board.spec.ts` |
+| 6 | Kanban (4 status columns, drag to change status) | Works, fixed columns | **Replaced** by customisable columns + persistent ordered tasks (dnd-kit) | integration `board.test.ts`, e2e `board.spec.ts` (drag + reload) |
 | 7 | Tracks (title, description, bpm, key, status) | Works | Tracks become **tasks**; bpm/key kept as optional task fields; status → column | integration board tests |
-| 8 | Track audio upload + playback | Works (proxied) | Replaced by direct browser → Supabase Storage signed upload + signed playback URLs | e2e audio test |
-| 9 | Session logs / notes for later | Works | Folded into task comments (single discussion stream) | integration task comment test |
-| 10 | Public project view | Works | Preserved as public project page; only explicitly public data rendered | integration visibility tests |
-| 11 | Track likes / ratings / comments | Works | Consolidated into post reactions + comments (community feed) | integration community tests |
-| 12 | Community feed: posts, comments, likes | Works (text + optional project) | Preserved & extended: titles, types, audio, images, links, feedback requests, reactions, pagination | integration + e2e community test |
-| 13 | Dashboard summary | Works (client-side computed) | Rebuilt server-side from real data | e2e dashboard test |
-| 14 | Health endpoints | Works | Preserved: `/api/health` | Docker healthcheck, unit test |
-| 15 | Docker + nginx + App Runner deploy | Works | **Replaced** by Next.js standalone image (portable) + Vercel | `docker build` in CI |
+| 8 | Track audio upload + playback | Works (proxied) | Replaced by direct browser → Supabase Storage signed upload + signed playback URLs | e2e `community.spec.ts` (upload + playback) |
+| 9 | Session logs / notes for later | Works | Folded into task comments (single discussion stream) | integration `board.test.ts` (task details) |
+| 10 | Public project view | Works | Preserved as `/showcase/[projectId]`; only explicitly public data rendered | integration `board.test.ts` + `community.test.ts` (private project not leaked) |
+| 11 | Track likes / ratings / comments | Works | Consolidated into post reactions + comments (community feed) | integration `community.test.ts` |
+| 12 | Community feed: posts, comments, likes | Works (text + optional project) | Preserved & extended: titles, types, audio, images, links, feedback requests, reactions, pagination | integration `community.test.ts`, e2e `community.spec.ts` |
+| 13 | Dashboard summary | Works (client-side computed) | Rebuilt server-side from real data | e2e `auth.spec.ts` (dashboard stats) |
+| 14 | Health endpoints | Works | Preserved: `/api/health` | Docker healthcheck, `verify-docker-prod.mjs` |
+| 15 | Docker + nginx + App Runner deploy | Works | **Replaced** by Next.js standalone image (portable) + Vercel | `docker` CI job, `verify-docker-prod.mjs` |
 
 ## 8. Migration risks
 

@@ -86,7 +86,7 @@ export function AppShell({
         {/* Top bar: mobile brand + global actions */}
         <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border bg-background/85 px-4 backdrop-blur-md lg:h-16 lg:px-8">
           <div className="lg:hidden">
-            <Logo href="/dashboard" size={28} version={false} />
+            <Logo href="/dashboard" size={28} version={false} compact />
           </div>
           <div className="ml-auto flex items-center gap-1">
             <NotificationsMenu items={notifications} unread={unread} />

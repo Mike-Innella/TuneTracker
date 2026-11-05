@@ -34,7 +34,7 @@ function Credit({ role, children }: { role: string; children: React.ReactNode })
     <div className="flex items-baseline gap-3">
       <dt className="type-role shrink-0 text-muted-foreground">{role}</dt>
       <span className="credit-leader" aria-hidden />
-      <dd className="text-right">{children}</dd>
+      <dd className="min-w-0 text-right break-words">{children}</dd>
     </div>
   );
 }
@@ -52,7 +52,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pt-14 pb-16 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:pt-20 lg:pb-24">
           <div className="lg:col-span-5">
-            <h1 className="type-title text-[clamp(2.75rem,11vw,4.25rem)] lg:text-[clamp(2.75rem,4.4vw,4.75rem)]">
+            <h1 className="type-title text-[clamp(2.4rem,11vw,4.25rem)] lg:text-[clamp(2.75rem,4.4vw,4.75rem)]">
               TuneTracker <span className="text-electric not-italic">2.0</span>
             </h1>
             <p className="type-role mt-5 text-base tracking-[0.2em] text-foreground">
@@ -76,10 +76,6 @@ export default function HomePage() {
           </div>
           <div className="relative lg:col-span-7">
             <div className="neon-bloom -top-28 -left-20 size-[30rem]" aria-hidden />
-            <LogoMark
-              size={88}
-              className="absolute -top-10 -right-2 z-10 hidden drop-shadow-[0_0_28px_rgb(58_107_255/0.55)] lg:block"
-            />
             <DemoBoard />
           </div>
         </div>
@@ -118,11 +114,7 @@ export default function HomePage() {
                 <span className="type-role flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.74rem] text-foreground/80">
                   {t.columns.map((c, j) => (
                     <span key={c} className="inline-flex items-center gap-2">
-                      {j > 0 && (
-                        <span className="text-ink-soft" aria-hidden>
-                          →
-                        </span>
-                      )}
+                      {j > 0 && <ArrowRight className="size-3 text-ink-soft" aria-hidden />}
                       {c}
                     </span>
                   ))}
@@ -135,10 +127,10 @@ export default function HomePage() {
 
       {/* Task detail — the session sheet */}
       <section className="border-y border-border bg-stock">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 sm:px-8 lg:grid-cols-12">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 sm:px-8 lg:grid-cols-12 [&>*]:min-w-0">
           <div className="sheet order-2 p-6 lg:order-1 lg:col-span-6" aria-label="Example task">
-            <p className="type-role text-muted-foreground">Mixing · example task</p>
-            <p className="type-title mt-2 text-3xl">Lead vocal chain</p>
+            <p className="type-title text-3xl">Lead vocal chain</p>
+            <p className="type-role mt-2 text-muted-foreground">Example task · Mixing</p>
             <dl className="mt-6 grid gap-2.5 text-sm">
               <Credit role="Priority">
                 <span className="text-warning">High</span>
@@ -215,15 +207,17 @@ export default function HomePage() {
             className="sheet overflow-hidden lg:col-span-6 lg:col-start-7"
             aria-label="Example community post"
           >
-            <div className="flex items-center justify-between px-5 pt-5">
-              <figcaption className="type-role text-muted-foreground">
-                Example post · Feedback wanted · Synthwave
-              </figcaption>
-              <span className="type-role inline-flex items-center gap-1 rounded-full border border-electric/50 px-2.5 py-1 text-electric">
+            <div className="flex items-start justify-between gap-3 px-5 pt-5">
+              <div className="min-w-0">
+                <p className="type-title text-2xl">“Echoes” — first full mix</p>
+                <figcaption className="type-role mt-1.5 text-muted-foreground">
+                  Example post · Synthwave
+                </figcaption>
+              </div>
+              <span className="type-role inline-flex shrink-0 items-center gap-1 rounded-full border border-electric/50 px-2.5 py-1 text-electric">
                 <MessageSquareQuote className="size-3" aria-hidden /> Feedback
               </span>
             </div>
-            <p className="type-title px-5 pt-3 text-2xl">“Echoes” — first full mix</p>
             <div
               className="mx-5 mt-4 flex items-center gap-4 rounded-md border border-border bg-stock-2 p-3"
               aria-hidden
@@ -280,7 +274,7 @@ export default function HomePage() {
         <h2 id="how" className="type-title max-w-xl text-4xl sm:text-5xl">
           From first idea to release.
         </h2>
-        <ol className="mt-12 grid gap-10 md:grid-cols-3">
+        <ol className="mt-12 border-y border-rule">
           {[
             [
               'Start a project',
@@ -295,35 +289,42 @@ export default function HomePage() {
               'Publish a demo or the finished track to the community and ask for feedback.',
             ],
           ].map(([title, body], i) => (
-            <li key={title} className="border-t border-rule pt-5">
-              <span className="type-figure text-sm text-electric">{String(i + 1).padStart(2, '0')}</span>
-              <p className="mt-2 text-lg font-semibold">{title}</p>
-              <p className="mt-2 text-muted-foreground">{body}</p>
+            <li
+              key={title}
+              className="grid gap-x-6 gap-y-1 border-b border-border py-5 last:border-0 sm:grid-cols-[3rem_16rem_minmax(0,1fr)] sm:items-baseline"
+            >
+              <span className="type-figure text-sm text-electric">A{i + 1}</span>
+              <span className="text-lg font-semibold">{title}</span>
+              <span className="text-muted-foreground">{body}</span>
             </li>
           ))}
         </ol>
       </section>
 
-      {/* Close */}
+      {/* Close — the back cover: title and action left, the credits right */}
       <section className="relative overflow-hidden border-t border-border">
-        <div
-          className="neon-bloom top-1/2 left-1/2 size-[36rem] -translate-x-1/2 -translate-y-1/2"
-          aria-hidden
-        />
-        <div className="relative mx-auto flex max-w-3xl flex-col items-center px-5 py-28 text-center">
-          <LogoMark size={72} className="drop-shadow-[0_0_28px_rgb(58_107_255/0.5)]" />
-          <h2 className="type-title mt-8 text-4xl sm:text-6xl">Your next record starts on a board.</h2>
-          <p className="mt-5 text-muted-foreground">Free for music creatives. Set up in under a minute.</p>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <Button asChild size="lg">
-              <Link href="/signup">
-                Get Started <ArrowRight aria-hidden />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="ghost">
-              <Link href="/login">I have an account</Link>
-            </Button>
+        <div className="neon-bloom top-10 -left-32 size-[28rem]" aria-hidden />
+        <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-6">
+            <LogoMark size={64} className="drop-shadow-[0_0_28px_rgb(58_107_255/0.5)]" />
+            <h2 className="type-title mt-8 text-4xl sm:text-6xl">Your next record starts on a board.</h2>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <Button asChild size="lg">
+                <Link href="/signup">
+                  Get Started <ArrowRight aria-hidden />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="ghost">
+                <Link href="/login">I have an account</Link>
+              </Button>
+            </div>
           </div>
+          <dl className="grid gap-4 border-y border-rule py-6 lg:col-span-5 lg:col-start-8">
+            <Credit role="Board">Kanban for every song</Credit>
+            <Credit role="Collaboration">Owner · editor · viewer</Credit>
+            <Credit role="Community">Demos, finished tracks, feedback</Credit>
+            <Credit role="Price">Free for music creatives</Credit>
+          </dl>
         </div>
       </section>
     </>
