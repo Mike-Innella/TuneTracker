@@ -73,7 +73,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ usernam
         </div>
       </header>
 
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <aside className="grid content-start gap-8">
           <section aria-labelledby="about">
             <SectionHeading>
