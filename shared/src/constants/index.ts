@@ -60,10 +60,10 @@ export const PROJECT_TEMPLATES = {
 export type ProjectTemplateKey = keyof typeof PROJECT_TEMPLATES;
 
 export const REACTIONS = {
-  LIKE: '👍',
-  FIRE: '🔥',
-  HEART: '❤️',
-  MIND_BLOWN: '🤯',
+  LIKE: 'Like',
+  FIRE: 'Fire',
+  HEART: 'Love',
+  MIND_BLOWN: 'Mind-blown',
 } as const;
 
 export const SPECIALTIES = [
