@@ -1,0 +1,50 @@
+{
+  "name": "tunetracker",
+  "version": "2.0.0",
+  "private": true,
+  "description": "TuneTracker 2.0 — Create. Collaborate. Share.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "shared",
+    "data",
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @tunetracker/client",
+    "build": "npm run build -w @tunetracker/client",
+    "start": "npm run start -w @tunetracker/client",
+    "lint": "npm run lint -w @tunetracker/client",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit --project client",
+    "test:integration": "vitest run --project integration",
+    "test:e2e": "playwright test",
+    "db:generate": "npm run generate -w @tunetracker/data",
+    "db:migrate": "npm run migrate:dev -w @tunetracker/data",
+    "db:deploy": "npm run migrate:deploy -w @tunetracker/data",
+    "db:seed": "npm run seed -w @tunetracker/data",
+    "supabase:start": "supabase start --workdir data -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,realtime,postgres-meta",
+    "supabase:stop": "supabase stop --workdir data"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^22",
+    "@vitejs/plugin-react": "^6.2.1",
+    "jsdom": "^30.1.3",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "supabase": "^3.0.0",
+    "typescript": "~5.9.3",
+    "vitest": "^5.1.0"
+  }
+}
