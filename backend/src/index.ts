@@ -21,6 +21,9 @@ export * as dashboard from './services/dashboard';
 export * as follows from './services/follows';
 export * as account from './services/account';
 export * as moderation from './services/moderation';
+export * as tracks from './services/tracks';
 
 export type { Board, BoardTask } from './services/boards';
 export type { FeedPost } from './services/community';
+export type { PublicTrack } from './services/tracks';
+export type { UpdateTrackInput, TrackListInput } from '@tunetracker/shared';

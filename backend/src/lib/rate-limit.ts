@@ -56,6 +56,17 @@ async function countPostgres(key: string, windowSec: number) {
  */
 export async function rateLimit(key: string, baseLimit: number, windowSec: number) {
   const limit = baseLimit * scale();
+  if ((await count(key, windowSec)) > limit) {
+    throw new AppError(429, 'You are doing that too often. Please wait a moment.');
+  }
+}
+
+/** True only for the first call with this key inside the window (play de-duplication). */
+export async function firstInWindow(key: string, windowSec: number) {
+  return (await count(`once:${key}`, windowSec)) === 1;
+}
+
+async function count(key: string, windowSec: number): Promise<number> {
   let count: number;
   const client = redis();
   try {
@@ -68,7 +79,7 @@ export async function rateLimit(key: string, baseLimit: number, windowSec: numbe
     globalForRedis.ttRedis = undefined;
     count = await countPostgres(key, windowSec);
   }
-  if (count > limit) throw new AppError(429, 'You are doing that too often. Please wait a moment.');
+  return count;
 }
 
 /** Test/shutdown helper. */

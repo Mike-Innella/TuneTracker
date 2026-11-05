@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PROJECT_TEMPLATES, REACTIONS } from '../constants/index';
+import { GENRES, PROJECT_TEMPLATES, REACTIONS, USAGE_RIGHTS } from '../constants/index';
 
 const id = z.string().min(1).max(64);
 const trimmed = (max: number) => z.string().trim().max(max);
@@ -188,3 +188,36 @@ export type UpdateTaskInput = z.input<typeof updateTaskSchema>;
 export type PostInput = z.input<typeof postSchema>;
 export type ProfileInput = z.input<typeof profileSchema>;
 export type RequestUploadInput = z.input<typeof requestUploadSchema>;
+
+// ---------- tracks & samples ----------
+export const trackKind = z.enum(['TRACK', 'SAMPLE']);
+export const trackVisibility = z.enum(['PRIVATE', 'PUBLIC']);
+export const usageRights = z.enum(Object.keys(USAGE_RIGHTS) as [keyof typeof USAGE_RIGHTS]);
+export const creditSchema = z.object({ name: trimmed(80).min(1), role: trimmed(40).min(1) });
+export const createTrackDraftSchema = z.object({ audioId: id, kind: trackKind.default('TRACK') });
+export const updateTrackSchema = z.object({
+  title: trimmed(160).min(1, 'Required').optional(),
+  description: optionalText(5000),
+  genre: z.enum(GENRES).nullish(),
+  tags: z.array(trimmed(30).min(1)).max(10).optional(),
+  links: z.array(safeUrl).max(5).optional(),
+  credits: z.array(creditSchema).max(20).optional(),
+  bpm: z.coerce.number().int().min(20).max(400).nullish(),
+  musicalKey: optionalText(12),
+  artworkId: id.nullish(),
+  kind: trackKind.optional(),
+  visibility: trackVisibility.optional(),
+  downloadable: z.boolean().optional(),
+  usageRights: usageRights.nullish(),
+});
+export const trackListSchema = z.object({
+  kind: trackKind.optional(),
+  genre: z.enum(GENRES).optional(),
+  tag: trimmed(30).optional(),
+  q: trimmed(80).optional(),
+  sort: z.enum(['recent', 'trending']).default('recent'),
+  cursor: id.nullish(),
+  limit: z.coerce.number().int().min(1).max(48).default(24),
+});
+export type UpdateTrackInput = z.input<typeof updateTrackSchema>;
+export type TrackListInput = z.input<typeof trackListSchema>;
