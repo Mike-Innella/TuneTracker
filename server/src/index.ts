@@ -7,6 +7,7 @@ export { supabaseServer } from './auth/supabase';
 export { can, type ProjectAction } from './authorization/permissions';
 export { authorizeProject } from './authorization/projects';
 export { publicUrl } from './storage';
+export { requestOrigin } from './lib/origin';
 
 export * as projects from './services/projects';
 export * as boards from './services/boards';

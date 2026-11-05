@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { AUTH_COOKIE_NAME } from '@tunetracker/shared';
 import { env } from '../lib/env';
+import { requestOrigin } from '../lib/origin';
 
 const PROTECTED = ['/dashboard', '/projects', '/profile', '/settings', '/artists', '/showcase', '/community'];
 
@@ -28,16 +29,21 @@ export async function refreshSession(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
   if (!user && PROTECTED.some((p) => path === p || path.startsWith(`${p}/`))) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.search = `?next=${encodeURIComponent(path)}`;
-    return NextResponse.redirect(url);
+    const url = new URL('/login', requestOrigin(request.headers, request.nextUrl.origin));
+    url.searchParams.set('next', path);
+    return withCookies(NextResponse.redirect(url), response);
   }
   if (user && (path === '/login' || path === '/signup')) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/dashboard';
-    url.search = '';
-    return NextResponse.redirect(url);
+    return withCookies(
+      NextResponse.redirect(new URL('/dashboard', requestOrigin(request.headers, request.nextUrl.origin))),
+      response,
+    );
   }
   return response;
+}
+
+/** Redirects must carry any refreshed session cookies, or the refresh is lost. */
+function withCookies(redirect: NextResponse, from: NextResponse) {
+  for (const c of from.cookies.getAll()) redirect.cookies.set(c);
+  return redirect;
 }
