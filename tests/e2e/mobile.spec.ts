@@ -9,7 +9,7 @@ test('mobile: bottom navigation, board column navigation and no horizontal overf
     ['Projects', /\/projects$/],
     ['Community', /\/community$/],
     ['Profile', /\/profile$/],
-    ['Settings', /\/settings$/],
+    ['Studio', /\/studio$/],
     ['Dashboard', /\/dashboard$/],
   ] as const) {
     await nav.getByRole('link', { name: label }).click();

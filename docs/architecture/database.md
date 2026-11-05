@@ -60,3 +60,11 @@ npm run migrate:status -w @tunetracker/data
 `ModerationAction` (audit trail; survives a moderator's account deletion via `SetNull`).
 `Profile` gains `role` (USER/MODERATOR/ADMIN), `suspendedAt` and a server-only `email` used to match
 email invitations — it is never selected into public payloads. All new tables enable RLS in their migration.
+
+## Phase 2 models
+
+`Track` (TRACK | SAMPLE, DRAFT | PUBLISHED, PUBLIC | PRIVATE, credits JSON, BPM/key, optional
+`usageRights` + `downloadable` for samples), `TrackLike`, `Play` (trackId, optional listener, time — no
+IP or user agent). Migration `music_core` creates a published public Track for every post that had audio
+and links it via `Post.trackId`; `Post.audioId` is kept, so the step is reversible.
+

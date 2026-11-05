@@ -64,3 +64,24 @@ export async function createProject(page: Page, title: string, template = 'Produ
   await expect(page).toHaveURL(/\/projects\/[^/]+\/board/);
   await expect(page.getByTestId('project-title')).toHaveText(title);
 }
+
+/** A valid PCM WAV of `seconds` silence-ish tone, built in memory (no big fixture in git). */
+export function wav(seconds: number, rate = 44100) {
+  const samples = seconds * rate;
+  const buf = Buffer.alloc(44 + samples * 2);
+  buf.write('RIFF', 0);
+  buf.writeUInt32LE(36 + samples * 2, 4);
+  buf.write('WAVEfmt ', 8);
+  buf.writeUInt32LE(16, 16);
+  buf.writeUInt16LE(1, 20); // PCM
+  buf.writeUInt16LE(1, 22); // mono
+  buf.writeUInt32LE(rate, 24);
+  buf.writeUInt32LE(rate * 2, 28);
+  buf.writeUInt16LE(2, 32);
+  buf.writeUInt16LE(16, 34);
+  buf.write('data', 36);
+  buf.writeUInt32LE(samples * 2, 40);
+  for (let i = 0; i < samples; i++)
+    buf.writeInt16LE(Math.round(Math.sin((i / rate) * 2 * Math.PI * 220) * 3000), 44 + i * 2);
+  return buf;
+}

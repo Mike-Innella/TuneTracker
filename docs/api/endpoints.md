@@ -56,3 +56,21 @@ Moderators are appointed from the CLI only: `npm run set-role -w @tunetracker/da
 Files over 6 MB use TUS against `POST {SUPABASE_URL}/storage/v1/upload/resumable/sign` with the same
 single-use signed upload token (`x-signature` header) in 6 MB chunks; dropped chunks retry and the upload
 resumes from the server offset. Smaller files use one signed PUT. Resume is within the page session.
+
+## Phase 2 — music core
+
+| Action | Who |
+|---|---|
+| createTrackDraftAction(audioId, kind) | signed in; verified own audio upload → private draft |
+| updateTrackAction(id, details/release) | owner; downloads require usage rights (samples only) |
+| publishTrackAction(id) | owner; idempotent; needs verified audio |
+| deleteTrackAction(id) | owner; deletes files no other track or post uses |
+| setTrackLikeAction(id, like) | signed in; track must be visible to them |
+| recordPlayAction(id) | anyone; sent by the global player after 10 s (or half a short track); counted once per listener / anonymous visitor (`tt-visitor` httpOnly cookie) per 30 min; owners and drafts never count; no IP stored |
+| sampleDownloadAction(id) | anyone; published, downloadable sample with rights; 5-minute signed URL; 20/h per listener |
+
+Public pages (no account): `/tracks/[id]`, `/artists/[username]`. Studio (signed in): `/studio`,
+`/studio/upload` (3-step wizard: upload → details → release), `/studio/tracks/[id]`.
+One app-wide `<audio>` (PlayerProvider in the root layout) drives every embedded player and the docked
+mini player, so playback and the queue survive navigation; Media Session gives lock-screen controls.
+
