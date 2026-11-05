@@ -40,4 +40,4 @@ jobs:
       - name: trivy fs
         run: >-
           docker run --rm -v "$PWD:/src" aquasec/trivy:0.76.1
-          fs --exit-code 1 --severity CRITICAL,HIGH --ignore-unfixed --scanners vuln,misconfig --skip-dirs /src/legacy --no-progress /src
+          fs --exit-code 1 --severity CRITICAL,HIGH --ignore-unfixed --scanners vuln,misconfig --no-progress /src

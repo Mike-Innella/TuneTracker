@@ -28,10 +28,13 @@ data/supabase/.branches/
 data/supabase/.temp/
 graphify-out/
 output/
-legacy/
 GATES.md
 **/.impeccable/hook.cache.json
 **/.impeccable/questions/
 **/.impeccable/review/
 **/.impeccable/live/
 **/.impeccable/config.local.json
+
+# local credential notes — never commit
+SupabasePW.md
+*.secret.md
