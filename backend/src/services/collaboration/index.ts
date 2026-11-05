@@ -59,7 +59,7 @@ export async function inviteMember(
         invitee.id,
         'project.invite',
         `You're invited to “${project.title}” as ${role.toLowerCase()}`,
-        '/dashboard#invitations',
+        '/studio#invitations',
       );
     }
     await logActivity(projectId, actorId, `invited @${invitee.username} as ${role.toLowerCase()}`);

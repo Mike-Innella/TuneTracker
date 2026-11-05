@@ -70,7 +70,7 @@ export function SignupForm() {
         <p className="mt-3 text-muted-foreground">
           We sent a confirmation link to{' '}
           <span className="font-medium text-foreground">{state.data.email}</span>. Open it to activate your
-          account and land on your dashboard.
+          account and land on Home.
         </p>
       </div>
     );

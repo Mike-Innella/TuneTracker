@@ -14,7 +14,7 @@
 - Email confirmations: **on**.
 - Email templates — use token-hash links (work across devices; copy from
   `data/supabase/templates/`):
-  - Confirm signup: `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/dashboard`
+  - Confirm signup: `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/home`
   - Reset password: `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password`
   - Invite user: `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=invite&next=/reset-password`
 - Configure a production SMTP provider (the built-in sender is heavily rate limited).
