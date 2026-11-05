@@ -1,5 +1,10 @@
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import type { NextConfig } from 'next';
+
+// One .env at the monorepo root for local dev; Vercel/Docker/CI inject real env vars instead.
+const rootEnv = path.join(import.meta.dirname, '..', '.env');
+if (existsSync(rootEnv)) process.loadEnvFile(rootEnv);
 
 const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'http://127.0.0.1:54321';
 const isDev = process.env.NODE_ENV !== 'production';
@@ -25,7 +30,6 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(import.meta.dirname, '..'),
   poweredByHeader: false,
   turbopack: {
-    root: path.join(import.meta.dirname, '..'),
     rules: {
       '*.css': { loaders: ['@tailwindcss/turbopack'], as: '*.css' },
     },

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 /** Uploaded artwork, or a generated sleeve: initials on the logo light, deterministic per title. */
@@ -11,11 +12,13 @@ export function ProjectArtwork({
   className?: string;
 }) {
   if (url) {
-    // eslint-disable-next-line @next/next/no-img-element -- user media from Supabase storage
     return (
-      <img
+      <Image
         src={url}
         alt=""
+        width={160}
+        height={160}
+        unoptimized
         className={cn('shrink-0 rounded-md border border-border object-cover', className)}
       />
     );
