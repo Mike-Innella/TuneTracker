@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Bell } from 'lucide-react';
+import { AnimateIcon } from '@animate-ui/react/icons';
+import { SlidingNumber } from '@animate-ui/react/primitives/texts/sliding-number';
+import { BellIcon } from '@/components/animate-ui/icons/bell';
 import { useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -20,21 +22,23 @@ export function NotificationsMenu({ items, unread }: { items: NotificationItem[]
   const [, start] = useTransition();
   return (
     <Popover onOpenChange={(open) => open && unread > 0 && start(() => void markNotificationsRead())}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="relative"
-          aria-label={`Notifications${unread ? `, ${unread} unread` : ''}`}
-        >
-          <Bell aria-hidden />
-          {unread > 0 && (
-            <span className="type-figure absolute top-1.5 right-1.5 grid min-w-4 place-items-center rounded-full bg-primary px-1 text-[0.6rem] text-primary-foreground">
-              {unread > 9 ? '9+' : unread}
-            </span>
-          )}
-        </Button>
-      </PopoverTrigger>
+      <AnimateIcon animateOnHover asChild>
+        <PopoverTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative"
+            aria-label={`Notifications${unread ? `, ${unread} unread` : ''}`}
+          >
+            <BellIcon aria-hidden />
+            {unread > 0 && (
+              <span className="type-figure absolute top-1.5 right-1.5 grid min-w-4 place-items-center rounded-full bg-primary px-1 text-[0.6rem] text-primary-foreground">
+                {unread > 9 ? '9+' : <SlidingNumber number={unread} className="inline-block align-bottom" />}
+              </span>
+            )}
+          </Button>
+        </PopoverTrigger>
+      </AnimateIcon>
       <PopoverContent align="end" className="w-80 p-0">
         <p className="type-role border-b border-border px-4 py-3 text-muted-foreground">Notifications</p>
         {items.length === 0 ? (

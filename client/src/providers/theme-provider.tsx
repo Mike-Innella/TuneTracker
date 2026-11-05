@@ -1,13 +1,13 @@
 'use client';
 
 import { ThemeProvider as NextThemes } from 'next-themes';
-import { MotionConfig } from 'motion/react';
+import { ReducedMotionConfig } from '@animate-ui/react/utils/motion';
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <NextThemes attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-      {/* "user" honours prefers-reduced-motion for every Motion animation */}
-      <MotionConfig reducedMotion="user">{children}</MotionConfig>
+      {/* Animate UI's config: under reduced motion movement goes, fades and blurs stay */}
+      <ReducedMotionConfig>{children}</ReducedMotionConfig>
     </NextThemes>
   );
 }

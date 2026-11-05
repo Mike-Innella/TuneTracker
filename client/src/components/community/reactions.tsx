@@ -1,13 +1,18 @@
 'use client';
 
 import { useOptimistic, useTransition } from 'react';
-import { Flame, Heart, Sparkles, ThumbsUp } from 'lucide-react';
+import { AnimateIcon } from '@animate-ui/react/icons';
+import { IconButton, IconButtonParticles } from '@animate-ui/react/primitives/buttons/icon';
+import { FlameIcon } from '@/components/animate-ui/icons/flame';
+import { HeartIcon } from '@/components/animate-ui/icons/heart';
+import { SparklesIcon } from '@/components/animate-ui/icons/sparkles';
+import { ThumbsUpIcon } from '@/components/animate-ui/icons/thumbs-up';
 import { toast } from 'sonner';
 import { REACTIONS } from '@tunetracker/shared';
 import { toggleReactionAction } from '@/features/community/actions';
 import { cn } from '@/lib/utils';
 
-const ICONS = { LIKE: ThumbsUp, FIRE: Flame, HEART: Heart, MIND_BLOWN: Sparkles } as const;
+const ICONS = { LIKE: ThumbsUpIcon, FIRE: FlameIcon, HEART: HeartIcon, MIND_BLOWN: SparklesIcon } as const;
 type Kind = keyof typeof REACTIONS;
 type State = { counts: Record<string, number>; mine: string[] };
 
@@ -36,27 +41,31 @@ export function Reactions({
         const n = state.counts[kind] ?? 0;
         return (
           <li key={kind}>
-            <button
-              type="button"
-              aria-pressed={on}
-              aria-label={`${REACTIONS[kind]}${n ? `, ${n}` : ''}`}
-              onClick={() =>
-                start(async () => {
-                  toggle(kind);
-                  const r = await toggleReactionAction(postId, kind);
-                  if (!r.ok) toast.error(r.error);
-                })
-              }
-              className={cn(
-                'inline-flex h-9 items-center gap-1.5 rounded-full border px-3 text-xs transition-colors',
-                on
-                  ? 'border-electric bg-accent text-foreground'
-                  : 'border-border text-muted-foreground hover:text-foreground',
-              )}
-            >
-              <Icon className={cn('size-3.5', on && 'text-electric')} aria-hidden />
-              {n > 0 && <span className="type-figure">{n}</span>}
-            </button>
+            {/* Animate UI Icon Button: press spring, the icon plays and particles burst when turned on */}
+            <AnimateIcon animateOnTap asChild>
+              <IconButton
+                type="button"
+                aria-pressed={on}
+                aria-label={`${REACTIONS[kind]}${n ? `, ${n}` : ''}`}
+                onClick={() =>
+                  start(async () => {
+                    toggle(kind);
+                    const r = await toggleReactionAction(postId, kind);
+                    if (!r.ok) toast.error(r.error);
+                  })
+                }
+                className={cn(
+                  'relative inline-flex h-9 items-center gap-1.5 rounded-full border px-3 text-xs transition-colors',
+                  on
+                    ? 'border-electric bg-accent text-foreground'
+                    : 'border-border text-muted-foreground hover:text-foreground',
+                )}
+              >
+                <Icon className={cn('size-3.5', on && 'text-electric')} aria-hidden />
+                {n > 0 && <span className="type-figure">{n}</span>}
+                {on && <IconButtonParticles className="text-electric" />}
+              </IconButton>
+            </AnimateIcon>
           </li>
         );
       })}
