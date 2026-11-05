@@ -7,6 +7,7 @@ import { AudioPlayer } from '@/components/audio/audio-player';
 import { SectionHeading } from '@/components/layout/page-header';
 import { DownloadButton, LikeButton } from '@/components/tracks/track-actions';
 import { Button } from '@/components/ui/button';
+import { ProjectArtwork } from '@/components/dashboard/project-artwork';
 import { UserAvatar } from '@/components/ui/user-avatar';
 import { formatDate, formatDuration } from '@/lib/format';
 import { or404 } from '@/lib/or-404';
@@ -51,16 +52,11 @@ export default async function TrackPage({ params }: Params) {
       ) : null}
       <header className="relative grid gap-6 sm:grid-cols-[14rem_minmax(0,1fr)] sm:items-end">
         <div className="neon-bloom -top-16 -left-16 size-72" aria-hidden />
-        {t.artworkUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element -- public bucket URL
-          <img
-            src={t.artworkUrl}
-            alt=""
-            className="relative aspect-square w-full max-w-56 rounded-md object-cover shadow-(--shadow-sheet)"
-          />
-        ) : (
-          <div className="action-gradient relative aspect-square w-full max-w-56 rounded-md" aria-hidden />
-        )}
+        <ProjectArtwork
+          title={t.title}
+          url={t.artworkUrl}
+          className="relative aspect-square size-auto w-full max-w-56 text-5xl shadow-(--shadow-sheet)"
+        />
         <div className="relative min-w-0">
           <p className="type-role text-muted-foreground">{t.kind === 'SAMPLE' ? 'Sample' : 'Track'}</p>
           <h1 className="type-title mt-1 text-4xl break-words sm:text-5xl">{t.title}</h1>

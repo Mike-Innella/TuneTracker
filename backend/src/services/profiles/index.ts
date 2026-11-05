@@ -100,3 +100,23 @@ export async function isUsernameAvailable(username: string) {
     select: { id: true },
   }));
 }
+
+/** Header search: public artists by username or display name (suspended accounts excluded). */
+export async function searchArtists(q: string, limit = 6) {
+  const term = q.trim().slice(0, 80);
+  if (!term) return [];
+  const rows = await db().profile.findMany({
+    where: {
+      isPublic: true,
+      suspendedAt: null,
+      OR: [
+        { username: { contains: term.toLowerCase().replace(/^@/, '') } },
+        { displayName: { contains: term, mode: 'insensitive' } },
+      ],
+    },
+    orderBy: { followers: { _count: 'desc' } },
+    take: limit,
+    select: { username: true, displayName: true, avatarPath: true, specialties: true },
+  });
+  return rows.map((r) => ({ ...r, avatarUrl: publicUrl(r.avatarPath) }));
+}
