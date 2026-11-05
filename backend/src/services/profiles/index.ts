@@ -3,6 +3,7 @@ import { BUCKETS, profileSchema, themeSchema, type ProfileInput } from '@tunetra
 import { AppError, notFound, parse } from '../../lib/errors';
 import { publicUrl, removeObjects } from '../../storage';
 import { getFeed } from '../community';
+import { followStats } from '../follows';
 
 export async function getMyProfile(actorId: string) {
   const profile = await db().profile.findUniqueOrThrow({
@@ -19,13 +20,14 @@ export async function getArtist(viewerId: string | null, username: string) {
     include: { socialLinks: { orderBy: { position: 'asc' } } },
   });
   if (!profile || (!profile.isPublic && profile.id !== viewerId)) throw notFound('Artist not found');
-  const [feed, projects] = await Promise.all([
+  const [feed, projects, stats] = await Promise.all([
     getFeed(viewerId, { authorId: profile.id, limit: 20 }),
     db().project.findMany({
       where: { ownerId: profile.id, visibility: 'PUBLIC', archivedAt: null },
       orderBy: { updatedAt: 'desc' },
       select: { id: true, title: true, description: true, artworkPath: true, status: true },
     }),
+    followStats(profile.id, viewerId),
   ]);
   return {
     profile: {
@@ -44,6 +46,7 @@ export async function getArtist(viewerId: string | null, username: string) {
     posts: feed.posts,
     projects: projects.map((p) => ({ ...p, artworkUrl: publicUrl(p.artworkPath) })),
     isMe: profile.id === viewerId,
+    stats,
   };
 }
 

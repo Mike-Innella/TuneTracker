@@ -75,6 +75,8 @@ export async function getFeed(
     authorId?: string;
     projectId?: string;
     type?: string;
+    /** only posts by artists this profile follows */
+    followedBy?: string;
   } = {},
 ) {
   const { cursor, limit } = parse(pageSchema, input);
@@ -82,6 +84,7 @@ export async function getFeed(
     ...(input.authorId ? { authorId: input.authorId } : {}),
     ...(input.projectId ? { projectId: input.projectId } : {}),
     ...(input.type ? { type: input.type as PostRow['type'] } : {}),
+    ...(input.followedBy ? { author: { followers: { some: { followerId: input.followedBy } } } } : {}),
   };
   const rows = await db().post.findMany({
     where,
