@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState, useTransition } from 'react';
+import { useId, useMemo, useRef, useState, useTransition } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   DndContext,
@@ -64,6 +64,7 @@ export function KanbanBoard({ board }: { board: Board }) {
   const snapshot = useRef<Column[] | null>(null);
   const [, start] = useTransition();
   const openTaskId = params.get('task');
+  const dndId = useId(); // stable across SSR/CSR (dnd-kit's counter is not)
 
   // Server is the source of truth: adopt fresh props after refreshes unless a drag is in flight.
   const [seenBoard, setSeenBoard] = useState(board);
@@ -193,6 +194,7 @@ export function KanbanBoard({ board }: { board: Board }) {
       </nav>
 
       <DndContext
+        id={dndId}
         sensors={canEdit ? sensors : []}
         collisionDetection={closestCorners}
         onDragStart={onDragStart}

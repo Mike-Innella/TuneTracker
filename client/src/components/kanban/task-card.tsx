@@ -46,13 +46,17 @@ export const TaskCard = forwardRef<HTMLDivElement, CardProps>(function TaskCard(
       )}
     >
       <div className="flex items-start gap-2">
-        <button
-          type="button"
-          onClick={onOpen}
-          className="min-w-0 flex-1 text-left text-sm leading-snug font-semibold break-words after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
-        >
-          {task.title}
-        </button>
+        {onOpen ? (
+          <button
+            type="button"
+            onClick={onOpen}
+            className="min-w-0 flex-1 text-left text-sm leading-snug font-semibold break-words after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+          >
+            {task.title}
+          </button>
+        ) : (
+          <span className="min-w-0 flex-1 text-sm leading-snug font-semibold break-words">{task.title}</span>
+        )}
         {menu && <div className="relative z-10 -mt-1 -mr-1">{menu}</div>}
       </div>
 
