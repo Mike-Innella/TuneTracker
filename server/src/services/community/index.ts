@@ -59,6 +59,8 @@ async function present(rows: PostRow[], viewerId: string | null) {
       myReactions: viewerId ? p.reactions.filter((r) => r.profileId === viewerId).map((r) => r.type) : [],
       commentCount: p._count.comments,
       isMine: viewerId === p.author.id,
+      // raw references only for the author (edit form); never exposes a private project's title
+      ownerRefs: viewerId === p.author.id ? { projectId: p.projectId, imageId: p.imageId } : null,
     };
   });
 }
