@@ -18,7 +18,9 @@ export function LogoMark({ size = 32, className }: { size?: number; className?: 
 
 export function Wordmark({ className, version = true }: { className?: string; version?: boolean }) {
   return (
-    <span className={cn('type-title text-[1.15rem] leading-none tracking-[-0.02em]', className)}>
+    <span
+      className={cn('type-title text-[1.15rem] leading-none tracking-[-0.02em] whitespace-nowrap', className)}
+    >
       TuneTracker{version && <span className="ml-1 text-electric not-italic"> 2.0</span>}
     </span>
   );

@@ -6,13 +6,13 @@ import { Button } from '@/components/ui/button';
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const next = resolvedTheme === 'dark' ? 'light' : 'dark';
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(next)}
-      aria-label={`Switch to ${next} theme`}
+      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+      // static label: the server cannot know the resolved theme (avoids a hydration mismatch)
+      aria-label="Toggle dark and light theme"
       data-testid="theme-toggle"
     >
       <Sun className="hidden dark:block" aria-hidden />
