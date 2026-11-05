@@ -5,7 +5,11 @@ import { AppError } from './errors';
  * Fixed-window limiter stored in Postgres so it holds across serverless instances.
  * One upsert per call; the row resets when its window expires.
  */
-export async function rateLimit(key: string, limit: number, windowSec: number) {
+/** Operators may raise limits (e.g. e2e on one IP); it can never disable them. */
+const scale = () => Math.max(1, Number(process.env.RATE_LIMIT_SCALE) || 1);
+
+export async function rateLimit(key: string, baseLimit: number, windowSec: number) {
+  const limit = baseLimit * scale();
   const rows = await db().$queryRaw<{ count: number }[]>`
     INSERT INTO "RateLimit" ("key", "windowStart", "count")
     VALUES (${key}, now(), 1)
