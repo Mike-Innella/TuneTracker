@@ -220,6 +220,17 @@ export async function listTracks(viewerId: string | null, input: TrackListInput 
   };
 }
 
+/** An artist's published public catalogue (artist page). */
+export async function artistTracks(viewerId: string | null, ownerId: string) {
+  const rows = await db().track.findMany({
+    where: { ownerId, status: 'PUBLISHED', visibility: 'PUBLIC' },
+    include: trackInclude,
+    orderBy: { publishedAt: 'desc' },
+    take: 50,
+  });
+  return present(rows, viewerId);
+}
+
 /** The owner's catalogue, drafts included (Studio). */
 export async function myTracks(actorId: string) {
   const rows = await db().track.findMany({

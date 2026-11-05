@@ -17,7 +17,7 @@ const required = [
   'frontend/src/app/(application)/community/new/page.tsx',
   'frontend/src/app/(application)/community/[postId]/page.tsx',
   'frontend/src/app/(application)/profile/page.tsx',
-  'frontend/src/app/(application)/artists/[username]/page.tsx',
+  'frontend/src/app/(public)/artists/[username]/page.tsx',
   'frontend/src/app/(application)/settings/page.tsx',
   'frontend/src/app/api/health/route.ts',
   'frontend/src/app/layout.tsx',

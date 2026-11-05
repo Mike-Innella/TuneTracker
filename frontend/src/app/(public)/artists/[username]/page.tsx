@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ExternalLink, Globe, MapPin, Music4, Pencil } from 'lucide-react';
-import { profiles, requireProfile } from '@tunetracker/backend';
+import { getCurrentProfile, profiles, tracks } from '@tunetracker/backend';
+import { TrackList } from '@/components/tracks/track-list';
 import { Button } from '@/components/ui/button';
 import { UserAvatar } from '@/components/ui/user-avatar';
 import { EmptyState, SectionHeading } from '@/components/layout/page-header';
@@ -23,10 +24,11 @@ export async function generateMetadata({
 
 export default async function ArtistPage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const me = await requireProfile();
+  const me = await getCurrentProfile();
   const { profile, posts, projects, isMe, stats } = await or404(
-    profiles.getArtist(me.id, decodeURIComponent(username)),
+    profiles.getArtist(me?.id ?? null, decodeURIComponent(username)),
   );
+  const catalogue = await tracks.artistTracks(me?.id ?? null, profile.id);
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -51,7 +53,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ usernam
               followers={stats.followers}
               following={stats.following}
               isFollowing={stats.isFollowing}
-              canFollow={!isMe}
+              canFollow={!!me && !isMe}
             />
           </div>
           {profile.specialties.length > 0 && (
@@ -66,7 +68,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ usernam
               </Link>
             </Button>
           ) : (
-            <ReportButton targetType="PROFILE" targetId={profile.id} />
+            me && <ReportButton targetType="PROFILE" targetId={profile.id} />
           )}
         </div>
       </header>
@@ -171,22 +173,34 @@ export default async function ArtistPage({ params }: { params: Promise<{ usernam
           </section>
         </aside>
 
-        <section aria-labelledby="posts">
-          <SectionHeading>
-            <span id="posts">Published posts</span>
-          </SectionHeading>
-          {posts.length === 0 ? (
-            <EmptyState icon={Music4} title="Nothing published yet">
-              {isMe ? 'Share a demo or a finished track from the community page.' : 'Check back soon.'}
-            </EmptyState>
-          ) : (
-            <div className="grid gap-6">
-              {posts.map((p) => (
-                <PostCard key={p.id} post={p} />
-              ))}
-            </div>
-          )}
-        </section>
+        <div className="grid content-start gap-10">
+          <section aria-labelledby="tracks">
+            <SectionHeading>
+              <span id="tracks">Tracks</span>
+            </SectionHeading>
+            {catalogue.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No published tracks yet.</p>
+            ) : (
+              <TrackList tracks={catalogue} />
+            )}
+          </section>
+          <section aria-labelledby="posts">
+            <SectionHeading>
+              <span id="posts">Published posts</span>
+            </SectionHeading>
+            {posts.length === 0 ? (
+              <EmptyState icon={Music4} title="Nothing published yet">
+                {isMe ? 'Share a demo or a finished track from the community page.' : 'Check back soon.'}
+              </EmptyState>
+            ) : (
+              <div className="grid gap-6">
+                {posts.map((p) => (
+                  <PostCard key={p.id} post={p} />
+                ))}
+              </div>
+            )}
+          </section>
+        </div>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const PROTECTED = [
   '/projects',
   '/profile',
   '/settings',
-  '/artists',
+  '/studio',
   '/showcase',
   '/community',
 ];

@@ -35,9 +35,10 @@ export function AppShell({
   unread,
   children,
 }: {
-  me: Me;
-  notifications: NotificationItem[];
-  unread: number;
+  /** null for signed-out visitors on public pages (tracks, artists) */
+  me: Me | null;
+  notifications?: NotificationItem[];
+  unread?: number;
   children: React.ReactNode;
 }) {
   const path = usePathname();
@@ -86,15 +87,17 @@ export function AppShell({
             </ul>
           </NavHighlight>
         </nav>
-        <AnimateIcon animateOnHover asChild>
-          <Button asChild className="mt-8">
-            <Link href="/projects?new=1">
-              <PlusIcon aria-hidden /> New project
-            </Link>
-          </Button>
-        </AnimateIcon>
+        {me && (
+          <AnimateIcon animateOnHover asChild>
+            <Button asChild className="mt-8">
+              <Link href="/projects?new=1">
+                <PlusIcon aria-hidden /> New project
+              </Link>
+            </Button>
+          </AnimateIcon>
+        )}
         <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-4">
-          <AccountMenu me={me} />
+          {me ? <AccountMenu me={me} /> : <GuestActions />}
           <ThemeToggle />
         </div>
       </aside>
@@ -106,13 +109,11 @@ export function AppShell({
             <Logo href="/dashboard" size={28} version={false} compact />
           </div>
           <div className="ml-auto flex items-center gap-1">
-            <NotificationsMenu items={notifications} unread={unread} />
+            {me && <NotificationsMenu items={notifications ?? []} unread={unread ?? 0} />}
             <div className="lg:hidden">
               <ThemeToggle />
             </div>
-            <div className="lg:hidden">
-              <AccountMenu me={me} compact />
-            </div>
+            <div className="lg:hidden">{me ? <AccountMenu me={me} compact /> : <GuestActions />}</div>
           </div>
         </header>
 
@@ -153,6 +154,20 @@ export function AppShell({
           })}
         </NavHighlight>
       </nav>
+    </div>
+  );
+}
+
+function GuestActions() {
+  const path = usePathname();
+  return (
+    <div className="flex items-center gap-1.5">
+      <Button asChild variant="ghost" size="sm">
+        <Link href={`/login?next=${encodeURIComponent(path)}`}>Log in</Link>
+      </Button>
+      <Button asChild size="sm">
+        <Link href="/signup">Sign up</Link>
+      </Button>
     </div>
   );
 }
