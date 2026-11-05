@@ -36,7 +36,7 @@ moderation UI, account deletion or resumable uploads yet.
 | Showcase | §13 public profiles/tracks | Kept as a public project page |
 | Settings, theme | §5, §21 | Kept; add account deletion, notification preferences |
 | Liner Notes design + Animate UI | §21 "preserve blue/indigo identity, elevate" | Kept and extended |
-| Folder names `client/server/data/shared` | §3.2 suggests `frontend/backend/…` | **Decided (owner, 2026-11-05)**: rename to `frontend/`, `backend/`, `data/`, `packages/shared/`, `infrastructure/docker` + `infrastructure/scripts` (first task of Phase 1) |
+| Folder names | §3.2 layout | **Done (PR "adopt the directive's repository layout")**: renamed to `frontend/`, `backend/`, `data/`, `packages/shared/`, `infrastructure/docker` + `infrastructure/scripts` (first task of Phase 1) |
 
 ## 3. Target architecture
 
