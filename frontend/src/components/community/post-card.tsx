@@ -89,6 +89,9 @@ export function PostCard({ post, full = false }: { post: FeedPost; full?: boolea
       <div className="grid gap-4 px-5 py-4">
         {post.audio && (
           <AudioPlayer
+            id={post.audio.trackId ?? post.audio.id}
+            trackId={post.audio.trackId ?? undefined}
+            artist={post.author.displayName}
             src={post.audio.url}
             title={post.audio.title ?? post.title}
             durationSec={post.audio.durationSec}

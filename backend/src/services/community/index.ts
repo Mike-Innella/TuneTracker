@@ -48,6 +48,8 @@ async function present(rows: PostRow[], viewerId: string | null) {
       audio: p.audio
         ? {
             id: p.audio.id,
+            // published track for this audio, so the player counts listens
+            trackId: p.trackId,
             title: p.audio.title,
             durationSec: p.audio.durationSec,
             mimeType: p.audio.mimeType,

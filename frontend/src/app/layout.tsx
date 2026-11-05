@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { Archivo, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { PlayerProvider } from '@/providers/player-provider';
+import { MiniPlayer } from '@/components/audio/mini-player';
 import './globals.css';
 
 const archivo = Archivo({ subsets: ['latin'], axes: ['wdth'], variable: '--font-archivo', display: 'swap' });
@@ -39,7 +41,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${archivo.variable} ${jetbrains.variable}`} suppressHydrationWarning>
       <body className="min-h-dvh">
         <ThemeProvider>
-          {children}
+          <PlayerProvider>
+            {children}
+            <MiniPlayer />
+          </PlayerProvider>
           <Toaster position="bottom-right" />
         </ThemeProvider>
       </body>
