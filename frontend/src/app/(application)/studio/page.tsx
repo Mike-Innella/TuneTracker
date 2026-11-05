@@ -73,7 +73,7 @@ export default async function StudioPage() {
         ))}
       </dl>
 
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <div className="grid content-start gap-10">
           <section aria-labelledby="my-tracks">
             <SectionHeading>

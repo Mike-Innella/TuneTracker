@@ -92,7 +92,7 @@ export default async function TrackPage({ params }: Params) {
         durationSec={t.durationSec}
       />
 
-      <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="mt-10 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <section aria-labelledby="notes">
           <SectionHeading>
             <span id="notes">Liner notes</span>
