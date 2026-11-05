@@ -229,3 +229,20 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Docked bars: the mini player sits above the mobile tab bar, and page content clears both. */
+:root {
+  --bottom-nav-h: 0px;
+  --player-h: 0px;
+}
+body:has([data-bottom-nav]) {
+  --bottom-nav-h: calc(4rem + env(safe-area-inset-bottom));
+}
+body:has([data-mini-player]) {
+  --player-h: 6.5rem;
+}
+@media (width >= 64rem) {
+  body:has([data-bottom-nav]) {
+    --bottom-nav-h: 0px;
+  }
+}

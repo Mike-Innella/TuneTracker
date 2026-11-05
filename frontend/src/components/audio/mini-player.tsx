@@ -6,6 +6,7 @@ import { Button as PressButton } from '@animate-ui/react/primitives/buttons/butt
 import { motionTokens } from '@animate-ui/react/utils/motion';
 import { SkipBack, SkipForward, Volume2, VolumeX, X } from 'lucide-react';
 import { formatDuration } from '@/lib/format';
+import { ProjectArtwork } from '@/components/dashboard/project-artwork';
 import { usePlayer } from '@/providers/player-provider';
 import { PlayPauseIcon, SeekBar } from './audio-player';
 
@@ -23,6 +24,7 @@ export function MiniPlayer() {
         <motion.section
           aria-label="Now playing"
           data-testid="mini-player"
+          data-mini-player
           initial={{ y: '110%', opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: '110%', opacity: 0, transition: motionTokens.transition.dismiss }}
@@ -30,12 +32,7 @@ export function MiniPlayer() {
           className="fixed inset-x-2 bottom-[calc(var(--bottom-nav-h,0px)+0.5rem)] z-40 mx-auto max-w-3xl rounded-lg border border-border bg-stock-2/95 p-2 shadow-(--shadow-sheet) backdrop-blur md:inset-x-4"
         >
           <div className="flex items-center gap-2 sm:gap-3">
-            {t.artworkUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element -- public bucket URL, already sized
-              <img src={t.artworkUrl} alt="" className="size-10 shrink-0 rounded-sm object-cover" />
-            ) : (
-              <div className="action-gradient size-10 shrink-0 rounded-sm" aria-hidden />
-            )}
+            <ProjectArtwork title={t.title} url={t.artworkUrl} className="size-10 rounded-sm text-xs" />
             <div className="min-w-0 flex-1" aria-live="polite">
               {t.trackId ? (
                 <Link
