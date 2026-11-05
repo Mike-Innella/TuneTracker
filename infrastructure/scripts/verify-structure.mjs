@@ -13,7 +13,7 @@ const required = [
   'frontend/src/app/(application)/projects/page.tsx',
   'frontend/src/app/(application)/projects/[projectId]/page.tsx',
   'frontend/src/app/(application)/projects/[projectId]/board/page.tsx',
-  'frontend/src/app/(application)/community/page.tsx',
+  'frontend/src/app/(application)/community/(feed)/page.tsx',
   'frontend/src/app/(application)/community/new/page.tsx',
   'frontend/src/app/(application)/community/[postId]/page.tsx',
   'frontend/src/app/(application)/profile/page.tsx',
