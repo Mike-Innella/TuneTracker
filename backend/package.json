@@ -1,0 +1,24 @@
+{
+  "name": "@tunetracker/backend",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./proxy": "./src/auth/proxy.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.0",
+    "@tunetracker/data": "2.0.0",
+    "@tunetracker/shared": "2.0.0",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.7"
+  },
+  "peerDependencies": {
+    "next": "^16.4.5"
+  }
+}

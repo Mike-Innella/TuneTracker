@@ -28,8 +28,8 @@ Rules that reviewers check:
 
 - Every mutation authorizes on the server (`authorizeProject`/ownership), never trusts client ids.
 - New `public` tables enable RLS in the same migration.
-- Validate all input with schemas in `shared/`.
-- UI follows the Liner Notes design system (`client/DESIGN.md`); test dark + light, 320–1440 px.
+- Validate all input with schemas in `packages/shared/`.
+- UI follows the Liner Notes design system (`frontend/DESIGN.md`); test dark + light, 320–1440 px.
 
 ## Releases
 

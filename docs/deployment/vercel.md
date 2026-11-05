@@ -9,8 +9,8 @@ A real deployment has not been performed yet — it needs the Vercel project and
 | Setting | Value |
 |---|---|
 | Framework | Next.js |
-| Root Directory | `client` |
-| Include files outside the Root Directory | **Enabled** (needed for `server/`, `data/`, `shared/`) |
+| Root Directory | `frontend` |
+| Include files outside the Root Directory | **Enabled** (needed for `backend/`, `data/`, `packages/shared/`) |
 | Install Command | default (`npm install` at the repo root — npm workspaces + root lockfile) |
 | Build Command | default (`next build`) |
 | Node.js | 24.x |

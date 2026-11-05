@@ -37,5 +37,5 @@ npm run format:check && npm run lint && npm run typecheck
 ## Troubleshooting
 
 - **Dev server reload loop** after many edits to workspace packages: stop `next dev`, delete
-  `client/.next`, start again. (Seen with Turbopack 16.4 on long-running dev sessions.)
+  `frontend/.next`, start again. (Seen with Turbopack 16.4 on long-running dev sessions.)
 - **Hydration warnings** in dev after hot edits: restart the dev server before investigating.

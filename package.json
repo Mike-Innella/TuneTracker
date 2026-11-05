@@ -2,23 +2,23 @@
   "name": "tunetracker",
   "version": "2.0.0",
   "private": true,
-  "description": "TuneTracker 2.0 — Create. Collaborate. Share.",
+  "description": "TuneTracker 2.0 \u2014 Create. Collaborate. Share.",
   "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=22"
   },
   "workspaces": [
-    "shared",
+    "packages/shared",
     "data",
-    "server",
-    "client"
+    "backend",
+    "frontend"
   ],
   "scripts": {
-    "dev": "npm run dev -w @tunetracker/client",
-    "build": "npm run build -w @tunetracker/client",
-    "start": "npm run start -w @tunetracker/client",
-    "lint": "npm run lint -w @tunetracker/client",
+    "dev": "npm run dev -w @tunetracker/frontend",
+    "build": "npm run build -w @tunetracker/frontend",
+    "start": "npm run start -w @tunetracker/frontend",
+    "lint": "npm run lint -w @tunetracker/frontend",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

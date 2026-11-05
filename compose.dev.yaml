@@ -7,15 +7,15 @@ services:
   app:
     build:
       target: dev
-    working_dir: /app/client
+    working_dir: /app/frontend
     command: ['npx', 'next', 'dev', '--hostname', '0.0.0.0']
     environment:
       NODE_ENV: development
       WATCHPACK_POLLING: 'true'
     volumes:
-      - ./client:/app/client
-      - ./server:/app/server
-      - ./shared:/app/shared
+      - ./frontend:/app/frontend
+      - ./backend:/app/backend
+      - ./packages/shared:/app/packages/shared
       - ./data/prisma:/app/data/prisma
       - ./data/src/db.ts:/app/data/src/db.ts
-      - /app/client/.next
+      - /app/frontend/.next
