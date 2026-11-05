@@ -56,7 +56,7 @@ export async function revokeInviteAction(projectId: string, inviteId: string) {
 export async function respondToInviteAction(inviteId: string, accept: boolean) {
   return runAction(async () => {
     const r = await collaboration.respondToInvite((await requireActor()).id, inviteId, accept);
-    revalidatePath('/dashboard');
+    revalidatePath('/studio');
     revalidatePath('/projects');
     return r;
   });

@@ -15,6 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { createTrackDraftAction, publishTrackAction, updateTrackAction } from '@/features/tracks/actions';
 import { uploadFile } from '@/features/media/upload';
 import { cn } from '@/lib/utils';
+import { ProjectArtwork } from '@/components/dashboard/project-artwork';
 
 export type EditableTrack = {
   id: string;
@@ -170,11 +171,11 @@ export function TrackWizard({ initial }: { initial?: EditableTrack }) {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <ol className="mb-8 flex items-center gap-3" aria-label="Steps">
+      <ol className="mb-8 flex items-center gap-2 sm:gap-3" aria-label="Steps">
         {STEPS.map((label, i) => (
           <li
             key={label}
-            className="flex flex-1 items-center gap-3"
+            className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3"
             aria-current={i === step ? 'step' : undefined}
           >
             <span
@@ -189,8 +190,10 @@ export function TrackWizard({ initial }: { initial?: EditableTrack }) {
             >
               {i + 1}
             </span>
-            <span className={cn('type-role text-sm', i !== step && 'text-muted-foreground')}>{label}</span>
-            {i < STEPS.length - 1 && <span className="h-px flex-1 bg-border" aria-hidden />}
+            <span className={cn('type-role text-sm', i !== step && 'text-muted-foreground max-sm:sr-only')}>
+              {label}
+            </span>
+            {i < STEPS.length - 1 && <span className="h-px min-w-3 flex-1 bg-border" aria-hidden />}
           </li>
         ))}
       </ol>
@@ -276,12 +279,7 @@ export function TrackWizard({ initial }: { initial?: EditableTrack }) {
               durationSec={track.durationSec}
             />
             <div className="flex items-center gap-4">
-              {track.artworkUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element -- public bucket URL
-                <img src={track.artworkUrl} alt="Artwork" className="size-20 rounded-md object-cover" />
-              ) : (
-                <div className="action-gradient size-20 rounded-md" aria-hidden />
-              )}
+              <ProjectArtwork title={track.title} url={track.artworkUrl} className="size-20 text-lg" />
               <input
                 ref={artRef}
                 id="track-artwork"

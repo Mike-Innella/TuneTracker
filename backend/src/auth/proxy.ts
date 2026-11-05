@@ -42,9 +42,10 @@ export async function refreshSession(request: NextRequest) {
     url.searchParams.set('next', path);
     return withCookies(NextResponse.redirect(url), response);
   }
-  if (user && (path === '/login' || path === '/signup')) {
+  // signed-in visitors skip the landing page and the auth forms
+  if (user && (path === '/' || path === '/login' || path === '/signup')) {
     return withCookies(
-      NextResponse.redirect(new URL('/dashboard', requestOrigin(request.headers, request.nextUrl.origin))),
+      NextResponse.redirect(new URL('/home', requestOrigin(request.headers, request.nextUrl.origin))),
       response,
     );
   }

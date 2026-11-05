@@ -11,6 +11,8 @@ vi.mock('../../src/storage', () => ({
 }));
 
 const tracks = await import('../../src/services/tracks');
+const profiles = await import('../../src/services/profiles');
+const follows = await import('../../src/services/follows');
 const { makeProfile } = await import('./helpers');
 
 async function audio(ownerId: string, verified = true) {
@@ -100,5 +102,46 @@ describe('tracks', () => {
     await tracks.deleteTrack(me.id, t.id);
     expect(removed).toContain(asset.path);
     expect(await db().mediaAsset.findUnique({ where: { id: asset.id } })).toBeNull();
+  });
+
+  it('home shows tracks from followed artists only, and artist search skips private profiles', async () => {
+    const fan = await makeProfile('listener');
+    const followed = await makeProfile('followed');
+    const other = await makeProfile('other');
+    for (const owner of [followed, other]) {
+      const t = await tracks.createDraft(owner.id, { audioId: (await audio(owner.id)).id });
+      await tracks.publishTrack(owner.id, t.id);
+    }
+    await follows.follow(fan.id, followed.username);
+    const feed = await tracks.listTracks(fan.id, { limit: 48 }, { followedBy: fan.id });
+    expect(new Set(feed.tracks.map((t) => t.owner.username))).toEqual(new Set([followed.username]));
+
+    await db().profile.update({ where: { id: other.id }, data: { isPublic: false } });
+    expect((await profiles.searchArtists(followed.username)).map((a) => a.username)).toEqual([
+      followed.username,
+    ]);
+    expect(await profiles.searchArtists(other.username)).toEqual([]);
+  });
+
+  it('discover paginates with a cursor: no overlap, no gaps, then the end', async () => {
+    const me = await makeProfile('pager');
+    const ids: string[] = [];
+    for (let i = 0; i < 5; i++) {
+      const t = await tracks.createDraft(me.id, { audioId: (await audio(me.id)).id });
+      await tracks.publishTrack(me.id, t.id);
+      ids.push(t.id);
+    }
+    const seen: string[] = [];
+    let cursor: string | null = null;
+    let pages = 0;
+    do {
+      const page = await tracks.listTracks(null, { q: me.username, limit: 2, cursor });
+      seen.push(...page.tracks.map((t) => t.id));
+      cursor = page.nextCursor;
+      pages++;
+    } while (cursor && pages < 10);
+    expect(pages).toBe(3);
+    expect(new Set(seen).size).toBe(5);
+    expect(new Set(seen)).toEqual(new Set(ids));
   });
 });

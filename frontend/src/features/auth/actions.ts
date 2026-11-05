@@ -89,6 +89,6 @@ export async function resetPassword(_: unknown, form: FormData): Promise<ActionR
     if (error) throw new AppError(400, error.message);
     return undefined;
   });
-  if (result.ok) redirect('/dashboard');
+  if (result.ok) redirect('/studio'); // Studio lists pending project invitations
   return result;
 }

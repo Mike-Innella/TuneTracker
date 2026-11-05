@@ -92,12 +92,12 @@ The hosted database currently holds no user data, so the first migrations carry 
 ## 7. Phased plan (each phase = branches → PR → CI green → merge)
 
 0. **This audit** + decisions (made: Kanban → Studio Projects; rename folders).
-1. **Platform foundations**: folder rename to the directive's layout; hosted Supabase wired to Vercel envs; Redis limiter; account
+1. **Platform foundations** (done): folder rename to the directive's layout; hosted Supabase wired to Vercel envs; Redis limiter; account
    deletion; moderation dashboard + roles; follows; collaboration requests (accept/decline,
    email invites for non-users).
-2. **Music core**: Track/Sample models + migration of post audio; resumable uploads; guided
+2. **Music core** (done): Track/Sample models + migration of post audio; resumable uploads; guided
    upload wizard; persistent global player + queue; public track and artist pages.
-3. **Navigation & Home/Discover**: rail + bottom nav per §7, header search, music-first Home,
+3. **Navigation & Home/Discover** (done): rail + bottom nav per §7, header search, music-first Home,
    Discover with filters and pagination.
 4. **Community & Blog**: categories, threaded replies, mentions, embeds; Tiptap blog with drafts,
    publishing, categories/tags, search, related articles, reporting.

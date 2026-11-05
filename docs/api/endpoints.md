@@ -74,3 +74,15 @@ Public pages (no account): `/tracks/[id]`, `/artists/[username]`. Studio (signed
 One app-wide `<audio>` (PlayerProvider in the root layout) drives every embedded player and the docked
 mini player, so playback and the queue survive navigation; Media Session gives lock-screen controls.
 
+## Phase 3 — navigation, Home and Discover
+
+- Rail: **Listen** (Home `/home`, Discover `/discover`, Community) and **Make** (Studio, Projects,
+  Profile); mobile tab bar: Home, Discover, Community, Studio, Profile. Blog joins in Phase 4.
+- `/home` (public): new releases, trending (most played, published in the last 30 days), fresh samples;
+  signed in, also tracks from artists you follow and recent community posts. Signed-in visits to `/`
+  go to `/home`; login and email confirmation land there.
+- `/discover` (public, GET form): `q` (title or artist), `type` (tracks | samples), `genre`,
+  `sort` (recent | trending), `cursor` (forward pagination, 24 per page). Matching public artists show
+  above the results. Header search submits here.
+- `/studio` is the former dashboard plus your tracks; `/dashboard` redirects to it.
+

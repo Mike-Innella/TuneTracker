@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimateIcon } from '@animate-ui/react/icons';
@@ -19,7 +20,8 @@ import {
 import { UserAvatar } from '@/components/ui/user-avatar';
 import { signOut } from '@/features/auth/actions';
 import { cn } from '@/lib/utils';
-import { NAV } from './nav-items';
+import { MOBILE_NAV, NAV, PRIMARY_NAV, STUDIO_NAV } from './nav-items';
+import { HeaderSearch } from './header-search';
 import { NotificationsMenu, type NotificationItem } from './notifications-menu';
 import { ThemeToggle } from './theme-toggle';
 
@@ -54,44 +56,52 @@ export function AppShell({
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-dvh flex-col border-r border-border bg-stock px-4 py-6 lg:flex">
         <div className="px-2">
-          <Logo href="/dashboard" size={30} />
+          <Logo href="/home" size={30} />
         </div>
         <nav aria-label="Main" className="mt-10">
           <NavHighlight
             value={NAV.find((n) => isActive(path, n.href))?.href ?? null}
             className="inset-0 rounded-md bg-accent"
           >
-            <ul className="grid gap-1">
-              {NAV.map(({ href, label, icon: Icon }) => {
-                const active = isActive(path, href);
-                return (
-                  <NavHighlightItem key={href} value={href}>
-                    <li>
-                      <AnimateIcon animateOnHover asChild>
-                        <Link
-                          href={href}
-                          aria-current={active ? 'page' : undefined}
-                          className={cn(
-                            'relative z-10 flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground',
-                            active && 'text-foreground',
-                          )}
-                        >
-                          <Icon className={cn('size-4', active && 'text-electric')} aria-hidden />
-                          {label}
-                        </Link>
-                      </AnimateIcon>
-                    </li>
-                  </NavHighlightItem>
-                );
-              })}
-            </ul>
+            {[
+              { title: 'Listen', items: PRIMARY_NAV },
+              { title: 'Make', items: STUDIO_NAV },
+            ].map((group) => (
+              <div key={group.title} className="mb-6">
+                <p className="type-role mb-2 px-3 text-ink-soft">{group.title}</p>
+                <ul className="grid gap-1">
+                  {group.items.map(({ href, label, icon: Icon }) => {
+                    const active = isActive(path, href);
+                    return (
+                      <NavHighlightItem key={href} value={href}>
+                        <li>
+                          <AnimateIcon animateOnHover asChild>
+                            <Link
+                              href={href}
+                              aria-current={active ? 'page' : undefined}
+                              className={cn(
+                                'relative z-10 flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground',
+                                active && 'text-foreground',
+                              )}
+                            >
+                              <Icon className={cn('size-4', active && 'text-electric')} aria-hidden />
+                              {label}
+                            </Link>
+                          </AnimateIcon>
+                        </li>
+                      </NavHighlightItem>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
           </NavHighlight>
         </nav>
         {me && (
           <AnimateIcon animateOnHover asChild>
             <Button asChild className="mt-8">
-              <Link href="/projects?new=1">
-                <PlusIcon aria-hidden /> New project
+              <Link href="/studio/upload">
+                <PlusIcon aria-hidden /> Upload
               </Link>
             </Button>
           </AnimateIcon>
@@ -106,8 +116,11 @@ export function AppShell({
         {/* Top bar: mobile brand + global actions */}
         <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border bg-background/85 px-4 backdrop-blur-md lg:h-16 lg:px-8">
           <div className="lg:hidden">
-            <Logo href="/dashboard" size={28} version={false} compact />
+            <Logo href="/home" size={28} version={false} compact />
           </div>
+          <Suspense fallback={<div className="flex-1" />}>
+            <HeaderSearch />
+          </Suspense>
           <div className="ml-auto flex items-center gap-1">
             {me && <NotificationsMenu items={notifications ?? []} unread={unread ?? 0} />}
             <div className="lg:hidden">
@@ -117,7 +130,10 @@ export function AppShell({
           </div>
         </header>
 
-        <main id="main" className="min-w-0 flex-1 px-4 pt-6 pb-28 sm:px-6 lg:px-8 lg:pt-8 lg:pb-12">
+        <main
+          id="main"
+          className="min-w-0 flex-1 px-4 pt-6 pb-[calc(var(--bottom-nav-h)+var(--player-h)+2rem)] sm:px-6 lg:px-8 lg:pt-8"
+        >
           {children}
         </main>
       </div>
@@ -126,13 +142,14 @@ export function AppShell({
       <nav
         aria-label="Main"
         data-testid="mobile-nav"
+        data-bottom-nav
         className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden"
       >
         <NavHighlight
-          value={NAV.find((n) => isActive(path, n.href))?.href ?? null}
+          value={MOBILE_NAV.find((n) => isActive(path, n.href))?.href ?? null}
           className="inset-x-3 top-1.5 h-1 rounded-full bg-electric"
         >
-          {NAV.map(({ href, label, icon: Icon }) => {
+          {MOBILE_NAV.map(({ href, label, icon: Icon }) => {
             const active = isActive(path, href);
             return (
               <NavHighlightItem key={href} value={href}>

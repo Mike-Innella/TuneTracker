@@ -40,11 +40,11 @@ export async function signUp(page: Page, user: TestUser) {
   await expect(page.getByRole('heading', { name: 'Check your inbox' })).toBeVisible();
 }
 
-/** Registers, follows the real verification email, and lands on the dashboard. */
+/** Registers, follows the real verification email, and lands on Home. */
 export async function signUpAndConfirm(page: Page, user = uniqueUser()) {
   await signUp(page, user);
   await page.goto(await confirmLinkFor(user.email));
-  await expect(page).toHaveURL(/\/dashboard/);
+  await expect(page).toHaveURL(/\/home$/);
   return user;
 }
 
@@ -53,7 +53,7 @@ export async function logIn(page: Page, user: TestUser) {
   await page.getByLabel('Email').fill(user.email);
   await page.getByLabel('Password').fill(user.password);
   await page.getByRole('button', { name: 'Log in' }).click();
-  await expect(page).toHaveURL(/\/dashboard/);
+  await expect(page).toHaveURL(/\/home$/);
 }
 
 export async function createProject(page: Page, title: string, template = 'Production') {

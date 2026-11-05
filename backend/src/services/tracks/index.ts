@@ -175,13 +175,20 @@ export async function getTrack(viewerId: string | null, trackId: string) {
   return (await present([t], viewerId))[0]!;
 }
 
-/** Discovery: published public tracks and samples, newest or trending (plays in the last 7 days). */
-export async function listTracks(viewerId: string | null, input: TrackListInput = {}) {
+/** Discovery: published public tracks and samples, newest or trending (most played, published in the last 30 days). */
+export async function listTracks(
+  viewerId: string | null,
+  input: TrackListInput = {},
+  opts: { followedBy?: string } = {},
+) {
   const f = parse(trackListSchema, input);
   const where: Prisma.TrackWhereInput = {
     status: 'PUBLISHED',
     visibility: 'PUBLIC',
-    owner: { suspendedAt: null },
+    owner: {
+      suspendedAt: null,
+      ...(opts.followedBy ? { followers: { some: { followerId: opts.followedBy } } } : {}),
+    },
     ...(f.kind ? { kind: f.kind } : {}),
     ...(f.genre ? { genre: f.genre } : {}),
     ...(f.tag ? { tags: { has: f.tag } } : {}),

@@ -6,11 +6,11 @@ test('mobile: bottom navigation, board column navigation and no horizontal overf
   const nav = page.getByTestId('mobile-nav');
   await expect(nav).toBeVisible();
   for (const [label, url] of [
-    ['Projects', /\/projects$/],
+    ['Discover', /\/discover$/],
     ['Community', /\/community$/],
-    ['Profile', /\/profile$/],
     ['Studio', /\/studio$/],
-    ['Dashboard', /\/dashboard$/],
+    ['Profile', /\/profile$/],
+    ['Home', /\/home$/],
   ] as const) {
     await nav.getByRole('link', { name: label }).click();
     await expect(page).toHaveURL(url);

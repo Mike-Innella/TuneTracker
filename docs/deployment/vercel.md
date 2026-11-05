@@ -40,6 +40,6 @@ to Supabase Auth redirect URLs (see `supabase.md`).
 ## Verify a deployment
 
 1. `GET /api/health` → `{ "ok": true }`.
-2. Sign up → confirmation email → lands on `/dashboard`.
+2. Sign up → confirmation email → lands on `/home`.
 3. Create a project, drag a task, reload: order persists.
 4. Upload a short audio file to a post and play it.
