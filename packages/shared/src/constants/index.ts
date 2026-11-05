@@ -78,3 +78,40 @@ export const SPECIALTIES = [
   'Mastering engineer',
   'Composer',
 ] as const;
+
+/** Fixed genre list (explainable filters; extend here). */
+export const GENRES = [
+  'Electronic',
+  'House',
+  'Techno',
+  'Drum & Bass',
+  'Hip-Hop',
+  'R&B',
+  'Pop',
+  'Rock',
+  'Indie',
+  'Synthwave',
+  'Ambient',
+  'Lo-fi',
+  'Jazz',
+  'Soul',
+  'Folk',
+  'Classical',
+  'Cinematic',
+  'Experimental',
+] as const;
+
+export const USAGE_RIGHTS = {
+  ALL_RIGHTS_RESERVED: { label: 'All rights reserved', summary: 'Listen only. No reuse without permission.' },
+  ROYALTY_FREE_NON_COMMERCIAL: {
+    label: 'Royalty-free, non-commercial',
+    summary: 'Free to use in non-commercial work. Credit appreciated.',
+  },
+  ROYALTY_FREE_COMMERCIAL: {
+    label: 'Royalty-free, commercial',
+    summary: 'Free to use in commercial and non-commercial work.',
+  },
+  CC_BY: { label: 'CC BY 4.0', summary: 'Any use, including commercial, with attribution.' },
+  CC_BY_NC: { label: 'CC BY-NC 4.0', summary: 'Non-commercial use with attribution.' },
+} as const;
+export type UsageRightsKey = keyof typeof USAGE_RIGHTS;

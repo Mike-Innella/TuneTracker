@@ -42,6 +42,30 @@ enum InviteStatus {
   REVOKED
 }
 
+enum TrackKind {
+  TRACK
+  SAMPLE
+}
+
+enum TrackStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum TrackVisibility {
+  PRIVATE
+  PUBLIC
+}
+
+/// Required before a sample can be downloaded; shown on its page.
+enum UsageRights {
+  ALL_RIGHTS_RESERVED
+  ROYALTY_FREE_NON_COMMERCIAL
+  ROYALTY_FREE_COMMERCIAL
+  CC_BY
+  CC_BY_NC
+}
+
 enum ModerationOutcome {
   DISMISSED
   CONTENT_REMOVED
@@ -105,6 +129,9 @@ model Profile {
   invitesSent       ProjectInvite[]    @relation("InviteInviter")
   invitesReceived   ProjectInvite[]    @relation("InviteInvitee")
   moderationActions ModerationAction[]
+  tracks            Track[]
+  trackLikes        TrackLike[]
+  plays             Play[]
   ownedProjects     Project[]          @relation("ProjectOwner")
   memberships       ProjectMember[]
   assignedTasks     Task[]             @relation("TaskAssignee")
@@ -269,6 +296,8 @@ model MediaAsset {
   task       Task?    @relation(fields: [taskId], references: [id], onDelete: SetNull)
   audioPosts Post[]   @relation("PostAudio")
   imagePosts Post[]   @relation("PostImage")
+  audioOf    Track[]  @relation("TrackAudio")
+  artworkOf  Track[]  @relation("TrackArtwork")
 
   @@unique([bucket, path])
   @@index([ownerId])
@@ -288,9 +317,12 @@ model Post {
   feedbackRequested Boolean  @default(false)
   audioId           String?
   imageId           String?
+  /// a published track embedded in the post (replaces raw audio attachments going forward)
+  trackId           String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
+  track     Track?        @relation(fields: [trackId], references: [id], onDelete: SetNull)
   author    Profile       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   project   Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
   audio     MediaAsset?   @relation("PostAudio", fields: [audioId], references: [id], onDelete: SetNull)
@@ -418,4 +450,66 @@ model ModerationAction {
   report      Report?           @relation(fields: [reportId], references: [id], onDelete: SetNull)
 
   @@index([createdAt])
+}
+
+/// A published (or draft) track or sample: the unit of music discovery and playback.
+model Track {
+  id           String          @id @default(cuid())
+  ownerId      String          @db.Uuid
+  kind         TrackKind       @default(TRACK)
+  status       TrackStatus     @default(DRAFT)
+  visibility   TrackVisibility @default(PUBLIC)
+  title        String
+  description  String?
+  genre        String?
+  tags         String[]
+  links        String[]
+  /// [{ name, role }] creator credits, validated by the shared schema
+  credits      Json            @default("[]")
+  bpm          Int?
+  musicalKey   String?
+  durationSec  Float?
+  audioId      String?
+  artworkId    String?
+  /// samples only: downloads need an explicit rights choice
+  downloadable Boolean         @default(false)
+  usageRights  UsageRights?
+  publishedAt  DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  owner   Profile     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  audio   MediaAsset? @relation("TrackAudio", fields: [audioId], references: [id], onDelete: SetNull)
+  artwork MediaAsset? @relation("TrackArtwork", fields: [artworkId], references: [id], onDelete: SetNull)
+  likes   TrackLike[]
+  plays   Play[]
+  posts   Post[]
+
+  @@index([status, visibility, publishedAt(sort: Desc)])
+  @@index([ownerId, status])
+  @@index([kind, status, genre])
+}
+
+model TrackLike {
+  trackId   String
+  profileId String   @db.Uuid
+  createdAt DateTime @default(now())
+  track     Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@id([trackId, profileId])
+  @@index([profileId])
+}
+
+/// One counted listen (de-duplicated per listener/visitor per track per window before insert).
+/// Stores no IP or user agent; anonymous plays keep only the time.
+model Play {
+  id         String   @id @default(cuid())
+  trackId    String
+  listenerId String?  @db.Uuid
+  createdAt  DateTime @default(now())
+  track      Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  listener   Profile? @relation(fields: [listenerId], references: [id], onDelete: SetNull)
+
+  @@index([trackId, createdAt])
 }

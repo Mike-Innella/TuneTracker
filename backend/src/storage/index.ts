@@ -48,6 +48,15 @@ export async function signedReadUrls(paths: string[], expiresIn = 60 * 60) {
   return out;
 }
 
+/** Short-lived URL that downloads a private object under a friendly filename. */
+export async function signedDownloadUrl(path: string, filename: string, expiresIn = 300) {
+  const { data, error } = await supabaseAdmin()
+    .storage.from(BUCKETS.media)
+    .createSignedUrl(path, expiresIn, { download: filename });
+  if (error || !data) return null;
+  return toPublicOrigin(data.signedUrl);
+}
+
 /** Public bucket URL; deterministic, so no network call. */
 export function publicUrl(path: string | null | undefined): string | null {
   if (!path) return null;
