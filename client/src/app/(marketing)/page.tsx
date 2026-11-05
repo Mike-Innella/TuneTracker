@@ -34,7 +34,7 @@ function Credit({ role, children }: { role: string; children: React.ReactNode })
     <div className="flex items-baseline gap-3">
       <dt className="type-role shrink-0 text-muted-foreground">{role}</dt>
       <span className="credit-leader" aria-hidden />
-      <dd className="text-right">{children}</dd>
+      <dd className="min-w-0 text-right break-words">{children}</dd>
     </div>
   );
 }
@@ -52,7 +52,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pt-14 pb-16 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:pt-20 lg:pb-24">
           <div className="lg:col-span-5">
-            <h1 className="type-title text-[clamp(2.75rem,11vw,4.25rem)] lg:text-[clamp(2.75rem,4.4vw,4.75rem)]">
+            <h1 className="type-title text-[clamp(2.4rem,11vw,4.25rem)] lg:text-[clamp(2.75rem,4.4vw,4.75rem)]">
               TuneTracker <span className="text-electric not-italic">2.0</span>
             </h1>
             <p className="type-role mt-5 text-base tracking-[0.2em] text-foreground">
@@ -127,7 +127,7 @@ export default function HomePage() {
 
       {/* Task detail — the session sheet */}
       <section className="border-y border-border bg-stock">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 sm:px-8 lg:grid-cols-12">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 sm:px-8 lg:grid-cols-12 [&>*]:min-w-0">
           <div className="sheet order-2 p-6 lg:order-1 lg:col-span-6" aria-label="Example task">
             <p className="type-title text-3xl">Lead vocal chain</p>
             <p className="type-role mt-2 text-muted-foreground">Example task · Mixing</p>
@@ -303,7 +303,7 @@ export default function HomePage() {
 
       {/* Close — the back cover: title and action left, the credits right */}
       <section className="relative overflow-hidden border-t border-border">
-        <div className="neon-bloom -top-40 -left-40 size-[32rem]" aria-hidden />
+        <div className="neon-bloom top-10 -left-32 size-[28rem]" aria-hidden />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-6">
             <LogoMark size={64} className="drop-shadow-[0_0_28px_rgb(58_107_255/0.5)]" />

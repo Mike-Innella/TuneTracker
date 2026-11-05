@@ -20,7 +20,7 @@ export default async function ProjectLayout({
       <header className="mb-6 flex items-center gap-4">
         <ProjectArtwork title={project.title} url={project.artworkUrl} className="size-14 sm:size-16" />
         <div className="min-w-0">
-          <h1 className="type-title truncate text-2xl sm:text-3xl" data-testid="project-title">
+          <h1 className="type-title text-2xl break-words sm:text-3xl" data-testid="project-title">
             {project.title}
           </h1>
           <p className="type-role mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">

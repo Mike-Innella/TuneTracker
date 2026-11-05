@@ -22,21 +22,22 @@ export function SiteFooter() {
           </p>
         </div>
         <nav aria-label="Footer" className="md:col-span-5 md:col-start-8">
-          <ul className="grid gap-2.5">
+          <ul className="grid grid-cols-2 gap-x-8 gap-y-2.5">
             {LINKS.map(([label, href]) => (
-              <li key={href} className="flex items-baseline gap-3">
+              <li key={href}>
                 <Link href={href} className="text-sm hover:text-electric">
                   {label}
                 </Link>
-                <span className="credit-leader" aria-hidden />
               </li>
             ))}
           </ul>
         </nav>
       </div>
-      <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-2 border-t border-border px-5 py-6 sm:px-8">
-        <p className="type-role text-ink-soft">TuneTracker 2.0 · Create · Collaborate · Share</p>
-        <p className="type-figure text-xs text-ink-soft">TT-2.0</p>
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="flex flex-wrap justify-between gap-2 border-t border-border py-6">
+          <p className="type-role text-ink-soft">TuneTracker 2.0 · Create · Collaborate · Share</p>
+          <p className="type-figure text-xs text-ink-soft">TT-2.0</p>
+        </div>
       </div>
     </footer>
   );

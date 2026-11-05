@@ -136,6 +136,8 @@
     @apply bg-background text-foreground antialiased;
     /* Archivo's fi/fl ligatures leave a gap at the wdth axis default in Chromium */
     font-variant-ligatures: no-common-ligatures;
+    /* unhinted glyph positions: hinted Archivo collapses/opens gaps at small sizes on Linux */
+    text-rendering: geometricPrecision;
     caret-color: var(--electric);
     accent-color: var(--electric);
   }
