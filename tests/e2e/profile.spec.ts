@@ -80,21 +80,25 @@ test('collaboration: owner invites, viewer is read-only, editor can change the b
     [editor.username, 'EDITOR'],
     [viewer.username, 'VIEWER'],
   ] as const) {
-    await page.getByLabel('Username to invite').fill(u);
+    await page.getByLabel('Username or email to invite').fill(u);
     await page.getByLabel('Role', { exact: true }).selectOption(role);
     await page.getByRole('button', { name: 'Invite' }).click();
-    await expect(page.getByText(`@${u} added`)).toBeVisible();
-    await expect(page.getByTestId('members')).toContainText(
-      u === editor.username ? editor.displayName : viewer.displayName,
-    );
-    await expect(page.getByLabel('Username to invite')).toHaveValue(''); // form action resets the form
+    await expect(page.getByText(`Invitation sent to @${u}`)).toBeVisible();
+    await expect(page.getByLabel('Username or email to invite')).toHaveValue(''); // form action resets the form
   }
-  await expect(page.getByTestId('members')).toContainText(editor.displayName);
+  await expect(page.getByTestId('pending-invites')).toContainText(editor.username);
 
-  // editor: notified, sees the shared project, can add a task
+  // each invitee is notified and must accept before getting access
   await editorPage.goto('/dashboard');
   await editorPage.getByRole('button', { name: /Notifications, 1 unread/ }).click();
-  await expect(editorPage.getByText('You were added to “Team Album”')).toBeVisible();
+  await expect(editorPage.getByText(/You.re invited to “Team Album”/)).toBeVisible();
+  await editorPage.keyboard.press('Escape');
+  await editorPage.getByTestId('invitation').getByRole('button', { name: 'Accept' }).click();
+  await expect(editorPage).toHaveURL(/\/board$/);
+  await viewerPage.goto('/dashboard');
+  await viewerPage.getByTestId('invitation').getByRole('button', { name: 'Accept' }).click();
+  await expect(viewerPage).toHaveURL(/\/board$/);
+
   await editorPage.goto(boardUrl);
   const col = editorPage.locator('[data-testid=board-column][data-column-title="To do"]');
   await col.getByRole('button', { name: 'Add task' }).click();
