@@ -28,6 +28,7 @@ A real deployment has not been performed yet — it needs the Vercel project and
 | `DATABASE_URL` | all | transaction pooler, port 6543 |
 | `DIRECT_URL` | where migrations run | direct connection, port 5432 |
 | `NEXT_PUBLIC_SITE_URL` | production | canonical URL, used in auth emails |
+| `REDIS_URL` | optional | Upstash Redis TCP URL (`rediss://default:<password>@<host>:6379`) for rate limiting; Postgres is used when unset |
 
 ## GitHub integration
 

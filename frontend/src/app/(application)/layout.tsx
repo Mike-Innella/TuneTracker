@@ -9,7 +9,12 @@ export default async function ApplicationLayout({ children }: { children: React.
   ]);
   return (
     <AppShell
-      me={{ displayName: me.displayName, username: me.username, avatarUrl: publicUrl(me.avatarPath) }}
+      me={{
+        displayName: me.displayName,
+        username: me.username,
+        avatarUrl: publicUrl(me.avatarPath),
+        isModerator: me.role !== 'USER',
+      }}
       notifications={items}
       unread={unread}
     >

@@ -51,7 +51,9 @@ export async function signIn(_: unknown, form: FormData): Promise<ActionResult> 
         400,
         error.code === 'email_not_confirmed'
           ? 'Confirm your email first — check your inbox for the link.'
-          : 'Email or password is incorrect.',
+          : error.code === 'user_banned'
+            ? 'This account has been suspended by a moderator. Contact support if you think this is a mistake.'
+            : 'Email or password is incorrect.',
       );
     }
     return undefined;

@@ -52,3 +52,11 @@ npm run migrate:status -w @tunetracker/data
   `pg_dump "$DIRECT_URL" -Fc -f backup.dump`).
 - Recovery: `pg_restore --clean --no-owner -d "$DIRECT_URL" backup.dump`, or Supabase point-in-time
   recovery on paid plans.
+
+## Phase 1 models
+
+`Follow` (composite PK follower/following), `ProjectInvite` (PENDING → ACCEPTED / DECLINED / REVOKED;
+`inviteeId` for artists, `email` for people without an account, linked on first sign-in),
+`ModerationAction` (audit trail; survives a moderator's account deletion via `SetNull`).
+`Profile` gains `role` (USER/MODERATOR/ADMIN), `suspendedAt` and a server-only `email` used to match
+email invitations — it is never selected into public payloads. All new tables enable RLS in their migration.

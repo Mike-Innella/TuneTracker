@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { PageHeader, SectionHeading } from '@/components/layout/page-header';
 import { AppearanceSettings } from '@/components/settings/appearance';
 import { PasswordForm } from '@/components/settings/password-form';
+import { DeleteAccount } from '@/components/settings/delete-account';
 import { signOut } from '@/features/auth/actions';
 
 export const metadata: Metadata = { title: 'Settings' };
@@ -47,6 +48,15 @@ export default async function SettingsPage() {
             Log out of this device
           </Button>
         </form>
+      </section>
+      <section aria-labelledby="danger">
+        <SectionHeading>
+          <span id="danger">Delete account</span>
+        </SectionHeading>
+        <p className="mb-4 max-w-prose text-sm text-muted-foreground">
+          Removes everything you own on TuneTracker, including stored audio and images.
+        </p>
+        <DeleteAccount username={me.username} />
       </section>
     </div>
   );

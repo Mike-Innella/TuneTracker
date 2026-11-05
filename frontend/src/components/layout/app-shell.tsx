@@ -23,7 +23,7 @@ import { NAV } from './nav-items';
 import { NotificationsMenu, type NotificationItem } from './notifications-menu';
 import { ThemeToggle } from './theme-toggle';
 
-type Me = { displayName: string; username: string; avatarUrl: string | null };
+type Me = { displayName: string; username: string; avatarUrl: string | null; isModerator: boolean };
 
 function isActive(path: string, href: string) {
   return path === href || path.startsWith(`${href}/`);
@@ -187,6 +187,11 @@ function AccountMenu({ me, compact }: { me: Me; compact?: boolean }) {
         <DropdownMenuItem asChild>
           <Link href="/settings">Settings</Link>
         </DropdownMenuItem>
+        {me.isModerator && (
+          <DropdownMenuItem asChild>
+            <Link href="/moderation">Moderation</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <form action={signOut}>
           <DropdownMenuItem asChild>

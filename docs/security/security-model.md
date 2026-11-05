@@ -54,3 +54,15 @@ RLS enabled with no policies on every `public` table (PostgREST sees nothing). S
 - Upload rows reserved but never completed count toward quota until cleaned up.
 - CSP allows `'unsafe-inline'` scripts (required by Next.js without nonces).
 - No account-deletion UI yet.
+
+## Phase 1
+
+- **Collaboration**: nobody joins a project without accepting an invitation; only the invitee can answer
+  it, only the owner can revoke it. Email invitations go through Supabase Auth's invite email.
+- **Moderation**: role-gated (MODERATOR/ADMIN) and invisible to others (404). Every decision is recorded in
+  `ModerationAction`; owners are notified when their content is removed. Suspension sets `suspendedAt`
+  (treated as signed out everywhere) and bans the Auth user so sessions cannot be refreshed.
+- **Account deletion**: typed-username confirmation; stored files are deleted first, then all owned rows
+  (cascades), then the Auth user.
+- **Rate limiting**: Redis when `REDIS_URL` is set, Postgres otherwise; if Redis is unreachable the limiter
+  falls back to Postgres (it never fails open).

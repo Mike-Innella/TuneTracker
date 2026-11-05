@@ -4,7 +4,16 @@ import { AUTH_COOKIE_NAME } from '@tunetracker/shared';
 import { env } from '../lib/env';
 import { requestOrigin } from '../lib/origin';
 
-const PROTECTED = ['/dashboard', '/projects', '/profile', '/settings', '/artists', '/showcase', '/community'];
+const PROTECTED = [
+  '/moderation',
+  '/dashboard',
+  '/projects',
+  '/profile',
+  '/settings',
+  '/artists',
+  '/showcase',
+  '/community',
+];
 
 /**
  * Runs in the Next.js proxy: refreshes the Supabase session cookie and bounces

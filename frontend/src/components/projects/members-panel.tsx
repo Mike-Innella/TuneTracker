@@ -8,7 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UserAvatar } from '@/components/ui/user-avatar';
 import { SectionHeading } from '@/components/layout/page-header';
-import { changeRoleAction, inviteMemberAction, removeMemberAction } from '@/features/projects/actions';
+import {
+  changeRoleAction,
+  inviteMemberAction,
+  removeMemberAction,
+  revokeInviteAction,
+} from '@/features/projects/actions';
 
 type Person = { id: string; username: string; displayName: string; avatarUrl: string | null };
 
@@ -18,22 +23,33 @@ export function MembersPanel({
   isOwner,
   owner,
   members,
+  invites = [],
 }: {
   projectId: string;
   meId: string;
   isOwner: boolean;
   owner: Person;
   members: { role: 'EDITOR' | 'VIEWER'; profile: Person }[];
+  invites?: {
+    id: string;
+    role: string;
+    email: string | null;
+    invitee: { username: string; displayName: string } | null;
+  }[];
 }) {
   const [pending, start] = useTransition();
 
   function invite(form: FormData) {
-    const username = String(form.get('username') ?? '').replace(/^@/, '');
+    const target = String(form.get('target') ?? '').trim();
     const role = String(form.get('role') ?? 'VIEWER');
     start(async () => {
-      const r = await inviteMemberAction(projectId, { username, role });
-      if (r.ok) toast.success(`@${username} added as ${role.toLowerCase()}`);
-      else toast.error(r.error);
+      const r = await inviteMemberAction(projectId, { target, role });
+      if (!r.ok) return void toast.error(r.error);
+      toast.success(
+        r.data.status === 'emailed'
+          ? `Invitation emailed to ${target}`
+          : `Invitation sent to ${target.startsWith('@') ? target : `@${target}`}`,
+      );
     });
   }
 
@@ -113,12 +129,40 @@ export function MembersPanel({
         ))}
       </ul>
 
+      {isOwner && invites.length > 0 && (
+        <ul className="mt-4 grid gap-2" aria-label="Pending invitations" data-testid="pending-invites">
+          {invites.map((i) => (
+            <li key={i.id} className="flex items-center gap-3 text-sm">
+              <span className="min-w-0 truncate text-muted-foreground">
+                {i.invitee ? `@${i.invitee.username}` : i.email}
+              </span>
+              <span className="credit-leader" aria-hidden />
+              <span className="type-role text-ink-soft">pending · {i.role.toLowerCase()}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={pending}
+                onClick={() => run(() => revokeInviteAction(projectId, i.id), 'Invitation withdrawn')}
+              >
+                Withdraw
+              </Button>
+            </li>
+          ))}
+        </ul>
+      )}
+
       {isOwner && (
         <form action={invite} className="mt-5 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto]">
-          <label htmlFor="invite-username" className="sr-only">
-            Username to invite
+          <label htmlFor="invite-target" className="sr-only">
+            Username or email to invite
           </label>
-          <Input id="invite-username" name="username" placeholder="@username" required autoComplete="off" />
+          <Input
+            id="invite-target"
+            name="target"
+            placeholder="@username or email"
+            required
+            autoComplete="off"
+          />
           <label htmlFor="invite-role" className="sr-only">
             Role
           </label>
@@ -135,7 +179,8 @@ export function MembersPanel({
             {pending ? <Loader2 className="animate-spin" aria-hidden /> : <UserPlus aria-hidden />} Invite
           </Button>
           <p className="text-xs text-muted-foreground sm:col-span-3">
-            Editors can change the board; viewers can read and comment. Invitees must already have an account.
+            Editors can change the board; viewers can read and comment. Invitees join once they accept; people
+            without an account get an email to sign up.
           </p>
         </form>
       )}

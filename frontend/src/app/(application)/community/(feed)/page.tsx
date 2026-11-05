@@ -14,15 +14,26 @@ const FILTERS = [['', 'Everything'], ...Object.entries(POST_TYPE_LABEL)] as cons
 export default async function CommunityPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cursor?: string; type?: string }>;
+  searchParams: Promise<{ cursor?: string; type?: string; following?: string }>;
 }) {
   const me = await requireProfile();
-  const { cursor, type } = await searchParams;
+  const { cursor, type, following } = await searchParams;
+  const onlyFollowing = following === '1';
   const validType = type && type in POST_TYPE_LABEL ? type : undefined;
-  const { posts, nextCursor } = await community.getFeed(me.id, { cursor, limit: 10, type: validType });
+  const { posts, nextCursor } = await community.getFeed(me.id, {
+    cursor,
+    limit: 10,
+    type: validType,
+    followedBy: onlyFollowing ? me.id : undefined,
+  });
   const qs = (extra: Record<string, string | undefined>) => {
     const sp = new URLSearchParams();
-    for (const [k, v] of Object.entries({ type: validType, ...extra })) if (v) sp.set(k, v);
+    for (const [k, v] of Object.entries({
+      type: validType,
+      following: onlyFollowing ? '1' : undefined,
+      ...extra,
+    }))
+      if (v) sp.set(k, v);
     return sp.size ? `?${sp}` : '';
   };
 
@@ -42,11 +53,14 @@ export default async function CommunityPage({
       <TabLinks
         label="Post type"
         className="-mx-4 mb-6 px-4"
-        items={FILTERS.map(([key, label]) => ({
-          href: `/community${key ? `?type=${key}` : ''}`,
-          label,
-          active: (validType ?? '') === key,
-        }))}
+        items={[
+          ...FILTERS.map(([key, label]) => ({
+            href: `/community${key ? `?type=${key}` : ''}`,
+            label,
+            active: !onlyFollowing && (validType ?? '') === key,
+          })),
+          { href: '/community?following=1', label: 'Following', active: onlyFollowing },
+        ]}
       />
 
       {posts.length === 0 ? (

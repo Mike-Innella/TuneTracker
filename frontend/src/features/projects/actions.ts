@@ -38,10 +38,27 @@ export async function deleteProjectAction(projectId: string) {
   return result;
 }
 
-export async function inviteMemberAction(projectId: string, input: { username: string; role: string }) {
+export async function inviteMemberAction(projectId: string, input: { target: string; role: string }) {
   return runAction(async () => {
-    await collaboration.inviteMember((await requireActor()).id, projectId, input);
+    const r = await collaboration.inviteMember((await requireActor()).id, projectId, input);
     revalidatePath(`/projects/${projectId}`, 'layout');
+    return r;
+  });
+}
+
+export async function revokeInviteAction(projectId: string, inviteId: string) {
+  return runAction(async () => {
+    await collaboration.revokeInvite((await requireActor()).id, inviteId);
+    revalidatePath(`/projects/${projectId}`, 'layout');
+  });
+}
+
+export async function respondToInviteAction(inviteId: string, accept: boolean) {
+  return runAction(async () => {
+    const r = await collaboration.respondToInvite((await requireActor()).id, inviteId, accept);
+    revalidatePath('/dashboard');
+    revalidatePath('/projects');
+    return r;
   });
 }
 

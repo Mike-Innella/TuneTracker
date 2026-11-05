@@ -68,7 +68,25 @@ export const updateProjectSchema = z.object({
 });
 
 export const memberRole = z.enum(['EDITOR', 'VIEWER']);
-export const inviteMemberSchema = z.object({ username: usernameSchema, role: memberRole });
+/** Invite by username (existing artist) or by email (anyone; they get a sign-up invitation). */
+export const inviteMemberSchema = z.object({
+  target: z.union([
+    z.email().trim().toLowerCase(),
+    z
+      .string()
+      .trim()
+      .transform((u) => u.replace(/^@/, ''))
+      .pipe(usernameSchema),
+  ]),
+  role: memberRole,
+});
+export const deleteAccountSchema = z.object({ confirmUsername: usernameSchema });
+export const moderationOutcome = z.enum(['DISMISSED', 'CONTENT_REMOVED', 'USER_SUSPENDED']);
+export const resolveReportSchema = z.object({
+  reportId: id,
+  outcome: moderationOutcome,
+  note: optionalText(500),
+});
 
 // ---------- board ----------
 export const columnTitle = trimmed(60).min(1, 'Required');

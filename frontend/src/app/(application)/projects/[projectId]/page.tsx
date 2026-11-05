@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Share2 } from 'lucide-react';
-import { projects, publicUrl, requireProfile } from '@tunetracker/backend';
+import { collaboration, projects, publicUrl, requireProfile } from '@tunetracker/backend';
 import { Button } from '@/components/ui/button';
 import { SectionHeading } from '@/components/layout/page-header';
 import { MembersPanel } from '@/components/projects/members-panel';
@@ -16,6 +16,7 @@ export default async function ProjectOverviewPage({ params }: { params: Promise<
   const me = await requireProfile();
   const { project, role, members, activity, owner } = await or404(projects.getProject(me.id, projectId));
   const canEdit = role !== 'VIEWER';
+  const invites = role === 'OWNER' ? await collaboration.projectInvites(me.id, projectId) : [];
 
   return (
     <div className="grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
@@ -64,6 +65,7 @@ export default async function ProjectOverviewPage({ params }: { params: Promise<
           projectId={project.id}
           meId={me.id}
           isOwner={role === 'OWNER'}
+          invites={invites}
           owner={{ ...owner, avatarUrl: publicUrl(owner.avatarPath) }}
           members={members.map((m) => ({
             role: m.role,

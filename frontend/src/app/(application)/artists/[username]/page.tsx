@@ -9,6 +9,7 @@ import { PostCard } from '@/components/community/post-card';
 import { ReportButton } from '@/components/community/post-extras';
 import { ProjectArtwork } from '@/components/dashboard/project-artwork';
 import { or404 } from '@/lib/or-404';
+import { FollowStats } from '@/components/profile/follow-stats';
 import { formatDate } from '@/lib/format';
 
 export async function generateMetadata({
@@ -23,7 +24,7 @@ export async function generateMetadata({
 export default async function ArtistPage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
   const me = await requireProfile();
-  const { profile, posts, projects, isMe } = await or404(
+  const { profile, posts, projects, isMe, stats } = await or404(
     profiles.getArtist(me.id, decodeURIComponent(username)),
   );
 
@@ -44,6 +45,15 @@ export default async function ArtistPage({ params }: { params: Promise<{ usernam
               <span className="type-role ml-3 text-warning">private profile — only you can see this</span>
             )}
           </p>
+          <div className="mt-4">
+            <FollowStats
+              username={profile.username}
+              followers={stats.followers}
+              following={stats.following}
+              isFollowing={stats.isFollowing}
+              canFollow={!isMe}
+            />
+          </div>
           {profile.specialties.length > 0 && (
             <p className="type-role mt-3 text-foreground">{profile.specialties.join(' · ')}</p>
           )}
