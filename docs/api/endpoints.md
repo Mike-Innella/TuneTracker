@@ -37,3 +37,22 @@ All inputs are validated with the Zod schemas in `packages/shared/src/schemas`. 
    deletes it if invalid, otherwise marks the asset verified and returns a URL.
 
 Limits: audio 50 MB, images 5 MB, other files 25 MB, 1 GB per user, 60 upload requests/hour.
+
+## Phase 1 additions
+
+| Module | Actions | Who |
+|---|---|---|
+| follows | setFollowAction(username, follow) | signed in; cannot follow yourself; idempotent |
+| projects (team) | inviteMemberAction(target = @username or email), revokeInviteAction, respondToInviteAction(accept) | owner invites/revokes; only the invitee answers |
+| account | deleteAccountAction(confirmUsername) | self; typed username required |
+| moderation | resolveReportAction(DISMISSED \| CONTENT_REMOVED \| USER_SUSPENDED), unsuspendAction | profiles with role MODERATOR or ADMIN (others get 404) |
+
+Route handler: `GET /auth/signout?reason=suspended` ends the session and explains why.
+
+Moderators are appointed from the CLI only: `npm run set-role -w @tunetracker/data -- <username> MODERATOR`.
+
+### Resumable uploads
+
+Files over 6 MB use TUS against `POST {SUPABASE_URL}/storage/v1/upload/resumable/sign` with the same
+single-use signed upload token (`x-signature` header) in 6 MB chunks; dropped chunks retry and the upload
+resumes from the server offset. Smaller files use one signed PUT. Resume is within the page session.
