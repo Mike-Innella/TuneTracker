@@ -19,7 +19,7 @@ export function SiteNav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-5 sm:px-8">
-        <Logo />
+        <Logo compact />
         <nav aria-label="Site" className="ml-6 hidden gap-6 text-sm text-muted-foreground lg:flex">
           {LINKS.map(([href, label]) => (
             <Link key={href} href={href} className="hover:text-foreground">

@@ -28,12 +28,12 @@ export default async function SettingsPage() {
           <div className="flex items-baseline gap-3">
             <dt className="type-role text-muted-foreground">Email</dt>
             <span className="credit-leader" aria-hidden />
-            <dd>{user?.email}</dd>
+            <dd className="min-w-0 text-right break-all">{user?.email}</dd>
           </div>
           <div className="flex items-baseline gap-3">
             <dt className="type-role text-muted-foreground">Username</dt>
             <span className="credit-leader" aria-hidden />
-            <dd>@{me.username}</dd>
+            <dd className="min-w-0 text-right break-all">@{me.username}</dd>
           </div>
         </dl>
         <PasswordForm />
