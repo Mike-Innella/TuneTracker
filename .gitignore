@@ -28,7 +28,7 @@ data/supabase/.branches/
 data/supabase/.temp/
 graphify-out/
 output/
-GATES.md
+GATES*.md
 **/.impeccable/hook.cache.json
 **/.impeccable/questions/
 **/.impeccable/review/

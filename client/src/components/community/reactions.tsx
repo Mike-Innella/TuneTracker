@@ -1,6 +1,6 @@
 'use client';
 
-import { useOptimistic, useTransition } from 'react';
+import { useOptimistic, useState, useTransition } from 'react';
 import { AnimateIcon } from '@animate-ui/react/icons';
 import { IconButton, IconButtonParticles } from '@animate-ui/react/primitives/buttons/icon';
 import { FlameIcon } from '@/components/animate-ui/icons/flame';
@@ -16,6 +16,14 @@ const ICONS = { LIKE: ThumbsUpIcon, FIRE: FlameIcon, HEART: HeartIcon, MIND_BLOW
 type Kind = keyof typeof REACTIONS;
 type State = { counts: Record<string, number>; mine: string[] };
 
+export function applyToggle(s: State, kind: Kind): State {
+  const on = s.mine.includes(kind);
+  return {
+    counts: { ...s.counts, [kind]: Math.max(0, (s.counts[kind] ?? 0) + (on ? -1 : 1)) },
+    mine: on ? s.mine.filter((k) => k !== kind) : [...s.mine, kind],
+  };
+}
+
 export function Reactions({
   postId,
   counts,
@@ -26,13 +34,10 @@ export function Reactions({
   mine: string[];
 }) {
   const [, start] = useTransition();
-  const [state, toggle] = useOptimistic<State, Kind>({ counts, mine }, (s, kind) => {
-    const on = s.mine.includes(kind);
-    return {
-      counts: { ...s.counts, [kind]: Math.max(0, (s.counts[kind] ?? 0) + (on ? -1 : 1)) },
-      mine: on ? s.mine.filter((k) => k !== kind) : [...s.mine, kind],
-    };
-  });
+  // Confirmed state lives here; useOptimistic only covers the pending request, so a successful
+  // reaction stays applied after the transition ends (the action does not refresh these props).
+  const [base, setBase] = useState<State>({ counts, mine });
+  const [state, toggle] = useOptimistic<State, Kind>(base, applyToggle);
   return (
     <ul className="flex flex-wrap gap-1.5" aria-label="Reactions">
       {(Object.keys(REACTIONS) as Kind[]).map((kind) => {
@@ -51,7 +56,8 @@ export function Reactions({
                   start(async () => {
                     toggle(kind);
                     const r = await toggleReactionAction(postId, kind);
-                    if (!r.ok) toast.error(r.error);
+                    if (r.ok) setBase((b) => applyToggle(b, kind));
+                    else toast.error(r.error);
                   })
                 }
                 className={cn(
