@@ -254,9 +254,9 @@ content_path = "./supabase/templates/confirmation.html"
 subject = "Reset your TuneTracker password"
 content_path = "./supabase/templates/recovery.html"
 
-# [auth.email.template.invite]
-# subject = "You have been invited"
-# content_path = "./supabase/templates/invite.html"
+[auth.email.template.invite]
+subject = "You're invited to collaborate on TuneTracker"
+content_path = "./supabase/templates/invite.html"
 
 # Uncomment to customize notification email template
 # [auth.email.notification.password_changed]

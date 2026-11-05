@@ -29,6 +29,25 @@ enum MemberRole {
   VIEWER
 }
 
+enum ProfileRole {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  REVOKED
+}
+
+enum ModerationOutcome {
+  DISMISSED
+  CONTENT_REMOVED
+  USER_SUSPENDED
+}
+
 enum TaskPriority {
   LOW
   MEDIUM
@@ -63,31 +82,40 @@ enum ReportTarget {
 }
 
 model Profile {
-  id          String   @id @db.Uuid
-  username    String   @unique
+  id          String      @id @db.Uuid
+  username    String      @unique
   displayName String
   bio         String?
   avatarPath  String?
   location    String?
   website     String?
   specialties String[]
-  isPublic    Boolean  @default(true)
-  theme       String   @default("dark")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  isPublic    Boolean     @default(true)
+  theme       String      @default("dark")
+  /// server-only: matches email invitations to accounts; never selected into public payloads
+  email       String?     @unique
+  role        ProfileRole @default(USER)
+  suspendedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 
-  socialLinks    SocialLink[]
-  ownedProjects  Project[]       @relation("ProjectOwner")
-  memberships    ProjectMember[]
-  assignedTasks  Task[]          @relation("TaskAssignee")
-  taskComments   TaskComment[]
-  posts          Post[]
-  postComments   PostComment[]
-  reactions      Reaction[]
-  media          MediaAsset[]
-  notifications  Notification[]  @relation("NotificationRecipient")
-  activity       Activity[]
-  reports        Report[]
+  socialLinks       SocialLink[]
+  followers         Follow[]           @relation("FollowFollowing")
+  following         Follow[]           @relation("FollowFollower")
+  invitesSent       ProjectInvite[]    @relation("InviteInviter")
+  invitesReceived   ProjectInvite[]    @relation("InviteInvitee")
+  moderationActions ModerationAction[]
+  ownedProjects     Project[]          @relation("ProjectOwner")
+  memberships       ProjectMember[]
+  assignedTasks     Task[]             @relation("TaskAssignee")
+  taskComments      TaskComment[]
+  posts             Post[]
+  postComments      PostComment[]
+  reactions         Reaction[]
+  media             MediaAsset[]
+  notifications     Notification[]     @relation("NotificationRecipient")
+  activity          Activity[]
+  reports           Report[]
 }
 
 model SocialLink {
@@ -123,13 +151,14 @@ model Project {
   posts    Post[]
   media    MediaAsset[]
   activity Activity[]
+  invites  ProjectInvite[]
 
   @@index([ownerId, archivedAt])
   @@index([visibility])
 }
 
 model ProjectMember {
-  projectId String    
+  projectId String
   profileId String     @db.Uuid
   role      MemberRole @default(VIEWER)
   createdAt DateTime   @default(now())
@@ -185,7 +214,7 @@ model Task {
 }
 
 model Label {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   projectId String
   name      String
   color     String
@@ -322,14 +351,16 @@ model Activity {
 }
 
 model Report {
-  id         String       @id @default(cuid())
-  reporterId String       @db.Uuid
+  id         String             @id @default(cuid())
+  reporterId String             @db.Uuid
   targetType ReportTarget
   targetId   String
   reason     String
-  createdAt  DateTime     @default(now())
+  createdAt  DateTime           @default(now())
   resolvedAt DateTime?
-  reporter   Profile      @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  outcome    ModerationOutcome?
+  reporter   Profile            @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  actions    ModerationAction[]
 
   @@unique([reporterId, targetType, targetId])
 }
@@ -339,4 +370,52 @@ model RateLimit {
   key         String   @id
   windowStart DateTime
   count       Int
+}
+
+model Follow {
+  followerId  String   @db.Uuid
+  followingId String   @db.Uuid
+  createdAt   DateTime @default(now())
+  follower    Profile  @relation("FollowFollower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   Profile  @relation("FollowFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followingId])
+  @@index([followingId, createdAt])
+}
+
+/// A pending invitation to collaborate on a project. Registered invitees are linked by id;
+/// people without an account are invited by email and linked when they first sign in.
+model ProjectInvite {
+  id          String       @id @default(cuid())
+  projectId   String
+  inviterId   String       @db.Uuid
+  inviteeId   String?      @db.Uuid
+  email       String?
+  role        MemberRole   @default(VIEWER)
+  status      InviteStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  respondedAt DateTime?
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  inviter     Profile      @relation("InviteInviter", fields: [inviterId], references: [id], onDelete: Cascade)
+  invitee     Profile?     @relation("InviteInvitee", fields: [inviteeId], references: [id], onDelete: Cascade)
+
+  @@index([inviteeId, status])
+  @@index([email, status])
+  @@index([projectId, status])
+}
+
+/// Audit trail: every moderator decision, kept even after the content is gone.
+model ModerationAction {
+  id          String            @id @default(cuid())
+  moderatorId String?           @db.Uuid
+  reportId    String?
+  outcome     ModerationOutcome
+  targetType  ReportTarget
+  targetId    String
+  note        String?
+  createdAt   DateTime          @default(now())
+  moderator   Profile?          @relation(fields: [moderatorId], references: [id], onDelete: SetNull)
+  report      Report?           @relation(fields: [reportId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
 }

@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { postSchema, profileSchema, safeUrl, signUpSchema, usernameSchema } from './index';
+import {
+  inviteMemberSchema,
+  postSchema,
+  profileSchema,
+  safeUrl,
+  signUpSchema,
+  usernameSchema,
+} from './index';
 
 describe('shared schemas', () => {
   it('normalises usernames', () => {
@@ -35,5 +42,12 @@ describe('shared schemas', () => {
       website: null,
       bio: null,
     });
+  });
+  it('accepts an invite target as @username, username or email', () => {
+    expect(inviteMemberSchema.parse({ target: '@Luna_K', role: 'EDITOR' }).target).toBe('luna_k');
+    expect(inviteMemberSchema.parse({ target: 'Luna@Example.com', role: 'VIEWER' }).target).toBe(
+      'luna@example.com',
+    );
+    expect(inviteMemberSchema.safeParse({ target: 'not valid!', role: 'VIEWER' }).success).toBe(false);
   });
 });
