@@ -29,6 +29,8 @@ const nextConfig: NextConfig = {
   // Trace workspace packages (server/, data/, shared/) that live above client/.
   outputFileTracingRoot: path.join(import.meta.dirname, '..'),
   poweredByHeader: false,
+  // the floating dev badge covers the mobile tab bar; errors still surface in the overlay
+  devIndicators: false,
   turbopack: {
     rules: {
       '*.css': { loaders: ['@tailwindcss/turbopack'], as: '*.css' },

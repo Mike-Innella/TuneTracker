@@ -68,7 +68,10 @@ export function PostCard({ post, full = false }: { post: FeedPost; full?: boolea
         </h2>
         {post.project && (
           <p className="type-role mt-1.5 text-muted-foreground">
-            from <span className="text-foreground">{post.project.title}</span>
+            from{' '}
+            <Link href={`/showcase/${post.project.id}`} className="text-foreground hover:underline">
+              {post.project.title}
+            </Link>
           </p>
         )}
       </div>

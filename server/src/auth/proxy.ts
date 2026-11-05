@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { AUTH_COOKIE_NAME } from '@tunetracker/shared';
 import { env } from '../lib/env';
 
-const PROTECTED = ['/dashboard', '/projects', '/community/new', '/profile', '/settings'];
+const PROTECTED = ['/dashboard', '/projects', '/profile', '/settings', '/artists', '/showcase', '/community'];
 
 /**
  * Runs in the Next.js proxy: refreshes the Supabase session cookie and bounces
