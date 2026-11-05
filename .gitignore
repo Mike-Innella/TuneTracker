@@ -30,3 +30,8 @@ graphify-out/
 output/
 legacy/
 GATES.md
+.impeccable/hook.cache.json
+.impeccable/questions/
+.impeccable/review/
+.impeccable/live/
+.impeccable/config.local.json
