@@ -1,0 +1,229 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-stock: var(--stock);
+  --color-stock-2: var(--stock-2);
+  --color-rule: var(--rule);
+  --color-ink-soft: var(--ink-soft);
+  --color-cyan: var(--cyan);
+  --color-electric: var(--electric);
+  --color-indigo: var(--indigo);
+  --color-violet: var(--violet);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Day sleeve — cool white stock, navy ink, the same neon light. */
+:root {
+  --radius: 0.5rem;
+  --background: #f3f5fb;
+  --foreground: #0b1230;
+  --stock: #ffffff;
+  --stock-2: #e9edf8;
+  --card: #ffffff;
+  --card-foreground: #0b1230;
+  --popover: #ffffff;
+  --popover-foreground: #0b1230;
+  --primary: #2447d8;
+  --primary-foreground: #ffffff;
+  --secondary: #e6eaf7;
+  --secondary-foreground: #18224a;
+  --muted: #e9edf8;
+  --muted-foreground: #4a5578;
+  --ink-soft: #5d6889;
+  --accent: #e3e8fb;
+  --accent-foreground: #18224a;
+  --destructive: #c8203f;
+  --border: #d5dbee;
+  --rule: #c3cbe4;
+  --input: #cdd4ea;
+  --ring: #2447d8;
+  --cyan: #0891b2;
+  --electric: #2447d8;
+  --indigo: #4338ca;
+  --violet: #7c3aed;
+  --success: #047857;
+  --warning: #b45309;
+  --glow: 0.35;
+  --gradient-light: linear-gradient(115deg, #0ea5c6 0%, #2447d8 45%, #7c3aed 100%);
+  --gradient-action: linear-gradient(115deg, #2447d8 0%, #4338ca 55%, #6d28d9 100%);
+  --shadow-sheet: 0 1px 2px rgb(11 18 48 / 0.06), 0 8px 24px -8px rgb(11 18 48 / 0.14);
+  --shadow-lift: 0 2px 4px rgb(11 18 48 / 0.08), 0 18px 40px -12px rgb(36 71 216 / 0.35);
+  color-scheme: light;
+}
+
+/* Midnight booklet — default. */
+.dark {
+  --background: #060a1c;
+  --foreground: #e8ecff;
+  --stock: #0a1027;
+  --stock-2: #0f1734;
+  --card: #0a1027;
+  --card-foreground: #e8ecff;
+  --popover: #0d1431;
+  --popover-foreground: #e8ecff;
+  --primary: #3460f5;
+  --primary-foreground: #ffffff;
+  --secondary: #141d3d;
+  --secondary-foreground: #dfe5ff;
+  --muted: #111936;
+  --muted-foreground: #9ba7cf;
+  --ink-soft: #7e8ab4;
+  --accent: #16204a;
+  --accent-foreground: #e8ecff;
+  --destructive: #ff5a7a;
+  --border: rgb(150 168 255 / 0.13);
+  --rule: rgb(150 168 255 / 0.22);
+  --input: rgb(150 168 255 / 0.2);
+  --ring: #5c8dff;
+  --cyan: #2ee6ff;
+  --electric: #4a7dff;
+  --indigo: #6366f1;
+  --violet: #a46bff;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --glow: 1;
+  --gradient-light: linear-gradient(115deg, #2ee6ff 0%, #3a6bff 45%, #b34dff 100%);
+  --gradient-action: linear-gradient(115deg, #2f5cf0 0%, #4a3fe0 55%, #7a35e8 100%);
+  --shadow-sheet: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 32px -16px rgb(0 0 0 / 0.7);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.5), 0 24px 48px -16px rgb(58 107 255 / 0.55);
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+    caret-color: var(--electric);
+    accent-color: var(--electric);
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--electric) 38%, transparent);
+    color: var(--foreground);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule) transparent;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  /* Sleeve title: the poster wordmark's expanded heavy italic. */
+  .type-title {
+    font-stretch: 125%;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+  /* Credit role: condensed caps, as printed beside a name in liner notes. */
+  .type-role {
+    font-stretch: 75%;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    line-height: 1.2;
+  }
+  .type-figure {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'zero' 0;
+  }
+  /* Dotted leader between a credit role and its name. */
+  .credit-leader {
+    flex: 1;
+    min-width: 1.5rem;
+    border-bottom: 1px dotted var(--rule);
+    transform: translateY(-0.3em);
+  }
+  .sheet {
+    background: var(--stock);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sheet);
+  }
+  .action-gradient {
+    background-image: var(--gradient-action);
+    color: #fff;
+  }
+  /* The logo's light: a soft bloom placed behind a focal element, never on text. */
+  .neon-bloom {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 9999px;
+    background:
+      radial-gradient(closest-side, rgb(46 230 255 / calc(0.22 * var(--glow))), transparent 70%),
+      radial-gradient(closest-side, rgb(164 107 255 / calc(0.2 * var(--glow))), transparent 75%);
+    filter: blur(24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

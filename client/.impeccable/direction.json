@@ -1,0 +1,139 @@
+{
+  "title": "Choose the visual world for TuneTracker 2.0",
+  "question": "Your brief pins the palette (deep navy, electric blue, indigo, controlled violet, neon logo). These directions decide the system and composition inside it. The roll assigned Liner Notes.",
+  "options": [
+    {
+      "id": "assigned",
+      "kind": "assigned",
+      "label": "Liner Notes",
+      "kicker": "THE ROLL",
+      "lineage": "album credits booklets and tracklist sleeves — 'Produced by · Mixed by · Mastered by'",
+      "thesis": "Every project reads like the credits page of the record it will become: numbered tracklists, role-and-name credits, durations, BPM and key set like sleeve type, lit by the logo's neon on a midnight-navy booklet.",
+      "palette": ["#060a1c", "#0d1430", "#2f7bff", "#22d3ee", "#7c5cff", "#c084fc", "#e8ecff"],
+      "materials": [
+        "midnight-navy booklet stock",
+        "hairline credit rules",
+        "neon gradient as the one light source",
+        "tabular numerals"
+      ],
+      "viewport": "Landing opens on the logo's glow behind a credits-sheet hero: 'TuneTracker 2.0 — Create · Collaborate · Share' set like an album title, with the real product's board shown as the record's tracklist; Get Started is the primary action, Learn More scrolls to the claim/proof sections.",
+      "risk": "If the credits typography is set timidly it collapses into a generic dark SaaS page with a gradient sticker.",
+      "raised": [
+        {
+          "from": "challenger-monochrome",
+          "raise": "Every marketing claim is immediately followed by a real interface fragment proving it (board, task sheet, player) — no abstract feature cards."
+        },
+        {
+          "from": "challenger-segment",
+          "raise": "Unlit states are designed as deliberately as lit ones: empty columns, empty feed and no-project states are composed credit slots, not apologies."
+        },
+        {
+          "from": "challenger-rietveld",
+          "raise": "Only the edge that moves takes colour: a dragged card and its drop slot light up; everything at rest stays in the navy frame."
+        },
+        {
+          "from": "challenger-ascii",
+          "raise": "One strict numeric voice: BPM, key, durations, counts and dates all in tabular monospaced figures."
+        }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "kind": "pick",
+      "label": "After Hours",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "the blueprint poster itself — a studio at 2am, monitors and LEDs glowing in the dark",
+      "thesis": "The app as a dark room lit only by its work: glassy layered panels, ambient violet bloom, glowing waveform accents, exactly the poster's mood.",
+      "palette": ["#050814", "#0b1226", "#3b82f6", "#22d3ee", "#8b5cf6", "#e6e9f5"],
+      "materials": ["frosted glass panels", "ambient bloom", "LED-dot accents", "waveform strokes"],
+      "viewport": "Centred neon logo and headline over a glowing laptop-style product shot, feature row beneath.",
+      "risk": "This is where most dark 'creator SaaS' sites land; familiar, and glass-on-glow can get muddy and low-contrast in Operate screens."
+    },
+    {
+      "id": "challenger-monochrome",
+      "kind": "challenger",
+      "catalogId": "digital-design-canon-monochrome-product-marketing",
+      "label": "Claim & Proof",
+      "verdict": "competitive",
+      "lineage": "restrained software marketing: neutral scale, one accent, screenshots as evidence",
+      "thesis": "Navy neutral scale with the logo gradient used a handful of times; every sentence paired with a product screenshot.",
+      "palette": ["#070b1a", "#121a33", "#94a3c4", "#e8ecff", "#2f7bff"],
+      "materials": ["neutral navy scale", "soft radial grounds behind screenshots"],
+      "viewport": "Short claim, primary action, large real board screenshot; alternating claim/proof pairs below.",
+      "case": "Strongest on product clarity; weaker on audience identification — it doesn't feel like music.",
+      "risk": "Drifts toward generic if the neon brand is rationed too hard.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-monochrome-product-marketing-hero.webp"
+    },
+    {
+      "id": "challenger-segment",
+      "kind": "challenger",
+      "catalogId": "signals-instruments-seven-segment-alarm-clock",
+      "label": "Seven-Segment",
+      "verdict": "declined",
+      "lineage": "LED segment displays",
+      "palette": ["#05070f", "#2f7bff"],
+      "materials": ["segment masks", "ghost cells"],
+      "case": "Fuses poorly: a novelty display face, weak identification for most creatives.",
+      "kept": "Unlit states designed as deliberately as lit ones."
+    },
+    {
+      "id": "challenger-rietveld",
+      "kind": "challenger",
+      "catalogId": "design-canon-rietveld-sliding-house",
+      "label": "Sliding Planes",
+      "verdict": "declined",
+      "lineage": "Rietveld Schröder house",
+      "palette": ["#f2f2f2", "#d62828", "#f7c600", "#1d4ed8"],
+      "materials": ["sliding primary planes"],
+      "case": "Conflicts with the pinned palette and has no musical identification.",
+      "kept": "Only the moving edge takes colour."
+    },
+    {
+      "id": "challenger-ascii",
+      "kind": "challenger",
+      "catalogId": "medium-native-ascii-live-scene-render",
+      "label": "Glyph Render",
+      "verdict": "declined",
+      "lineage": "ASCII live render",
+      "palette": ["#000000", "#33ff66"],
+      "materials": ["monospace glyph grid"],
+      "case": "Costume of a terminal; hurts clarity.",
+      "kept": "One strict numeric voice."
+    },
+    {
+      "id": "challenger-ikebana",
+      "kind": "challenger",
+      "catalogId": "growth-metamorphosis-branching-ikebana-ma-arrangement",
+      "label": "Ikebana",
+      "verdict": "declined",
+      "lineage": "tokonoma arrangement",
+      "palette": ["#e9e4da", "#4a5d8a"],
+      "materials": ["plaster", "pine"],
+      "case": "No connection to music creatives.",
+      "kept": "Active emptiness around the hero."
+    },
+    {
+      "id": "challenger-quilt",
+      "kind": "challenger",
+      "catalogId": "textiles-weave-drape-fashion-memory-quilt-atlas",
+      "label": "Memory Quilt",
+      "verdict": "declined",
+      "lineage": "pieced quilt",
+      "palette": ["#2b3a55", "#c0392b"],
+      "materials": ["pieced cloth"],
+      "case": "Warm but off-brand against the neon identity.",
+      "kept": "Visible provenance: every item shows who made it."
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "The category standard",
+    "thesis": "A polished dark SaaS dashboard and landing, executed cleanly.",
+    "palette": ["#0b1020", "#111a33", "#3b82f6", "#e5e7eb"],
+    "materials": ["clean grid", "product screenshots", "card rows"],
+    "viewport": "Headline, subcopy, two buttons, screenshot, three feature cards.",
+    "risk": "Indistinguishable from competitors."
+  }
+}

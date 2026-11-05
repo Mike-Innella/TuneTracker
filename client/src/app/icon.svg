@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512" role="img" aria-labelledby="tt-title">
+  <title id="tt-title">TuneTracker</title>
+  <!-- Vector reconstruction of the approved neon T / waveform mark. Editable paths, no raster. -->
+  <defs>
+    <linearGradient id="tt-ring" gradientUnits="userSpaceOnUse" x1="50" y1="13" x2="50" y2="90">
+      <stop offset="0" stop-color="#2ee6ff"/>
+      <stop offset="0.55" stop-color="#3b6bff"/>
+      <stop offset="1" stop-color="#5b3cff"/>
+    </linearGradient>
+    <linearGradient id="tt-t" gradientUnits="userSpaceOnUse" x1="50" y1="28" x2="40" y2="87">
+      <stop offset="0" stop-color="#2ef2ff"/>
+      <stop offset="0.5" stop-color="#3a7bff"/>
+      <stop offset="1" stop-color="#c13dff"/>
+    </linearGradient>
+    <linearGradient id="tt-wave" gradientUnits="userSpaceOnUse" x1="4" y1="0" x2="94" y2="0">
+      <stop offset="0" stop-color="#2ef2ff"/>
+      <stop offset="0.5" stop-color="#3a6bff"/>
+      <stop offset="1" stop-color="#c56bff"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="51.5" r="38.5" fill="#050817"/>
+  <path d="M15.2 44 A36 36 0 0 1 84.8 44 A38.5 38.5 0 0 0 15.2 44 Z" fill="url(#tt-ring)"/>
+  <circle cx="50" cy="51.5" r="38" fill="none" stroke="url(#tt-ring)" stroke-width="1.6"/>
+  <g fill="url(#tt-wave)">
+    <rect x="3.6" y="49.2" width="2.6" height="5" rx="1.3"/>
+    <rect x="10" y="46.5" width="2.6" height="10.4" rx="1.3"/>
+    <rect x="16.4" y="43" width="2.6" height="17.4" rx="1.3"/>
+    <rect x="22.8" y="38" width="2.6" height="27.4" rx="1.3"/>
+    <rect x="29.2" y="42.4" width="2.6" height="18.6" rx="1.3"/>
+    <rect x="59.6" y="46.5" width="2.6" height="10.4" rx="1.3"/>
+    <rect x="66" y="42" width="2.6" height="19.4" rx="1.3"/>
+    <rect x="72.4" y="37.2" width="2.6" height="29" rx="1.3"/>
+    <rect x="78.8" y="43.4" width="2.6" height="16.6" rx="1.3"/>
+    <rect x="85.2" y="45.8" width="2.6" height="11.8" rx="1.3"/>
+    <rect x="91.6" y="49.2" width="2.6" height="5" rx="1.3"/>
+  </g>
+  <path fill="url(#tt-t)" d="M37.5 28.5 H75.5 L68.6 37.2 H32.2 Z"/>
+  <path fill="url(#tt-t)" d="M47.2 37.2 H60.8 C57.6 40.4 56 45 54.6 51 C52.4 60.6 49.4 72.6 34 86.5 C41.4 72 43.6 60 45.2 50.4 C46 45.4 46.6 40.8 47.2 37.2 Z"/>
+  <path fill="url(#tt-t)" d="M60.8 37.2 C63.6 38.2 64.4 40.4 63.6 42.6 C62.6 40.6 61 39.8 58.6 40.2 Z"/>
+  <path fill="#9b4dff" d="M43.6 74.6 C51.8 79.6 61.4 78.8 69.4 72.2 C61.8 75.8 52.6 76.6 43.6 74.6 Z"/>
+</svg>
