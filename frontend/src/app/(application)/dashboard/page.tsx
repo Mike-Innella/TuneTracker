@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, CalendarClock, FolderKanban, Music4, Plus, Upload, Users } from 'lucide-react';
-import { dashboard, requireProfile } from '@tunetracker/backend';
+import { collaboration, dashboard, requireProfile } from '@tunetracker/backend';
 import { CountingNumber } from '@animate-ui/react/primitives/texts/counting-number';
 import { Button } from '@/components/ui/button';
 import { EmptyState, PageHeader, SectionHeading } from '@/components/layout/page-header';
+import { Invitations } from '@/components/dashboard/invitations';
 import { ProgressLine } from '@/components/dashboard/progress-line';
 import { ProjectArtwork } from '@/components/dashboard/project-artwork';
 import { UserAvatar } from '@/components/ui/user-avatar';
@@ -19,7 +20,7 @@ function greeting(d = new Date()) {
 
 export default async function DashboardPage() {
   const me = await requireProfile();
-  const data = await dashboard.getDashboard(me.id);
+  const [data, invites] = await Promise.all([dashboard.getDashboard(me.id), collaboration.myInvites(me.id)]);
   const stats = [
     ['Active projects', data.stats.activeProjects],
     ['Tasks with due dates', data.stats.tasksDue],
@@ -47,6 +48,8 @@ export default async function DashboardPage() {
           </>
         }
       />
+
+      <Invitations invites={invites} />
 
       {/* Credits strip — one ruled line, not a row of stat cards */}
       <dl

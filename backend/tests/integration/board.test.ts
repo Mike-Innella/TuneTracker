@@ -134,8 +134,13 @@ describe('authorization', () => {
     const editor = await makeProfile('editor');
     const viewer = await makeProfile('viewer');
     const p = await projects.createProject(owner.id, { title: 'Team' });
-    await collaboration.inviteMember(owner.id, p.id, { username: editor.username, role: 'EDITOR' });
-    await collaboration.inviteMember(owner.id, p.id, { username: viewer.username, role: 'VIEWER' });
+    // nobody joins without accepting: invite, then each invitee accepts their own invitation
+    await collaboration.inviteMember(owner.id, p.id, { target: editor.username, role: 'EDITOR' });
+    await collaboration.inviteMember(owner.id, p.id, { target: viewer.username, role: 'VIEWER' });
+    for (const who of [editor, viewer]) {
+      const [inv] = await collaboration.myInvites(who.id);
+      await collaboration.respondToInvite(who.id, inv!.id, true);
+    }
     const [col] = await db().boardColumn.findMany({ where: { projectId: p.id } });
 
     const t = await tasks.createTask(editor.id, { columnId: col!.id, title: 'by editor' });
@@ -147,7 +152,7 @@ describe('authorization', () => {
       status: 403,
     });
     await expect(
-      collaboration.inviteMember(editor.id, p.id, { username: viewer.username, role: 'EDITOR' }),
+      collaboration.inviteMember(editor.id, p.id, { target: viewer.username, role: 'EDITOR' }),
     ).rejects.toMatchObject({ status: 403 });
     await expect(projects.deleteProject(editor.id, p.id)).rejects.toMatchObject({ status: 403 });
 
