@@ -1,0 +1,1829 @@
+openapi: 3.0.3
+info:
+  title: TuneTracker API
+  version: 1.1.0
+  description: |
+    OpenAPI contract for the TuneTracker Express API.
+    Authentication is cookie-based with `tt_session`.
+
+servers:
+  - url: http://localhost:4000/api
+    description: Local development
+  - url: https://your-domain.com/api
+    description: Production
+
+tags:
+  - name: Health
+  - name: Auth
+  - name: Projects
+  - name: Tracks
+  - name: Public Track
+  - name: Posts
+  - name: Uploads
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: tt_session
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        error:
+          type: string
+        details:
+          type: object
+          nullable: true
+      required: [ok, error]
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+        email:
+          type: string
+          format: email
+        profileImageData:
+          type: string
+          nullable: true
+        socialLinks:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserSocialLink"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UserSocialLink:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        url:
+          type: string
+          format: uri
+
+    Visibility:
+      type: string
+      enum: [PUBLIC, PRIVATE]
+
+    TrackStatus:
+      type: string
+      enum: [IDEA, DRAFT, MIX, MASTER]
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+        ownerId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        visibility:
+          $ref: "#/components/schemas/Visibility"
+        owner:
+          $ref: "#/components/schemas/User"
+        _count:
+          type: object
+          properties:
+            tracks:
+              type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Track:
+      type: object
+      properties:
+        id:
+          type: string
+        projectId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          $ref: "#/components/schemas/TrackStatus"
+        bpm:
+          type: integer
+          nullable: true
+        key:
+          type: string
+          nullable: true
+        s3ObjectKey:
+          type: string
+          nullable: true
+        audioUrl:
+          type: string
+          nullable: true
+          description: Resolved `/api/uploads/...` URL or public S3/CloudFront URL.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    SessionLog:
+      type: object
+      properties:
+        id:
+          type: string
+        trackId:
+          type: string
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    NoteForLater:
+      type: object
+      properties:
+        id:
+          type: string
+        trackId:
+          type: string
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    TrackEngagement:
+      type: object
+      properties:
+        likesCount:
+          type: integer
+        commentsCount:
+          type: integer
+        ratingAverage:
+          type: number
+          nullable: true
+        ratingCount:
+          type: integer
+        likedByMe:
+          type: boolean
+        myRating:
+          type: integer
+          nullable: true
+
+    TrackComment:
+      type: object
+      properties:
+        id:
+          type: string
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        author:
+          $ref: "#/components/schemas/User"
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+        authorId:
+          type: string
+        projectId:
+          type: string
+          nullable: true
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PostComment:
+      type: object
+      properties:
+        id:
+          type: string
+        postId:
+          type: string
+        userId:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    AuthUserResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        user:
+          $ref: "#/components/schemas/User"
+      required: [ok, user]
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required: [success]
+
+  responses:
+    BadRequest:
+      description: Invalid request payload or params
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: Missing or invalid session
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Forbidden:
+      description: Authenticated but not allowed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unprocessable:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: API health check
+      responses:
+        "200":
+          description: API running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                required: [ok]
+
+  /health/db:
+    get:
+      tags: [Health]
+      summary: Database health check
+      responses:
+        "200":
+          description: Database reachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                required: [ok]
+        "500":
+          description: Database unreachable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ping:
+    get:
+      tags: [Health]
+      summary: API router ping
+      responses:
+        "200":
+          description: Router is mounted
+
+  /auth/ping:
+    get:
+      tags: [Auth]
+      summary: Auth router ping
+      responses:
+        "200":
+          description: Auth router is mounted
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [displayName, email, password]
+              properties:
+                displayName:
+                  type: string
+                  minLength: 2
+                  maxLength: 50
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                  maxLength: 72
+      responses:
+        "201":
+          description: User registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUserResponse"
+        "409":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/Unprocessable"
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login and set session cookie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 1
+                  maxLength: 72
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUserResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/Unprocessable"
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Logout and clear session cookie
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                required: [ok]
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Get current user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Session user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUserResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    patch:
+      tags: [Auth]
+      summary: Update current user profile
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                  minLength: 2
+                  maxLength: 50
+                profileImageData:
+                  type: string
+                  description: Data URL image string
+                socialLinks:
+                  type: array
+                  maxItems: 10
+                  items:
+                    type: object
+                    required: [label, url]
+                    properties:
+                      label:
+                        type: string
+                        minLength: 1
+                        maxLength: 40
+                      url:
+                        type: string
+                        format: uri
+                        maxLength: 2048
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUserResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/Unprocessable"
+    post:
+      tags: [Auth]
+      summary: Legacy alias of PATCH /auth/me
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUserResponse"
+    delete:
+      tags: [Auth]
+      summary: Delete current user profile
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Profile deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  success:
+                    type: boolean
+                required: [ok, success]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /auth/public/{userId}:
+    get:
+      tags: [Auth]
+      summary: Get public user profile
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Public user profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUserResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /projects/public:
+    get:
+      tags: [Projects]
+      summary: List public projects
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 12
+        - in: query
+          name: q
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Paginated public projects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Project"
+                  page:
+                    type: integer
+                  limit:
+                    type: integer
+                  total:
+                    type: integer
+                  totalPages:
+                    type: integer
+                required: [data, page, limit, total, totalPages]
+
+  /projects/public/{projectId}:
+    get:
+      tags: [Projects]
+      summary: Get one public project with tracks
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Public project
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Project"
+                  - type: object
+                    properties:
+                      tracks:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Track"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /projects/public/{projectId}/tracks/{trackId}/engagement:
+    get:
+      tags: [Public Track]
+      summary: Get public track engagement metrics
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Engagement stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrackEngagement"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /projects/public/{projectId}/tracks/{trackId}/comments:
+    get:
+      tags: [Public Track]
+      summary: Get public track comments
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Public comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrackComment"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags: [Public Track]
+      summary: Create public track comment
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body:
+                  type: string
+                  minLength: 1
+                  maxLength: 1000
+      responses:
+        "201":
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/TrackComment"
+                required: [data]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /projects/public/{projectId}/tracks/{trackId}/like:
+    post:
+      tags: [Public Track]
+      summary: Like a public track
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Track liked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  liked:
+                    type: boolean
+                  likesCount:
+                    type: integer
+                required: [liked, likesCount]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    delete:
+      tags: [Public Track]
+      summary: Remove like from a public track
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Like removed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  liked:
+                    type: boolean
+                  likesCount:
+                    type: integer
+                required: [liked, likesCount]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /projects/public/{projectId}/tracks/{trackId}/rating:
+    post:
+      tags: [Public Track]
+      summary: Rate a public track (1-5)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [value]
+              properties:
+                value:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+      responses:
+        "200":
+          description: Rating updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  myRating:
+                    type: integer
+                  ratingAverage:
+                    type: number
+                    nullable: true
+                  ratingCount:
+                    type: integer
+                required: [myRating, ratingAverage, ratingCount]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /projects:
+    get:
+      tags: [Projects]
+      summary: List signed-in user's projects
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: User projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags: [Projects]
+      summary: Create project
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 120
+                description:
+                  type: string
+                  maxLength: 2000
+                visibility:
+                  $ref: "#/components/schemas/Visibility"
+                tags:
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                    maxLength: 24
+                  maxItems: 10
+      responses:
+        "201":
+          description: Project created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Project"
+                required: [data]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/Unprocessable"
+
+  /projects/{projectId}:
+    get:
+      tags: [Projects]
+      summary: Get one project (owner or public visibility)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags: [Projects]
+      summary: Update project (owner only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 120
+                description:
+                  type: string
+                  maxLength: 2000
+                visibility:
+                  $ref: "#/components/schemas/Visibility"
+      responses:
+        "200":
+          description: Updated project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags: [Projects]
+      summary: Delete project (owner only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /projects/{projectId}/tracks:
+    get:
+      tags: [Tracks]
+      summary: List tracks for a project
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Track list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Track"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags: [Tracks]
+      summary: Create track
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 120
+                description:
+                  type: string
+                  maxLength: 2000
+                status:
+                  $ref: "#/components/schemas/TrackStatus"
+                bpm:
+                  type: integer
+                  minimum: 1
+                  maximum: 400
+                key:
+                  type: string
+                  maxLength: 20
+                fileName:
+                  type: string
+                  description: Must be provided with `audioDataUrl`.
+                audioDataUrl:
+                  type: string
+                  description: Data URL for inline audio upload.
+      responses:
+        "201":
+          description: Track created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Track"
+                required: [data]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/Unprocessable"
+
+  /projects/{projectId}/tracks/{trackId}:
+    get:
+      tags: [Tracks]
+      summary: Get one track
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Track
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Track"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags: [Tracks]
+      summary: Update track
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 120
+                description:
+                  type: string
+                  nullable: true
+                  maxLength: 2000
+                status:
+                  $ref: "#/components/schemas/TrackStatus"
+                bpm:
+                  type: integer
+                  nullable: true
+                  minimum: 1
+                  maximum: 400
+                key:
+                  type: string
+                  nullable: true
+                  maxLength: 20
+                fileName:
+                  type: string
+                  description: Must be provided with `audioDataUrl`.
+                audioDataUrl:
+                  type: string
+                  description: Data URL for inline audio upload.
+                deleteAudio:
+                  type: boolean
+                  description: Cannot be true when fileName/audioDataUrl are set.
+      responses:
+        "200":
+          description: Updated track
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Track"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/Unprocessable"
+    delete:
+      tags: [Tracks]
+      summary: Delete track
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /projects/{projectId}/tracks/{trackId}/audio:
+    put:
+      tags: [Tracks]
+      summary: Upload or replace track audio with raw binary payload
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: x-file-name
+          required: true
+          schema:
+            type: string
+          description: Original file name used for extension validation.
+      requestBody:
+        required: true
+        content:
+          audio/mpeg:
+            schema:
+              type: string
+              format: binary
+          audio/wav:
+            schema:
+              type: string
+              format: binary
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: Updated track with resolved audio URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Track"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "413":
+          description: Payload too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags: [Tracks]
+      summary: Remove track audio
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Updated track with audio removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Track"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /projects/{projectId}/tracks/{trackId}/session-logs:
+    get:
+      tags: [Tracks]
+      summary: List session logs for a track
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session log list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionLog"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags: [Tracks]
+      summary: Create session log
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body:
+                  type: string
+                  minLength: 1
+                  maxLength: 4000
+      responses:
+        "201":
+          description: Session log created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/SessionLog"
+                required: [data]
+
+  /projects/{projectId}/tracks/{trackId}/notes:
+    get:
+      tags: [Tracks]
+      summary: List notes for a track
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Note list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NoteForLater"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags: [Tracks]
+      summary: Create note
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body:
+                  type: string
+                  minLength: 1
+                  maxLength: 4000
+      responses:
+        "201":
+          description: Note created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/NoteForLater"
+                required: [data]
+
+  /projects/{projectId}/tracks/{trackId}/engagement:
+    get:
+      tags: [Public Track]
+      summary: Legacy alias for public track engagement
+      description: Equivalent behavior to `/projects/public/{projectId}/tracks/{trackId}/engagement`.
+      deprecated: true
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Engagement stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrackEngagement"
+
+  /projects/{projectId}/tracks/{trackId}/comments:
+    get:
+      tags: [Public Track]
+      summary: Legacy alias for public track comments
+      description: Equivalent behavior to `/projects/public/{projectId}/tracks/{trackId}/comments`.
+      deprecated: true
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Public comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrackComment"
+    post:
+      tags: [Public Track]
+      summary: Legacy alias for creating track comments
+      description: Equivalent behavior to `/projects/public/{projectId}/tracks/{trackId}/comments`.
+      deprecated: true
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body:
+                  type: string
+      responses:
+        "201":
+          description: Comment created
+
+  /projects/{projectId}/tracks/{trackId}/like:
+    post:
+      tags: [Public Track]
+      summary: Legacy alias for liking a public track
+      description: Equivalent behavior to `/projects/public/{projectId}/tracks/{trackId}/like`.
+      deprecated: true
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Track liked
+    delete:
+      tags: [Public Track]
+      summary: Legacy alias for unliking a public track
+      description: Equivalent behavior to `/projects/public/{projectId}/tracks/{trackId}/like`.
+      deprecated: true
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Like removed
+
+  /projects/{projectId}/tracks/{trackId}/rating:
+    post:
+      tags: [Public Track]
+      summary: Legacy alias for rating a public track
+      description: Equivalent behavior to `/projects/public/{projectId}/tracks/{trackId}/rating`.
+      deprecated: true
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [value]
+              properties:
+                value:
+                  type: integer
+      responses:
+        "200":
+          description: Rating updated
+
+  /posts:
+    get:
+      tags: [Posts]
+      summary: List feed posts
+      responses:
+        "200":
+          description: Feed posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+    post:
+      tags: [Posts]
+      summary: Create a feed post
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                content:
+                  type: string
+                  minLength: 1
+                  maxLength: 1000
+                projectId:
+                  type: string
+      responses:
+        "201":
+          description: Post created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Post"
+                required: [data]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /posts/{postId}:
+    get:
+      tags: [Posts]
+      summary: Get one post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags: [Posts]
+      summary: Delete own post
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /posts/{postId}/comments:
+    get:
+      tags: [Posts]
+      summary: List post comments
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Post comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PostComment"
+    post:
+      tags: [Posts]
+      summary: Create post comment
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                content:
+                  type: string
+                  minLength: 1
+                  maxLength: 1000
+      responses:
+        "201":
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PostComment"
+                required: [data]
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /posts/{postId}/comments/{commentId}:
+    delete:
+      tags: [Posts]
+      summary: Delete own post comment
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Comment deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /posts/{postId}/like:
+    post:
+      tags: [Posts]
+      summary: Like a post
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Post liked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  liked:
+                    type: boolean
+                  likesCount:
+                    type: integer
+                required: [liked, likesCount]
+    delete:
+      tags: [Posts]
+      summary: Unlike a post
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Post unliked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  liked:
+                    type: boolean
+                  likesCount:
+                    type: integer
+                required: [liked, likesCount]
+
+  /uploads/{storagePath}:
+    get:
+      tags: [Uploads]
+      summary: Resolve uploaded audio path
+      description: |
+        `storagePath` is the URL-encoded object key (can include `/` segments).
+        Behavior depends on storage mode:
+        - `STORAGE_DRIVER=local`: API serves file content directly.
+        - `STORAGE_DRIVER=s3`: API returns `302` redirect to a signed S3 URL unless `AWS_S3_PUBLIC_BASE_URL` is configured.
+      parameters:
+        - in: path
+          name: storagePath
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Local file served
+        "302":
+          description: Redirect to signed/public S3 object URL
+        "404":
+          $ref: "#/components/responses/NotFound"

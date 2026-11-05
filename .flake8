@@ -1,0 +1,33 @@
+# .flake8
+[flake8]
+# Set max line length to match Black's default
+max-line-length = 88
+
+# Ignore specific errors/warnings to avoid conflicts with Black:
+# E203: whitespace before ':' (Black handles differently for slices)
+# W503: line break before binary operator (Black prefers line break after - W504)
+# E501: line too long (let Black handle formatting line length)
+# Optional ignores (remove if you want stricter checks):
+# F401: module imported but unused (can be noisy during development)
+# F841: local variable assigned but never used (can be noisy)
+extend-ignore = E203, W503
+
+# Exclude directories from linting
+exclude =
+    .git,
+    __pycache__,
+    .vscode,
+    build,
+    dist,
+    venv,
+    .venv,
+    node_modules,
+    *.egg-info
+    # Add other project-specific directories to exclude (e.g., docs/build, notebooks)
+
+# Optional: Ignore specific issues in specific files (e.g., unused imports in __init__)
+per-file-ignores =
+    __init__.py: F401
+
+# Optional: Increase McCabe complexity limit (default 10) if needed
+# max-complexity = 12
