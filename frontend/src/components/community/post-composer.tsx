@@ -29,14 +29,18 @@ type Initial = {
   projectId: string | null;
   audio: { id: string; url: string | null; title: string | null; durationSec: number | null } | null;
   image: { id: string; url: string | null } | null;
+  trackId?: string | null;
 };
 
 export function PostComposer({
   projects,
+  tracks = [],
   defaultProjectId,
   initial,
 }: {
   projects: { id: string; title: string; visibility: string }[];
+  /** your published tracks, embeddable in the post */
+  tracks?: { id: string; title: string }[];
   defaultProjectId?: string;
   initial?: Initial;
 }) {
@@ -48,6 +52,7 @@ export function PostComposer({
   const [image, setImage] = useState<{ id: string; url: string | null } | null>(initial?.image ?? null);
   const [progress, setProgress] = useState<{ kind: string; pct: number } | null>(null);
   const [projectId, setProjectId] = useState(initial?.projectId ?? defaultProjectId ?? '');
+  const [trackId, setTrackId] = useState(initial?.trackId ?? '');
   const audioRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
   const linked = projects.find((p) => p.id === projectId);
@@ -92,6 +97,12 @@ export function PostComposer({
       projectId: projectId || null,
       audioId: audio?.id ?? null,
       imageId: image?.id ?? null,
+      // posts with their own audio keep the track they were migrated to while that audio is unchanged
+      trackId: audio
+        ? audio.id === initial?.audio?.id
+          ? (initial?.trackId ?? null)
+          : null
+        : trackId || null,
     };
     start(async () => {
       const r = initial ? await updatePostAction(initial.id, input) : await createPostAction(input);
@@ -282,6 +293,30 @@ export function PostComposer({
           )}
         </Field>
       </div>
+
+      {tracks.length > 0 && !audio && (
+        <Field
+          id="post-track"
+          label="Embed one of your tracks"
+          hint="Optional. Listens from the post count toward the track."
+        >
+          {(p) => (
+            <select
+              {...p}
+              value={trackId}
+              onChange={(e) => setTrackId(e.target.value)}
+              className={selectClass}
+            >
+              <option value="">None</option>
+              {tracks.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.title}
+                </option>
+              ))}
+            </select>
+          )}
+        </Field>
+      )}
 
       <Field
         id="post-project"
