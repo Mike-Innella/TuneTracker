@@ -1,8 +1,9 @@
 # Legacy Audit — TuneTracker 1.x capstone
 
-Audited 2026-11-05. The original source is preserved at git tag `legacy-baseline`
-and, for reference during migration, under `legacy/` (excluded from the workspace,
-lint, build and Docker contexts).
+Audited 2026-11-05. The original source (code, docs and design wireframes) is preserved at git tag
+`legacy-baseline`; the local reference copy and legacy design files were removed from the working tree
+once 2.0 reached feature parity. Legacy secrets and uploaded tracks were never committed; the owner holds
+a private backup outside the repository.
 
 ## 1. Architecture (as found)
 
