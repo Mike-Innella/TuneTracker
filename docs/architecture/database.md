@@ -68,3 +68,9 @@ email invitations — it is never selected into public payloads. All new tables 
 IP or user agent). Migration `music_core` creates a published public Track for every post that had audio
 and links it via `Post.trackId`; `Post.audioId` is kept, so the step is reversible.
 
+## Phase 4 models
+
+`PostComment.parentId` (self-relation, cascade: deleting a comment deletes its replies).
+`Article` (unique `slug`, sanitized `bodyHtml`, plain-text `bodyText` for search, `category` from
+`BLOG_CATEGORIES`, normalized lowercase `tags`, optional public `cover`, DRAFT | PUBLISHED, RLS on).
+`ReportTarget` gains `ARTICLE`.
