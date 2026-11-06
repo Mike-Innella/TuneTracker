@@ -116,7 +116,11 @@ export const labelSchema = z.object({
   color: z.string().regex(/^#[0-9a-f]{6}$/i),
 });
 export const checklistItemSchema = z.object({ text: trimmed(200).min(1) });
-export const commentSchema = z.object({ body: trimmed(4000).min(1, 'Write something first') });
+export const commentSchema = z.object({
+  body: trimmed(4000).min(1, 'Write something first'),
+  /** reply to this top-level comment */
+  parentId: id.nullish(),
+});
 
 // ---------- media ----------
 export const mediaKind = z.enum(['AUDIO', 'IMAGE', 'FILE']);
@@ -154,6 +158,8 @@ export const postSchema = z.object({
   projectId: id.nullish(),
   audioId: id.nullish(),
   imageId: id.nullish(),
+  /** embed one of your published tracks */
+  trackId: id.nullish(),
 });
 export const reportSchema = z.object({
   targetType: z.enum(['POST', 'COMMENT', 'PROFILE']),

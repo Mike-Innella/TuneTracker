@@ -26,9 +26,9 @@ export async function deletePostAction(postId: string) {
   return r;
 }
 
-export async function addCommentAction(postId: string, body: string) {
+export async function addCommentAction(postId: string, body: string, parentId?: string) {
   return runAction(async () => {
-    await community.addComment((await requireActor()).id, postId, body);
+    await community.addComment((await requireActor()).id, postId, body, parentId);
     revalidatePath(`/community/${postId}`);
   });
 }
