@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { community, projects, requireProfile } from '@tunetracker/backend';
+import { community, projects, requireProfile, tracks } from '@tunetracker/backend';
 import { PageHeader } from '@/components/layout/page-header';
 import { PostComposer } from '@/components/community/post-composer';
 import { or404 } from '@/lib/or-404';
@@ -13,17 +13,19 @@ export default async function EditPostPage({ params }: { params: Promise<{ postI
   const { post } = await or404(community.getPost(me.id, postId));
   if (!post.isMine || !post.ownerRefs) notFound();
   const raw = post.ownerRefs;
-  const mine = await projects.listProjects(me.id);
+  const [mine, myTracks] = await Promise.all([projects.listProjects(me.id), tracks.myTracks(me.id)]);
   return (
     <div className="mx-auto max-w-2xl">
       <PageHeader title="Edit post" />
       <PostComposer
         projects={mine.map((p) => ({ id: p.id, title: p.title, visibility: p.visibility }))}
+        tracks={myTracks.filter((t) => t.status === 'PUBLISHED').map((t) => ({ id: t.id, title: t.title }))}
         initial={{
           ...post,
           projectId: raw.projectId,
           audio: post.audio,
           image: raw.imageId ? { id: raw.imageId, url: post.imageUrl } : null,
+          trackId: raw.trackId,
         }}
       />
     </div>

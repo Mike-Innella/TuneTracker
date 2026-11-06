@@ -335,15 +335,20 @@ model Post {
 }
 
 model PostComment {
-  id        String   @id @default(cuid())
+  id        String        @id @default(cuid())
   postId    String
-  authorId  String   @db.Uuid
+  authorId  String        @db.Uuid
+  /// one level of threading: replies point at a top-level comment
+  parentId  String?
   body      String
-  createdAt DateTime @default(now())
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  author    Profile  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime      @default(now())
+  post      Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author    Profile       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent    PostComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   PostComment[] @relation("CommentReplies")
 
   @@index([postId, createdAt])
+  @@index([parentId])
 }
 
 model Reaction {
