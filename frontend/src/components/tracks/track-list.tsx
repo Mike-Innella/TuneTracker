@@ -19,7 +19,16 @@ export const toPlayerTrack = (t: PublicTrack): PlayerTrack => ({
 });
 
 /** Numbered track rows, like an album's back cover. Playing one queues the whole list. */
-export function TrackList({ tracks, showArtist = false }: { tracks: PublicTrack[]; showArtist?: boolean }) {
+export function TrackList({
+  tracks,
+  showArtist = false,
+  actions,
+}: {
+  tracks: PublicTrack[];
+  showArtist?: boolean;
+  /** per-row controls (client callers only), e.g. reorder buttons on your playlist */
+  actions?: (track: PublicTrack, index: number) => React.ReactNode;
+}) {
   const player = usePlayer();
   const queue = tracks.map(toPlayerTrack);
   return (
@@ -68,6 +77,7 @@ export function TrackList({ tracks, showArtist = false }: { tracks: PublicTrack[
             <span className="type-figure w-10 text-right text-xs text-muted-foreground">
               {formatDuration(t.durationSec ?? 0)}
             </span>
+            {actions?.(t, i)}
           </li>
         );
       })}

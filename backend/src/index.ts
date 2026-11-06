@@ -23,9 +23,11 @@ export * as account from './services/account';
 export * as moderation from './services/moderation';
 export * as tracks from './services/tracks';
 export * as blog from './services/blog';
+export * as playlists from './services/playlists';
+export * as analytics from './services/analytics';
 
 export type { Board, BoardTask } from './services/boards';
 export type { FeedPost } from './services/community';
 export type { PublicTrack } from './services/tracks';
 export type { PublicArticle } from './services/blog';
-export type { UpdateTrackInput, TrackListInput, ArticleInput } from '@tunetracker/shared';
+export type { UpdateTrackInput, TrackListInput, ArticleInput, PlaylistInput } from '@tunetracker/shared';

@@ -138,6 +138,7 @@ model Profile {
   tracks            Track[]
   articles          Article[]
   trackLikes        TrackLike[]
+  playlists         Playlist[]
   plays             Play[]
   ownedProjects     Project[]          @relation("ProjectOwner")
   memberships       ProjectMember[]
@@ -491,12 +492,13 @@ model Track {
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
 
-  owner   Profile     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  audio   MediaAsset? @relation("TrackAudio", fields: [audioId], references: [id], onDelete: SetNull)
-  artwork MediaAsset? @relation("TrackArtwork", fields: [artworkId], references: [id], onDelete: SetNull)
-  likes   TrackLike[]
-  plays   Play[]
-  posts   Post[]
+  owner         Profile        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  audio         MediaAsset?    @relation("TrackAudio", fields: [audioId], references: [id], onDelete: SetNull)
+  artwork       MediaAsset?    @relation("TrackArtwork", fields: [artworkId], references: [id], onDelete: SetNull)
+  likes         TrackLike[]
+  plays         Play[]
+  playlistItems PlaylistItem[]
+  posts         Post[]
 
   @@index([status, visibility, publishedAt(sort: Desc)])
   @@index([ownerId, status])
@@ -551,4 +553,34 @@ model Article {
   @@index([status, publishedAt(sort: Desc)])
   @@index([category, status])
   @@index([authorId])
+}
+
+/// An ordered, curated list of tracks; public playlists have a shareable page.
+model Playlist {
+  id          String          @id @default(cuid())
+  ownerId     String          @db.Uuid
+  title       String
+  description String?
+  visibility  TrackVisibility @default(PUBLIC)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  owner Profile        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  items PlaylistItem[]
+
+  @@index([ownerId])
+}
+
+model PlaylistItem {
+  playlistId String
+  trackId    String
+  /// 0-based order, rewritten in one transaction on reorder
+  position   Int
+  addedAt    DateTime @default(now())
+
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  track    Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  @@id([playlistId, trackId])
+  @@index([playlistId, position])
 }

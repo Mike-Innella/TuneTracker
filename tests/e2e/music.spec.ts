@@ -45,7 +45,7 @@ test('music core: publish a track, a guest plays it without an account, playback
   // a draft stays private
   await publishViaWizard(page, { title: 'Secret Demo', kind: 'Track', publish: false });
   await expect(page.getByTestId('track-row').filter({ hasText: 'Secret Demo' })).toContainText('Draft');
-  const draftHref = await page.getByRole('link', { name: 'Secret Demo' }).getAttribute('href');
+  const draftHref = await page.getByRole('link', { name: 'Secret Demo', exact: true }).getAttribute('href');
 
   const guest = await (await browser.newContext()).newPage();
   expect((await guest.goto(draftHref!))?.status()).toBe(404);
