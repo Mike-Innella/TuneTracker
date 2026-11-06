@@ -274,7 +274,7 @@ export function ReportButton({
   targetId,
   compact,
 }: {
-  targetType: 'POST' | 'COMMENT' | 'PROFILE';
+  targetType: 'POST' | 'COMMENT' | 'PROFILE' | 'ARTICLE';
   targetId: string;
   compact?: boolean;
 }) {

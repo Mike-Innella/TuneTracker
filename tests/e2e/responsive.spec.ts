@@ -21,6 +21,8 @@ test('no horizontal overflow and navigation reachable at every directive breakpo
     '/discover',
     '/studio',
     '/studio/upload',
+    '/blog',
+    '/studio/articles/new',
     '/projects',
     board,
     board.replace(/\/board$/, ''),
@@ -50,7 +52,8 @@ test('no horizontal overflow and navigation reachable at every directive breakpo
   await page.context().clearCookies();
   for (const vp of VIEWPORTS) {
     await page.setViewportSize(vp);
-    for (const path of ['/', '/about', '/login', '/signup']) {
+    // signed out: marketing and auth, plus the public app pages with the guest header
+    for (const path of ['/', '/about', '/login', '/signup', '/home', '/discover', '/blog']) {
       await page.goto(path);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       if (overflow > 0) failures.push(`${vp.width}x${vp.height} ${path}: page overflows by ${overflow}px`);

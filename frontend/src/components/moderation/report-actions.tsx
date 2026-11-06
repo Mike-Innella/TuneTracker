@@ -11,7 +11,7 @@ export function ReportActions({
   targetGone,
 }: {
   reportId: string;
-  targetType: 'POST' | 'COMMENT' | 'PROFILE';
+  targetType: 'POST' | 'COMMENT' | 'PROFILE' | 'ARTICLE';
   targetGone: boolean;
 }) {
   const [pending, start] = useTransition();
@@ -38,7 +38,7 @@ export function ReportActions({
           disabled={pending}
           onClick={() => act('CONTENT_REMOVED', 'Content removed')}
         >
-          Remove {targetType === 'POST' ? 'post' : 'comment'}
+          Remove {{ POST: 'post', COMMENT: 'comment', ARTICLE: 'article', PROFILE: '' }[targetType]}
         </Button>
       )}
       {!targetGone && (

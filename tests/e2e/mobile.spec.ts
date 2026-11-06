@@ -8,8 +8,8 @@ test('mobile: bottom navigation, board column navigation and no horizontal overf
   for (const [label, url] of [
     ['Discover', /\/discover$/],
     ['Community', /\/community$/],
+    ['Blog', /\/blog$/],
     ['Studio', /\/studio$/],
-    ['Profile', /\/profile$/],
     ['Home', /\/home$/],
   ] as const) {
     await nav.getByRole('link', { name: label }).click();

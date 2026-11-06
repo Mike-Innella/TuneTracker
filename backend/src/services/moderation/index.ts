@@ -12,7 +12,7 @@ async function requireModerator(actorId: string) {
   if (!p || !isModerator(p)) throw notFound('Not found');
 }
 
-type Target = { type: 'POST' | 'COMMENT' | 'PROFILE'; id: string };
+type Target = { type: 'POST' | 'COMMENT' | 'PROFILE' | 'ARTICLE'; id: string };
 
 /** What a moderator needs to judge a report, plus the owner to act on. */
 async function describe(t: Target) {
@@ -43,6 +43,21 @@ async function describe(t: Target) {
           owner: c.author.username,
           preview: c.body.slice(0, 240),
           href: `/community/${c.postId}`,
+        }
+      : null;
+  }
+  if (t.type === 'ARTICLE') {
+    const a = await db().article.findUnique({
+      where: { id: t.id },
+      select: { title: true, bodyText: true, slug: true, author: { select: { id: true, username: true } } },
+    });
+    return a
+      ? {
+          exists: true,
+          ownerId: a.author.id,
+          owner: a.author.username,
+          preview: `${a.title} — ${a.bodyText.slice(0, 240)}`,
+          href: `/blog/${a.slug}`,
         }
       : null;
   }
@@ -104,11 +119,12 @@ export async function resolveReport(
     if (target.type === 'PROFILE') throw new AppError(400, 'Profiles are suspended, not removed');
     if (info) {
       if (target.type === 'POST') await db().post.delete({ where: { id: target.id } });
+      else if (target.type === 'ARTICLE') await db().article.delete({ where: { id: target.id } });
       else await db().postComment.delete({ where: { id: target.id } });
       await notify(
         info.ownerId,
         'moderation.removed',
-        `A moderator removed your ${target.type === 'POST' ? 'post' : 'comment'} for breaking the community rules.`,
+        `A moderator removed your ${{ POST: 'post', ARTICLE: 'article', COMMENT: 'comment' }[target.type]} for breaking the community rules.`,
       );
     }
   }

@@ -103,6 +103,12 @@ enum ReportTarget {
   POST
   COMMENT
   PROFILE
+  ARTICLE
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
 }
 
 model Profile {
@@ -130,6 +136,7 @@ model Profile {
   invitesReceived   ProjectInvite[]    @relation("InviteInvitee")
   moderationActions ModerationAction[]
   tracks            Track[]
+  articles          Article[]
   trackLikes        TrackLike[]
   plays             Play[]
   ownedProjects     Project[]          @relation("ProjectOwner")
@@ -291,13 +298,14 @@ model MediaAsset {
   verifiedAt  DateTime?
   createdAt   DateTime  @default(now())
 
-  owner      Profile  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  project    Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
-  task       Task?    @relation(fields: [taskId], references: [id], onDelete: SetNull)
-  audioPosts Post[]   @relation("PostAudio")
-  imagePosts Post[]   @relation("PostImage")
-  audioOf    Track[]  @relation("TrackAudio")
-  artworkOf  Track[]  @relation("TrackArtwork")
+  owner      Profile   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  project    Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  task       Task?     @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  audioPosts Post[]    @relation("PostAudio")
+  imagePosts Post[]    @relation("PostImage")
+  audioOf    Track[]   @relation("TrackAudio")
+  coverOf    Article[]
+  artworkOf  Track[]   @relation("TrackArtwork")
 
   @@unique([bucket, path])
   @@index([ownerId])
@@ -517,4 +525,30 @@ model Play {
   listener   Profile? @relation(fields: [listenerId], references: [id], onDelete: SetNull)
 
   @@index([trackId, createdAt])
+}
+
+/// Blog article. bodyHtml is sanitized on the server before it is stored; bodyText powers search.
+model Article {
+  id          String        @id @default(cuid())
+  authorId    String        @db.Uuid
+  /// stable once created: title slug + short random suffix
+  slug        String        @unique
+  title       String
+  excerpt     String?
+  bodyHtml    String
+  bodyText    String
+  category    String
+  tags        String[]
+  coverId     String?
+  status      ArticleStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  author Profile     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  cover  MediaAsset? @relation(fields: [coverId], references: [id], onDelete: SetNull)
+
+  @@index([status, publishedAt(sort: Desc)])
+  @@index([category, status])
+  @@index([authorId])
 }
