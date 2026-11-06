@@ -22,19 +22,17 @@ export function TabLinks({
       >
         <ul className="flex gap-1 overflow-x-auto">
           {items.map((item) => (
-            <NavHighlightItem key={item.href} value={item.href} className="shrink-0">
-              <li>
-                <Link
-                  href={item.href}
-                  aria-current={item.active ? 'page' : undefined}
-                  className={cn(
-                    'relative z-10 block px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors',
-                    item.active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
-                  )}
-                >
-                  {item.label}
-                </Link>
-              </li>
+            <NavHighlightItem key={item.href} value={item.href} className="shrink-0" as="li">
+              <Link
+                href={item.href}
+                aria-current={item.active ? 'page' : undefined}
+                className={cn(
+                  'relative z-10 block px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors',
+                  item.active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+                )}
+              >
+                {item.label}
+              </Link>
             </NavHighlightItem>
           ))}
         </ul>

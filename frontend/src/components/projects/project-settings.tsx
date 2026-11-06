@@ -84,6 +84,7 @@ export function ProjectSettingsForm({ project, isOwner }: { project: P; isOwner:
               accept="image/png,image/jpeg,image/webp"
               className="sr-only"
               id="artwork"
+              aria-label="Project artwork image file"
               onChange={(e) => onArtwork(e.target.files?.[0])}
             />
             <Button

@@ -184,6 +184,7 @@ export function ArticleEditor({ initial }: { initial?: EditableArticle }) {
         <input
           ref={coverRef}
           id="article-cover"
+          aria-label="Article cover image file"
           type="file"
           accept="image/png,image/jpeg,image/webp"
           className="sr-only"

@@ -201,7 +201,7 @@ function DemoTask({ task, columnId }: { task: BoardTask; columnId: string }) {
       className="cursor-grab"
       {...attributes}
       {...listeners}
-      aria-label={`Drag ${task.title}`}
+      aria-roledescription="draggable task"
     />
   );
 }
