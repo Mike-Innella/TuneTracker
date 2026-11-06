@@ -1,6 +1,15 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, CalendarClock, FolderKanban, Music4, Plus, Upload, Users } from 'lucide-react';
+import {
+  ArrowRight,
+  BarChart3,
+  CalendarClock,
+  FolderKanban,
+  Music4,
+  Plus,
+  Upload,
+  Users,
+} from 'lucide-react';
 import { blog, collaboration, dashboard, playlists, requireProfile, tracks } from '@tunetracker/backend';
 import { NewPlaylist } from '@/components/playlists/new-playlist';
 import { StudioTracks } from '@/components/tracks/studio-tracks';
@@ -9,6 +18,7 @@ import { CountingNumber } from '@animate-ui/react/primitives/texts/counting-numb
 import { Button } from '@/components/ui/button';
 import { EmptyState, PageHeader, SectionHeading } from '@/components/layout/page-header';
 import { Invitations } from '@/components/dashboard/invitations';
+import { Activation } from '@/components/dashboard/activation';
 import { ProgressLine } from '@/components/dashboard/progress-line';
 import { ProjectArtwork } from '@/components/dashboard/project-artwork';
 import { UserAvatar } from '@/components/ui/user-avatar';
@@ -24,13 +34,14 @@ function greeting(d = new Date()) {
 /** Studio: your tracks, projects, invitations and activity (the former dashboard). */
 export default async function StudioPage() {
   const me = await requireProfile();
-  const [data, invites, mine, articles, myPlaylists, saved] = await Promise.all([
+  const [data, invites, mine, articles, myPlaylists, saved, setup] = await Promise.all([
     dashboard.getDashboard(me.id),
     collaboration.myInvites(me.id),
     tracks.myTracks(me.id),
     blog.myArticles(me.id),
     playlists.myPlaylists(me.id),
     playlists.savedTracks(me.id),
+    dashboard.activation(me.id),
   ]);
   const stats = [
     ['Active projects', data.stats.activeProjects],
@@ -56,11 +67,17 @@ export default async function StudioPage() {
                 <Plus aria-hidden /> New project
               </Link>
             </Button>
+            <Button asChild variant="ghost">
+              <Link href="/studio/analytics">
+                <BarChart3 aria-hidden /> Analytics
+              </Link>
+            </Button>
           </>
         }
       />
 
       <Invitations invites={invites} />
+      <Activation steps={setup.steps} completed={setup.completed} />
 
       {/* Credits strip — one ruled line, not a row of stat cards */}
       <dl
