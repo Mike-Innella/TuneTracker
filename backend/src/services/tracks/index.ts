@@ -18,19 +18,19 @@ const ownerSelect = {
   avatarPath: true,
   isPublic: true,
 } as const;
-const trackInclude = {
+export const trackInclude = {
   owner: { select: ownerSelect },
   audio: { select: { path: true, bucket: true, mimeType: true, verifiedAt: true } },
   artwork: { select: { path: true } },
   _count: { select: { likes: true, plays: true } },
 } satisfies Prisma.TrackInclude;
-type TrackRow = Prisma.TrackGetPayload<{ include: typeof trackInclude }>;
+export type TrackRow = Prisma.TrackGetPayload<{ include: typeof trackInclude }>;
 
-const isPlayable = (t: { status: string; visibility: string }) =>
+export const isPlayable = (t: { status: string; visibility: string }) =>
   t.status === 'PUBLISHED' && t.visibility === 'PUBLIC';
 
 /** Public shape. Signed playback URLs are minted per request and expire; drafts stay private. */
-async function present(rows: TrackRow[], viewerId: string | null) {
+export async function present(rows: TrackRow[], viewerId: string | null) {
   const urls = await signedReadUrls(rows.flatMap((t) => (t.audio?.verifiedAt ? [t.audio.path] : [])));
   const liked = viewerId
     ? new Set(

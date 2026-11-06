@@ -228,6 +228,14 @@ export const trackListSchema = z.object({
 export type UpdateTrackInput = z.input<typeof updateTrackSchema>;
 export type TrackListInput = z.input<typeof trackListSchema>;
 
+// ---------- playlists ----------
+export const playlistSchema = z.object({
+  title: trimmed(100).min(1, 'Required'),
+  description: optionalText(500),
+  visibility: trackVisibility.default('PUBLIC'),
+});
+export type PlaylistInput = z.input<typeof playlistSchema>;
+
 // ---------- blog ----------
 export const blogCategory = z.enum(BLOG_CATEGORIES);
 export const articleSchema = z.object({
