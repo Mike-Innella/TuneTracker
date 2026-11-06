@@ -15,7 +15,7 @@ test('homepage: hero, CTAs, demo board drag, sections and SEO metadata', async (
   await expect(page.getByRole('heading', { name: 'From first idea to release.' })).toBeVisible();
 
   // demo board is interactive
-  const card = page.getByRole('button', { name: 'Drag Find a vocal chop' });
+  const card = page.getByRole('button', { name: /^Find a vocal chop/ });
   const target = page.getByRole('region', { name: 'Mastered column' });
   const cb = (await card.boundingBox())!;
   const tb = (await target.boundingBox())!;

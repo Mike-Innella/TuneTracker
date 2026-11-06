@@ -67,7 +67,7 @@
   --ink-soft: #5d6889;
   --accent: #e3e8fb;
   --accent-foreground: #18224a;
-  --destructive: #c8203f;
+  --destructive: #a01834; /* ≥4.5:1 on its own 10–20% tints over every light surface */
   --border: #d5dbee;
   --rule: #c3cbe4;
   --input: #cdd4ea;
@@ -317,5 +317,81 @@ body:has([data-mini-player]) {
 @media (width >= 64rem) {
   body:has([data-bottom-nav]) {
     --bottom-nav-h: 0px;
+  }
+}
+
+/* Card entrance (Animate UI spring.toast as CSS): plays as soon as HTML paints — no hydration
+   needed — staggered via --i; skipped entirely for reduced motion. */
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.card-enter {
+  animation: card-in 550ms
+    linear(
+      0,
+      0.0134,
+      0.0492,
+      0.1017,
+      0.1659,
+      0.2377,
+      0.3134,
+      0.3904,
+      0.4664,
+      0.5396,
+      0.6088,
+      0.673,
+      0.7317,
+      0.7846,
+      0.8315,
+      0.8726,
+      0.9081,
+      0.9382,
+      0.9634,
+      0.984,
+      1.0006,
+      1.0136,
+      1.0234,
+      1.0305,
+      1.0353,
+      1.0381,
+      1.0393,
+      1.0393,
+      1.0382,
+      1.0364,
+      1.0341,
+      1.0314,
+      1.0284,
+      1.0254,
+      1.0224,
+      1.0194,
+      1.0166,
+      1.014,
+      1.0116,
+      1.0094,
+      1.0075,
+      1.0057,
+      1.0042,
+      1.0029,
+      1.0019,
+      1.001,
+      1.0003,
+      0.9997,
+      0.9992,
+      0.9989,
+      1,
+      1,
+      1,
+      1,
+      1
+    )
+    both;
+  animation-delay: calc(min(var(--i, 0), 8) * 30ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-enter {
+    animation: none;
   }
 }

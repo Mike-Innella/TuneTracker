@@ -89,6 +89,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
           <input
             ref={fileRef}
             id="avatar-input"
+            aria-label="Profile photo file"
             type="file"
             accept="image/png,image/jpeg,image/webp"
             className="sr-only"

@@ -110,7 +110,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
           {nextCursor && (
             <Button asChild variant="outline">
               <Link href={href({ cursor: nextCursor })} rel="next">
-                More
+                More articles
               </Link>
             </Button>
           )}

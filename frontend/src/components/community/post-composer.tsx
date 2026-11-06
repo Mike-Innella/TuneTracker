@@ -176,6 +176,7 @@ export function PostComposer({
             <input
               ref={audioRef}
               id="post-audio"
+              aria-label="Audio file"
               type="file"
               accept="audio/mpeg,audio/mp4,audio/aac,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/flac,.mp3,.m4a,.wav,.ogg,.flac"
               className="sr-only"
@@ -219,6 +220,7 @@ export function PostComposer({
         <input
           ref={imageRef}
           id="post-image"
+          aria-label="Cover image file"
           type="file"
           accept="image/png,image/jpeg,image/webp,image/gif"
           className="sr-only"

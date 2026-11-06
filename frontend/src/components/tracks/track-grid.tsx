@@ -1,10 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'motion/react';
 import type { PublicTrack } from '@tunetracker/backend';
 import { Button as PressButton } from '@animate-ui/react/primitives/buttons/button';
-import { motionTokens } from '@animate-ui/react/utils/motion';
 import { PlayPauseIcon } from '@/components/audio/audio-player';
 import { formatDuration } from '@/lib/format';
 import { cn } from '@/lib/utils';
@@ -12,7 +10,7 @@ import { ProjectArtwork } from '@/components/dashboard/project-artwork';
 import { usePlayer } from '@/providers/player-provider';
 import { toPlayerTrack } from './track-list';
 
-/** Sleeve-style cards; playing one queues the whole grid. Entrances stagger once, on mount. */
+/** Sleeve-style cards; playing one queues the whole grid. Entrances stagger once (CSS, see .card-enter). */
 export function TrackGrid({ tracks, className }: { tracks: PublicTrack[]; className?: string }) {
   const player = usePlayer();
   const queue = tracks.map(toPlayerTrack);
@@ -25,12 +23,10 @@ export function TrackGrid({ tracks, className }: { tracks: PublicTrack[]; classN
         const current = player.current?.id === t.id;
         const playing = current && player.playing;
         return (
-          <motion.li
+          <li
             key={t.id}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...motionTokens.spring.toast, delay: Math.min(i, 8) * 0.03 }}
-            className="group min-w-0"
+            className="card-enter group min-w-0"
+            style={{ '--i': i } as React.CSSProperties}
             data-testid="track-card"
           >
             <div className="relative aspect-square overflow-hidden rounded-md border border-rule">
@@ -62,13 +58,16 @@ export function TrackGrid({ tracks, className }: { tracks: PublicTrack[]; classN
               {t.title}
             </Link>
             <p className="flex items-baseline gap-2 text-xs text-muted-foreground">
-              <Link href={`/artists/${t.owner.username}`} className="min-w-0 truncate hover:text-foreground">
+              <Link
+                href={`/artists/${t.owner.username}`}
+                className="inline-flex min-h-6 min-w-0 items-center truncate hover:text-foreground"
+              >
                 {t.owner.displayName}
               </Link>
               <span className="credit-leader" aria-hidden />
               <span className="type-figure">{formatDuration(t.durationSec ?? 0)}</span>
             </p>
-          </motion.li>
+          </li>
         );
       })}
     </ul>

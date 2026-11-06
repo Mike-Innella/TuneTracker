@@ -33,14 +33,17 @@ export function NavHighlight({
 export function NavHighlightItem({
   value,
   className,
+  as,
   children,
 }: {
   value: string;
   className?: string;
+  /** render as this element (e.g. 'li' inside a list) instead of a wrapper div */
+  as?: 'li';
   children: React.ReactElement;
 }) {
   return (
-    <HighlightItem value={value} className={cn('relative', className)}>
+    <HighlightItem as={as} value={value} className={cn('relative', className)}>
       {children}
     </HighlightItem>
   );

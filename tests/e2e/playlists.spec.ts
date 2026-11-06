@@ -42,7 +42,7 @@ test('playlists: build from track pages, reorder, share publicly, then make priv
   const url = page.url();
   const rows = page.getByTestId('track-row');
   await expect(rows).toHaveText([/Opening Song/, /Closing Song/]);
-  await page.getByRole('button', { name: 'Move Closing Song up' }).click();
+  await page.getByRole('button', { name: 'Move Closing Song up', exact: true }).click();
   await expect(rows).toHaveText([/Closing Song/, /Opening Song/]);
 
   // a guest sees the same order and can play it all
