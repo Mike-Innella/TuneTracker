@@ -126,7 +126,7 @@ export function AppShell({
             <div className="lg:hidden">
               <ThemeToggle />
             </div>
-            <div className="lg:hidden">{me ? <AccountMenu me={me} compact /> : <GuestActions />}</div>
+            <div className="lg:hidden">{me ? <AccountMenu me={me} compact /> : <GuestActions compact />}</div>
           </div>
         </header>
 
@@ -175,16 +175,19 @@ export function AppShell({
   );
 }
 
-function GuestActions() {
+/** Signed-out visitors. The compact (mobile header) form keeps only Log in so the bar fits 320px. */
+function GuestActions({ compact }: { compact?: boolean }) {
   const path = usePathname();
   return (
     <div className="flex items-center gap-1.5">
-      <Button asChild variant="ghost" size="sm">
+      <Button asChild variant={compact ? 'outline' : 'ghost'} size="sm">
         <Link href={`/login?next=${encodeURIComponent(path)}`}>Log in</Link>
       </Button>
-      <Button asChild size="sm">
-        <Link href="/signup">Sign up</Link>
-      </Button>
+      {!compact && (
+        <Button asChild size="sm">
+          <Link href="/signup">Sign up</Link>
+        </Button>
+      )}
     </div>
   );
 }
@@ -215,6 +218,9 @@ function AccountMenu({ me, compact }: { me: Me; compact?: boolean }) {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href={`/artists/${me.username}`}>View public profile</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/profile">Edit profile</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/settings">Settings</Link>

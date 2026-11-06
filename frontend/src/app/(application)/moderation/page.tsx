@@ -10,7 +10,7 @@ import { timeAgo } from '@/lib/format';
 
 export const metadata: Metadata = { title: 'Moderation', robots: { index: false } };
 
-const TARGET_LABEL = { POST: 'Post', COMMENT: 'Comment', PROFILE: 'Profile' } as const;
+const TARGET_LABEL = { POST: 'Post', COMMENT: 'Comment', PROFILE: 'Profile', ARTICLE: 'Article' } as const;
 
 export default async function ModerationPage({ searchParams }: { searchParams: Promise<{ view?: string }> }) {
   const me = await requireProfile();

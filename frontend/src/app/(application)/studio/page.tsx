@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, CalendarClock, FolderKanban, Music4, Plus, Upload, Users } from 'lucide-react';
-import { collaboration, dashboard, requireProfile, tracks } from '@tunetracker/backend';
+import { blog, collaboration, dashboard, requireProfile, tracks } from '@tunetracker/backend';
 import { TrackList } from '@/components/tracks/track-list';
 import { CountingNumber } from '@animate-ui/react/primitives/texts/counting-number';
 import { Button } from '@/components/ui/button';
@@ -22,10 +22,11 @@ function greeting(d = new Date()) {
 /** Studio: your tracks, projects, invitations and activity (the former dashboard). */
 export default async function StudioPage() {
   const me = await requireProfile();
-  const [data, invites, mine] = await Promise.all([
+  const [data, invites, mine, articles] = await Promise.all([
     dashboard.getDashboard(me.id),
     collaboration.myInvites(me.id),
     tracks.myTracks(me.id),
+    blog.myArticles(me.id),
   ]);
   const stats = [
     ['Active projects', data.stats.activeProjects],
@@ -93,6 +94,45 @@ export default async function StudioPage() {
               </EmptyState>
             ) : (
               <TrackList tracks={mine} />
+            )}
+          </section>
+          <section aria-labelledby="my-articles">
+            <SectionHeading
+              action={
+                <Link
+                  href="/studio/articles/new"
+                  className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+                >
+                  Write <ArrowRight className="size-3.5" aria-hidden />
+                </Link>
+              }
+            >
+              <span id="my-articles">Your articles</span>
+            </SectionHeading>
+            {articles.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                Share what you know — a mixing trick, a gear note, the story behind a release.
+              </p>
+            ) : (
+              <ul className="divide-y divide-border" data-testid="my-articles">
+                {articles.map((a) => (
+                  <li key={a.id} className="flex items-baseline gap-3 py-3">
+                    <Link
+                      href={`/studio/articles/${a.id}`}
+                      className="min-w-0 flex-1 truncate font-medium hover:text-electric"
+                    >
+                      {a.title}
+                    </Link>
+                    <span
+                      className={
+                        a.status === 'DRAFT' ? 'type-role text-warning' : 'type-role text-muted-foreground'
+                      }
+                    >
+                      {a.status === 'DRAFT' ? 'Draft' : 'Published'}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             )}
           </section>
           <section aria-labelledby="recent-projects">
