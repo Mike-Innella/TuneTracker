@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, CalendarClock, FolderKanban, Music4, Plus, Upload, Users } from 'lucide-react';
-import { blog, collaboration, dashboard, requireProfile, tracks } from '@tunetracker/backend';
+import { blog, collaboration, dashboard, playlists, requireProfile, tracks } from '@tunetracker/backend';
+import { NewPlaylist } from '@/components/playlists/new-playlist';
+import { StudioTracks } from '@/components/tracks/studio-tracks';
 import { TrackList } from '@/components/tracks/track-list';
 import { CountingNumber } from '@animate-ui/react/primitives/texts/counting-number';
 import { Button } from '@/components/ui/button';
@@ -22,11 +24,13 @@ function greeting(d = new Date()) {
 /** Studio: your tracks, projects, invitations and activity (the former dashboard). */
 export default async function StudioPage() {
   const me = await requireProfile();
-  const [data, invites, mine, articles] = await Promise.all([
+  const [data, invites, mine, articles, myPlaylists, saved] = await Promise.all([
     dashboard.getDashboard(me.id),
     collaboration.myInvites(me.id),
     tracks.myTracks(me.id),
     blog.myArticles(me.id),
+    playlists.myPlaylists(me.id),
+    playlists.savedTracks(me.id),
   ]);
   const stats = [
     ['Active projects', data.stats.activeProjects],
@@ -93,7 +97,44 @@ export default async function StudioPage() {
                 Upload a track or a sample: it’s saved as a private draft until you publish it.
               </EmptyState>
             ) : (
-              <TrackList tracks={mine} />
+              <StudioTracks tracks={mine} />
+            )}
+          </section>
+          <section aria-labelledby="my-playlists">
+            <SectionHeading action={<NewPlaylist />}>
+              <span id="my-playlists">Playlists</span>
+            </SectionHeading>
+            {myPlaylists.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                Collect tracks in order — yours or anyone’s — and share them.
+              </p>
+            ) : (
+              <ul className="divide-y divide-border" data-testid="my-playlists">
+                {myPlaylists.map((p) => (
+                  <li key={p.id} className="flex items-baseline gap-3 py-3">
+                    <Link
+                      href={`/playlists/${p.id}`}
+                      className="min-w-0 flex-1 truncate font-medium hover:text-electric"
+                    >
+                      {p.title}
+                    </Link>
+                    <span className="type-figure text-xs text-muted-foreground">
+                      {p.trackCount} {p.trackCount === 1 ? 'track' : 'tracks'}
+                      {p.visibility === 'PRIVATE' && ' · private'}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+          <section aria-labelledby="saved">
+            <SectionHeading>
+              <span id="saved">Saved tracks</span>
+            </SectionHeading>
+            {saved.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Tracks you like are collected here.</p>
+            ) : (
+              <TrackList tracks={saved} showArtist />
             )}
           </section>
           <section aria-labelledby="my-articles">
