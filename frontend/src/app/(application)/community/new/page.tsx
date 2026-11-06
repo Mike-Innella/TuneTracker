@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { projects, requireProfile } from '@tunetracker/backend';
+import { projects, requireProfile, tracks } from '@tunetracker/backend';
 import { PageHeader } from '@/components/layout/page-header';
 import { PostComposer } from '@/components/community/post-composer';
 
@@ -12,7 +12,7 @@ export default async function NewPostPage({
 }) {
   const me = await requireProfile();
   const { projectId } = await searchParams;
-  const mine = await projects.listProjects(me.id);
+  const [mine, myTracks] = await Promise.all([projects.listProjects(me.id), tracks.myTracks(me.id)]);
   return (
     <div className="mx-auto max-w-2xl">
       <PageHeader
@@ -21,6 +21,7 @@ export default async function NewPostPage({
       />
       <PostComposer
         projects={mine.map((p) => ({ id: p.id, title: p.title, visibility: p.visibility }))}
+        tracks={myTracks.filter((t) => t.status === 'PUBLISHED').map((t) => ({ id: t.id, title: t.title }))}
         defaultProjectId={mine.some((p) => p.id === projectId) ? projectId : undefined}
       />
     </div>

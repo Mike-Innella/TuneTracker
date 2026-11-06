@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { GENRES, PROJECT_TEMPLATES, REACTIONS, USAGE_RIGHTS } from '../constants/index';
+import { BLOG_CATEGORIES, GENRES, PROJECT_TEMPLATES, REACTIONS, USAGE_RIGHTS } from '../constants/index';
 
 const id = z.string().min(1).max(64);
 const trimmed = (max: number) => z.string().trim().max(max);
@@ -116,7 +116,11 @@ export const labelSchema = z.object({
   color: z.string().regex(/^#[0-9a-f]{6}$/i),
 });
 export const checklistItemSchema = z.object({ text: trimmed(200).min(1) });
-export const commentSchema = z.object({ body: trimmed(4000).min(1, 'Write something first') });
+export const commentSchema = z.object({
+  body: trimmed(4000).min(1, 'Write something first'),
+  /** reply to this top-level comment */
+  parentId: id.nullish(),
+});
 
 // ---------- media ----------
 export const mediaKind = z.enum(['AUDIO', 'IMAGE', 'FILE']);
@@ -154,9 +158,11 @@ export const postSchema = z.object({
   projectId: id.nullish(),
   audioId: id.nullish(),
   imageId: id.nullish(),
+  /** embed one of your published tracks */
+  trackId: id.nullish(),
 });
 export const reportSchema = z.object({
-  targetType: z.enum(['POST', 'COMMENT', 'PROFILE']),
+  targetType: z.enum(['POST', 'COMMENT', 'PROFILE', 'ARTICLE']),
   targetId: id,
   reason: trimmed(1000).min(5, 'Tell us a little more'),
 });
@@ -221,3 +227,24 @@ export const trackListSchema = z.object({
 });
 export type UpdateTrackInput = z.input<typeof updateTrackSchema>;
 export type TrackListInput = z.input<typeof trackListSchema>;
+
+// ---------- blog ----------
+export const blogCategory = z.enum(BLOG_CATEGORIES);
+export const articleSchema = z.object({
+  title: trimmed(160).min(1, 'Required'),
+  excerpt: optionalText(300),
+  /** editor HTML; sanitized on the server before it is stored */
+  bodyHtml: z.string().max(200_000, 'That article is too long'),
+  category: blogCategory,
+  tags: z.array(trimmed(30).min(1)).max(10).default([]),
+  coverId: id.nullish(),
+});
+export const articleListSchema = z.object({
+  q: trimmed(80).optional(),
+  category: blogCategory.optional(),
+  tag: trimmed(30).optional(),
+  cursor: id.nullish(),
+  limit: z.coerce.number().int().min(1).max(30).default(12),
+});
+export type ArticleInput = z.input<typeof articleSchema>;
+export type ArticleListInput = z.input<typeof articleListSchema>;

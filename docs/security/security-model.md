@@ -66,3 +66,13 @@ RLS enabled with no policies on every `public` table (PostgREST sees nothing). S
   (cascades), then the Auth user.
 - **Rate limiting**: Redis when `REDIS_URL` is set, Postgres otherwise; if Redis is unreachable the limiter
   falls back to Postgres (it never fails open).
+
+## Phase 4
+
+- **Article HTML** is never trusted from the browser: the server sanitizes it with an allowlist before
+  storing it, and the page renders only the stored, sanitized HTML. Unit tests cover script/handler/style
+  removal and unsafe link schemes.
+- **Mentions** render as text plus links built from the matched username only; no user HTML is
+  interpreted anywhere in community content.
+- Embedded tracks and blog drafts are visibility-checked on every read: unpublished or private items
+  never show through a post or a list.

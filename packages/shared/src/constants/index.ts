@@ -115,3 +115,14 @@ export const USAGE_RIGHTS = {
   CC_BY_NC: { label: 'CC BY-NC 4.0', summary: 'Non-commercial use with attribution.' },
 } as const;
 export type UsageRightsKey = keyof typeof USAGE_RIGHTS;
+
+/** Blog categories: fixed so the category tabs stay short and meaningful. */
+export const BLOG_CATEGORIES = [
+  'Production',
+  'Mixing & mastering',
+  'Songwriting',
+  'Gear',
+  'Music business',
+  'Artist stories',
+  'Releases',
+] as const;

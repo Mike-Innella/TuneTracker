@@ -29,8 +29,10 @@ test('follow: an artist gains a follower, gets notified, and appears in the Foll
   await expect(fan.page.getByTestId('follow-button')).toHaveAttribute('aria-pressed', 'true');
 
   await fan.page.goto('/community?following=1');
-  await expect(fan.page.getByTestId('post-card')).toHaveCount(1);
-  await expect(fan.page.getByTestId('post-card')).toContainText('Fresh demo');
+  // visible only: the feed streams, and React keeps a hidden copy while it swaps the segment in
+  const cards = fan.page.getByTestId('post-card').filter({ visible: true });
+  await expect(cards).toHaveCount(1);
+  await expect(cards).toContainText('Fresh demo');
 
   await artist.page.goto('/studio');
   await artist.page.getByRole('button', { name: /Notifications, 1 unread/ }).click();

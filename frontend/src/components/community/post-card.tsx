@@ -6,6 +6,7 @@ import { UserAvatar } from '@/components/ui/user-avatar';
 import { formatDate, timeAgo } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import { Reactions } from './reactions';
+import { RichText } from './rich-text';
 
 export const POST_TYPE_LABEL: Record<string, string> = {
   PROGRESS: 'Work in progress',
@@ -97,13 +98,31 @@ export function PostCard({ post, full = false }: { post: FeedPost; full?: boolea
             durationSec={post.audio.durationSec}
           />
         )}
+        {!post.audio && post.track && (
+          <div className="grid gap-1.5" data-testid="track-embed">
+            <AudioPlayer
+              id={post.track.id}
+              trackId={post.track.id}
+              artist={post.author.displayName}
+              src={post.track.url}
+              title={post.track.title}
+              durationSec={post.track.durationSec}
+            />
+            <Link
+              href={`/tracks/${post.track.id}`}
+              className="type-role justify-self-end text-muted-foreground hover:text-foreground"
+            >
+              Open track →
+            </Link>
+          </div>
+        )}
         <p
           className={cn(
             'text-[0.95rem] leading-relaxed break-words whitespace-pre-wrap',
             !full && 'line-clamp-4',
           )}
         >
-          {post.body}
+          <RichText text={post.body} />
         </p>
         {post.tags.length > 0 && (
           <ul className="flex flex-wrap gap-1.5" aria-label="Tags">

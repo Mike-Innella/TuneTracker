@@ -86,3 +86,22 @@ mini player, so playback and the queue survive navigation; Media Session gives l
   above the results. Header search submits here.
 - `/studio` is the former dashboard plus your tracks; `/dashboard` redirects to it.
 
+## Phase 4 — community threads and blog
+
+| Action | Who |
+|---|---|
+| addCommentAction(postId, body, parentId?) | signed in; a reply to a reply joins the top-level thread (one level deep) |
+| createPostAction / updatePostAction(..., trackId?) | author; embeds one of their own **published** tracks |
+| saveArticleAction(id \| null, article) | signed in; create (draft) or update own; HTML sanitized on the server; 20 new articles/h |
+| setArticlePublishedAction(id, publish) | author; publishing needs body text; idempotent |
+| deleteArticleAction(id) | author |
+| reportAction(targetType = ARTICLE, …) | signed in; moderators can remove the article (author notified) |
+
+- **@mentions** (posts and comments): `@username` (3–30 of a-z 0-9 _; not inside an email address) links to
+  the artist page and notifies existing, non-suspended people once; edits notify only newly added names;
+  capped at 10 per text. Parsing lives in `packages/shared/src/text/mentions.ts`.
+- **Blog pages**: public `/blog` (`q`, `category`, `tag`, `cursor`) and `/blog/[slug]`; editor at
+  `/studio/articles/new` and `/studio/articles/[id]`. Slugs are fixed at creation.
+- **Sanitizer** (`backend/src/lib/sanitize.ts`): allows p, h2, h3, strong, em, u, s, code, pre,
+  blockquote, ul, ol, li, hr, br and http/https/mailto links (forced `rel="nofollow noopener noreferrer"`,
+  `target="_blank"`); unsafe links are unwrapped; h1 becomes h2; everything else is removed.
