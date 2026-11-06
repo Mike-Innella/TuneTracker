@@ -24,6 +24,7 @@ export * as moderation from './services/moderation';
 export * as tracks from './services/tracks';
 export * as blog from './services/blog';
 export * as playlists from './services/playlists';
+export * as analytics from './services/analytics';
 
 export type { Board, BoardTask } from './services/boards';
 export type { FeedPost } from './services/community';

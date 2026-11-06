@@ -45,3 +45,35 @@ export async function getDashboard(actorId: string) {
     notifications,
   };
 }
+
+/**
+ * Creator activation: the first things that make a profile worth visiting. Each step is derived
+ * from real data (nothing to store), so it completes itself however the creator gets there.
+ */
+export async function activation(profileId: string) {
+  const [profile, tracks, published, playlists, projects, shares] = await Promise.all([
+    db().profile.findUniqueOrThrow({ where: { id: profileId }, select: { bio: true, avatarPath: true } }),
+    db().track.count({ where: { ownerId: profileId } }),
+    db().track.count({ where: { ownerId: profileId, status: 'PUBLISHED' } }),
+    db().playlist.count({ where: { ownerId: profileId } }),
+    db().project.count({ where: { OR: [{ ownerId: profileId }, { members: { some: { profileId } } }] } }),
+    Promise.all([
+      db().post.count({ where: { authorId: profileId } }),
+      db().article.count({ where: { authorId: profileId, status: 'PUBLISHED' } }),
+    ]).then(([a, b]) => a + b),
+  ]);
+  const steps = [
+    {
+      key: 'profile',
+      label: 'Add a photo or bio',
+      href: '/profile',
+      done: !!(profile.bio?.trim() || profile.avatarPath),
+    },
+    { key: 'upload', label: 'Upload a track or sample', href: '/studio/upload', done: tracks > 0 },
+    { key: 'publish', label: 'Publish it', href: '/studio', done: published > 0 },
+    { key: 'playlist', label: 'Make a playlist', href: '/studio#my-playlists', done: playlists > 0 },
+    { key: 'project', label: 'Start a project', href: '/projects?new=1', done: projects > 0 },
+    { key: 'share', label: 'Post to the community or the blog', href: '/community/new', done: shares > 0 },
+  ];
+  return { steps, completed: steps.filter((s) => s.done).length };
+}
