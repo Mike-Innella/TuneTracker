@@ -3,6 +3,8 @@
 Status: **build verified locally with `vercel build`** from a clean checkout (workspace packages,
 generated Prisma client, Prisma query compiler WASM and `pg` are traced into the functions).
 A real deployment has not been performed yet — it needs the Vercel project and Supabase credentials.
+The full launch order (backup, migrations, Auth, Vercel, verification, rollback) is in
+[`release-runbook.md`](release-runbook.md).
 
 ## Project settings
 
