@@ -9,25 +9,43 @@
 
 ## Features
 
-- **Kanban boards** — music-production templates (songwriting, recording, production, mixing,
-  mastering, release prep); add/rename/reorder/delete columns; drag tasks with mouse, touch or
-  keyboard (plus a Move menu); order persists. Tasks carry priority, due date, assignee, labels,
-  checklist, comments, attachments with inline audio playback, BPM and key.
-- **Projects** — artwork, deadlines, status, private/public visibility, archive, delete.
-- **Collaboration** — invite by username as editor or viewer; permissions enforced on the server;
-  notifications for invites, assignments and feedback.
-- **Community** — posts with audio and cover images uploaded straight to Supabase Storage, tags,
-  links, feedback requests, comments, reactions, reporting, pagination, project-to-community sharing
-  that never exposes private project data.
-- **Artist profiles** — avatar, bio, specialties, links, privacy toggle, published posts, public
-  project showcase.
-- **Dark (default) and light themes**, mobile-first layouts, WCAG 2.2 AA target, reduced-motion aware.
+**Listen** — open to everyone, no account needed
+- **Home** — new releases, trending (most played in 30 days), fresh samples, and — signed in — tracks
+  from artists you follow.
+- **Discover** — search tracks, samples and artists; Tracks/Samples tabs, genre and sort filters,
+  pagination; play straight from the grid.
+- **A player that never stops** — one app-wide player with a queue and lock-screen controls; playback
+  continues while you browse.
+- **Track and artist pages**, **public playlists**, and a **blog** (categories, tags, search, related
+  reads).
+
+**Share**
+- **Community** — posts with audio, images and embedded tracks; threaded replies; @mentions that
+  notify; reactions; feedback requests; reporting.
+- **Follows** — follower counts, a Following feed and notifications.
+- **Blog** — write in a rich-text editor (server-sanitized), drafts, publishing.
+
+**Make** (Studio)
+- **Guided upload** — upload → details (artwork, genre, BPM, key, tags, credits) → release; large files
+  resume if the connection drops; samples carry usage rights before they can be downloaded.
+- **Playlists** (ordered, public or private) and **saved tracks**.
+- **Analytics** from real listens — plays per day, listeners, likes, playlist adds, top tracks.
+- **Projects** — Kanban boards with music-production templates, drag and drop (mouse, touch,
+  keyboard), tasks with checklists, comments, attachments, BPM and key; collaborators join by
+  accepting an invitation (by username or email) as editor or viewer.
+- **A first-run checklist** that ticks itself off as you go.
+
+**Trust & safety** — moderation dashboard (remove content, suspend accounts, audit trail), account
+deletion, rate limits (Redis or Postgres), Row Level Security on every table.
+
+Dark (default) and light themes, mobile-first, **zero axe violations (WCAG 2.2 AA)** across the app in
+both themes, reduced-motion aware.
 
 ## Stack
 
 Next.js 16 (App Router, Server Actions) · React 19 · TypeScript strict · Tailwind CSS 4 · shadcn/ui
-(Radix) · Motion · dnd-kit · Supabase (Auth, Storage, Postgres) · Prisma 7 · Zod · Vitest · Playwright
-· Docker · GitHub Actions · Vercel.
+(Radix) + Animate UI (Motion) · dnd-kit · Tiptap · Supabase (Auth, Storage, Postgres) · Prisma 7 · Redis
+(optional) · Zod · Vitest · Playwright + axe · Docker · GitHub Actions · Vercel.
 
 ## Repository layout
 

@@ -101,11 +101,11 @@ The hosted database currently holds no user data, so the first migrations carry 
    Discover with filters and pagination.
 4. **Community & Blog** (done): categories, threaded replies, mentions, embeds; Tiptap blog with drafts,
    publishing, categories/tags, search, related articles, reporting.
-5. **Studio**: onboarding/activation, track & sample management, playlists (ordered, reorder),
+5. **Studio** (done): onboarding/activation, track & sample management, playlists (ordered, reorder),
    collections (references), analytics from real plays, projects/Kanban as Studio → Projects.
-6. **Hardening**: accessibility (axe in e2e), responsive and performance passes, the 14 journeys
+6. **Hardening** (done): accessibility (axe in e2e), responsive and performance passes, the 14 journeys
    of §26 in Playwright, docs.
-7. **Deployment**: Vercel preview + production, migration runbook, rollback, verification.
+7. **Deployment** (runbook ready — needs the owner's Vercel login and go-ahead for hosted migrations): Vercel preview + production, migration runbook, rollback, verification.
 
 ## 8. First safe tasks (Phase 1)
 
