@@ -99,7 +99,7 @@ The hosted database currently holds no user data, so the first migrations carry 
    upload wizard; persistent global player + queue; public track and artist pages.
 3. **Navigation & Home/Discover** (done): rail + bottom nav per §7, header search, music-first Home,
    Discover with filters and pagination.
-4. **Community & Blog**: categories, threaded replies, mentions, embeds; Tiptap blog with drafts,
+4. **Community & Blog** (done): categories, threaded replies, mentions, embeds; Tiptap blog with drafts,
    publishing, categories/tags, search, related articles, reporting.
 5. **Studio**: onboarding/activation, track & sample management, playlists (ordered, reorder),
    collections (references), analytics from real plays, projects/Kanban as Studio → Projects.
