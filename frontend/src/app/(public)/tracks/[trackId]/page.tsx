@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Pencil } from 'lucide-react';
 import { USAGE_RIGHTS } from '@tunetracker/shared';
-import { getCurrentProfile, tracks } from '@tunetracker/backend';
+import { getCurrentProfile, playlists, tracks } from '@tunetracker/backend';
+import { AddToPlaylist } from '@/components/playlists/add-to-playlist';
 import { AudioPlayer } from '@/components/audio/audio-player';
 import { SectionHeading } from '@/components/layout/page-header';
 import { DownloadButton, LikeButton } from '@/components/tracks/track-actions';
@@ -31,6 +32,7 @@ export default async function TrackPage({ params }: Params) {
   const { trackId } = await params;
   const me = await getCurrentProfile();
   const t = await or404(tracks.getTrack(me?.id ?? null, trackId));
+  const mine = me ? await playlists.myPlaylists(me.id, t.id) : null;
   const details = [
     ['Type', t.kind === 'SAMPLE' ? 'Sample' : 'Track'],
     ['Genre', t.genre],
@@ -69,6 +71,7 @@ export default async function TrackPage({ params }: Params) {
           </Link>
           <div className="mt-5 flex flex-wrap gap-2">
             <LikeButton trackId={t.id} liked={t.likedByMe} count={t.likeCount} signedIn={!!me} />
+            <AddToPlaylist trackId={t.id} trackTitle={t.title} playlists={mine} />
             {t.downloadable && <DownloadButton trackId={t.id} />}
             {t.isMine && (
               <Button asChild variant="ghost">

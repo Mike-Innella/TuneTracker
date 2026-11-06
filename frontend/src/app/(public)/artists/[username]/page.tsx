@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ExternalLink, Globe, MapPin, Music4, Pencil } from 'lucide-react';
-import { getCurrentProfile, profiles, tracks } from '@tunetracker/backend';
+import { getCurrentProfile, playlists, profiles, tracks } from '@tunetracker/backend';
 import { TrackList } from '@/components/tracks/track-list';
 import { Button } from '@/components/ui/button';
 import { UserAvatar } from '@/components/ui/user-avatar';
@@ -28,7 +28,10 @@ export default async function ArtistPage({ params }: { params: Promise<{ usernam
   const { profile, posts, projects, isMe, stats } = await or404(
     profiles.getArtist(me?.id ?? null, decodeURIComponent(username)),
   );
-  const catalogue = await tracks.artistTracks(me?.id ?? null, profile.id);
+  const [catalogue, lists] = await Promise.all([
+    tracks.artistTracks(me?.id ?? null, profile.id),
+    playlists.artistPlaylists(profile.id),
+  ]);
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -184,6 +187,26 @@ export default async function ArtistPage({ params }: { params: Promise<{ usernam
               <TrackList tracks={catalogue} />
             )}
           </section>
+          {lists.length > 0 && (
+            <section aria-labelledby="playlists">
+              <SectionHeading>
+                <span id="playlists">Playlists</span>
+              </SectionHeading>
+              <ul className="divide-y divide-border">
+                {lists.map((p) => (
+                  <li key={p.id} className="flex items-baseline gap-3 py-2.5">
+                    <Link
+                      href={`/playlists/${p.id}`}
+                      className="min-w-0 flex-1 truncate font-medium hover:text-electric"
+                    >
+                      {p.title}
+                    </Link>
+                    <span className="type-figure text-xs text-muted-foreground">{p.trackCount} tracks</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           <section aria-labelledby="posts">
             <SectionHeading>
               <span id="posts">Published posts</span>
