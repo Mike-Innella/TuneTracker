@@ -30,7 +30,7 @@ test('mobile: bottom navigation, board column navigation and no horizontal overf
   await col.getByRole('button', { name: 'Add task' }).click();
   await col.getByLabel('New task title').fill('Phone task');
   await col.getByRole('button', { name: 'Add', exact: true }).click();
-  await page.getByRole('button', { name: 'Move Phone task' }).click();
+  await page.getByRole('button', { name: 'Move Phone task', exact: true }).click();
   await page.getByRole('menuitem', { name: 'Revisions' }).click();
   await expect(
     page.locator('[data-testid=board-column][data-column-title="Revisions"] [data-task-title="Phone task"]'),

@@ -2,7 +2,7 @@
   "name": "tunetracker",
   "version": "2.0.0",
   "private": true,
-  "description": "TuneTracker 2.0 \u2014 Create. Collaborate. Share.",
+  "description": "TuneTracker 2.0 — Create. Collaborate. Share.",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -34,6 +34,7 @@
     "supabase:stop": "supabase stop --workdir data"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.64.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.0",
