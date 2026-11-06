@@ -140,7 +140,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
           {result.nextCursor && (
             <Button asChild variant="outline">
               <Link href={href({ cursor: result.nextCursor })} rel="next">
-                More
+                More tracks
               </Link>
             </Button>
           )}
