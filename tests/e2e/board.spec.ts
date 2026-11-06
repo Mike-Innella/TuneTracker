@@ -74,7 +74,7 @@ test('project creation, board customization, tasks, drag-and-drop and persistent
   await expect.poll(() => cardTitles(page, 'To do')).toEqual(['Bounce stems', 'Write hook']);
 
   // accessible alternative: Move menu
-  await page.getByRole('button', { name: 'Move Write hook' }).click();
+  await page.getByRole('button', { name: 'Move Write hook', exact: true }).click();
   await page.getByRole('menuitem', { name: 'Done' }).click();
   await expect.poll(() => cardTitles(page, 'Done')).toEqual(['Write hook']);
 
@@ -128,10 +128,12 @@ test('task details: edit fields, checklist and comments persist', async ({ page 
   await expect(sheet.getByText('Try the 1176 before the LA-2A')).toBeVisible();
 
   await page.keyboard.press('Escape');
-  const card = page.locator('[data-task-title="Lead vocal chain"]');
+  const card = page.locator('[data-task-title="Lead vocal chain"]').filter({ visible: true });
   await expect(card).toContainText('High');
   await expect(card).toContainText('124 BPM · F#m');
   await expect(card).toContainText('1/1');
   await page.reload();
-  await expect(page.locator('[data-task-title="Lead vocal chain"]')).toContainText('vocals');
+  await expect(page.locator('[data-task-title="Lead vocal chain"]').filter({ visible: true })).toContainText(
+    'vocals',
+  );
 });

@@ -402,6 +402,7 @@ export function TaskSheet({
                       multiple
                       className="sr-only"
                       id="t-file-input"
+                      aria-label="Attach files"
                       onChange={(e) => onFiles(e.target.files)}
                     />
                     <Button

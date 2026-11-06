@@ -67,7 +67,7 @@
   --ink-soft: #5d6889;
   --accent: #e3e8fb;
   --accent-foreground: #18224a;
-  --destructive: #c8203f;
+  --destructive: #a01834; /* ≥4.5:1 on its own 10–20% tints over every light surface */
   --border: #d5dbee;
   --rule: #c3cbe4;
   --input: #cdd4ea;

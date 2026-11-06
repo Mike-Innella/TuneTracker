@@ -62,7 +62,10 @@ export function TrackGrid({ tracks, className }: { tracks: PublicTrack[]; classN
               {t.title}
             </Link>
             <p className="flex items-baseline gap-2 text-xs text-muted-foreground">
-              <Link href={`/artists/${t.owner.username}`} className="min-w-0 truncate hover:text-foreground">
+              <Link
+                href={`/artists/${t.owner.username}`}
+                className="inline-flex min-h-6 min-w-0 items-center truncate hover:text-foreground"
+              >
                 {t.owner.displayName}
               </Link>
               <span className="credit-leader" aria-hidden />

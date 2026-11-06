@@ -39,7 +39,7 @@ export function Logo({
   version?: boolean;
 }) {
   return (
-    <Link href={href} className="inline-flex items-center gap-2.5 rounded-md" aria-label="TuneTracker home">
+    <Link href={href} className="inline-flex items-center gap-2.5 rounded-md">
       <LogoMark size={size} />
       <Wordmark version={version} className={compact ? 'max-[359px]:sr-only' : undefined} />
     </Link>

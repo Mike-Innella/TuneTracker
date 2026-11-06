@@ -471,7 +471,6 @@ function SortableTask({
       style={{ transform: CSS.Translate.toString(transform), transition }}
       {...(canEdit ? { ...attributes, ...listeners } : {})}
       aria-roledescription="draggable task"
-      aria-label={`Drag ${task.title}`}
     />
   );
 }

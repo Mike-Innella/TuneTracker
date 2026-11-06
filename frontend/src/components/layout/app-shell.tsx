@@ -73,22 +73,20 @@ export function AppShell({
                   {group.items.map(({ href, label, icon: Icon }) => {
                     const active = isActive(path, href);
                     return (
-                      <NavHighlightItem key={href} value={href}>
-                        <li>
-                          <AnimateIcon animateOnHover asChild>
-                            <Link
-                              href={href}
-                              aria-current={active ? 'page' : undefined}
-                              className={cn(
-                                'relative z-10 flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground',
-                                active && 'text-foreground',
-                              )}
-                            >
-                              <Icon className={cn('size-4', active && 'text-electric')} aria-hidden />
-                              {label}
-                            </Link>
-                          </AnimateIcon>
-                        </li>
+                      <NavHighlightItem key={href} value={href} as="li">
+                        <AnimateIcon animateOnHover asChild>
+                          <Link
+                            href={href}
+                            aria-current={active ? 'page' : undefined}
+                            className={cn(
+                              'relative z-10 flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground',
+                              active && 'text-foreground',
+                            )}
+                          >
+                            <Icon className={cn('size-4', active && 'text-electric')} aria-hidden />
+                            {label}
+                          </Link>
+                        </AnimateIcon>
                       </NavHighlightItem>
                     );
                   })}
@@ -198,9 +196,10 @@ function AccountMenu({ me, compact }: { me: Me; compact?: boolean }) {
       <DropdownMenuTrigger asChild>
         <button
           className="flex min-w-0 items-center gap-2.5 rounded-md p-1 text-left hover:bg-muted"
-          aria-label="Account menu"
           data-testid="account-menu"
         >
+          {/* name = what's shown (avatar initials, name, handle) plus its purpose */}
+          <span className="sr-only">Account menu,</span>
           <UserAvatar name={me.displayName} url={me.avatarUrl} />
           {!compact && (
             <span className="min-w-0">
