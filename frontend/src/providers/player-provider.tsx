@@ -162,7 +162,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       artist: current.artist ?? 'TuneTracker',
       artwork: current.artworkUrl ? [{ src: current.artworkUrl, sizes: '512x512' }] : [],
     });
-    const set = (action: MediaSessionAction, fn: (() => void) | null) => {
+    const set = (action: MediaSessionAction, fn: MediaSessionActionHandler | null) => {
       try {
         navigator.mediaSession.setActionHandler(action, fn);
       } catch {
@@ -173,7 +173,31 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     set('pause', () => audioRef.current?.pause());
     set('nexttrack', index < list.length - 1 ? api.next : null);
     set('previoustrack', api.previous);
+    set('seekto', (d) => d.seekTime != null && api.seek(d.seekTime));
+    set('seekbackward', (d) => api.seek((audioRef.current?.currentTime ?? 0) - (d.seekOffset ?? 10)));
+    set('seekforward', (d) => api.seek((audioRef.current?.currentTime ?? 0) + (d.seekOffset ?? 10)));
   }, [current, index, list.length, api]);
+
+  // lock-screen scrubber + play/pause icon: synced on play/pause/seek/duration; the OS extrapolates time
+  const { playing, duration } = state;
+  const syncPosition = useCallback(() => {
+    const a = audioRef.current;
+    if (!('mediaSession' in navigator) || !a || !(a.duration > 0) || !Number.isFinite(a.duration)) return;
+    try {
+      navigator.mediaSession.setPositionState({
+        duration: a.duration,
+        position: Math.min(a.currentTime, a.duration),
+        playbackRate: a.playbackRate,
+      });
+    } catch {
+      // older Safari: setPositionState missing or strict about values
+    }
+  }, []);
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !current) return;
+    navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+    syncPosition();
+  }, [current, playing, duration, syncPosition]);
 
   const onTime = (a: HTMLAudioElement) => {
     patch({ time: a.currentTime });
@@ -200,6 +224,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         onPlaying={() => patch({ buffering: false })}
         onCanPlay={() => patch({ buffering: false })}
         onTimeUpdate={(e) => onTime(e.currentTarget)}
+        onSeeked={syncPosition}
         onLoadedMetadata={(e) =>
           Number.isFinite(e.currentTarget.duration) && patch({ duration: e.currentTarget.duration })
         }

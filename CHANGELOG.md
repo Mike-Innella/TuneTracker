@@ -18,6 +18,12 @@ All notable changes to this project are documented here. The format follows
 - Artist profiles, public project showcase, settings with persisted theme.
 - Liner Notes design system with dark and light themes; new logo and brand assets.
 - Docker dev/prod images, GitHub Actions CI, security scanning and release workflow.
+- Expanded player (full controls, volume, Up next queue) opened from the mini-player; lock-screen
+  seek and position via the Media Session API.
+
+### Fixed
+- Safe-area insets on iPhone (`viewport-fit=cover`), so the tab bar clears the home indicator.
+- Sign-up form fields stay top-aligned when a neighbour shows a hint or error.
 
 ### Changed
 - Database moved from MySQL to PostgreSQL (Supabase) with Prisma 7.
