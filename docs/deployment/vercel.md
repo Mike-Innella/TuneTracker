@@ -1,6 +1,6 @@
 # Deploying to Vercel
 
-Status: **build verified locally with `vercel build`** from a clean checkout (workspace packages,
+Status: project `tunetracker` (team `mikes-projects-4896b1c6`) is created and connected to GitHub; production branch `main`. Build first verified locally with `vercel build` from a clean checkout (workspace packages,
 generated Prisma client, Prisma query compiler WASM and `pg` are traced into the functions).
 A real deployment has not been performed yet — it needs the Vercel project and Supabase credentials.
 The full launch order (backup, migrations, Auth, Vercel, verification, rollback) is in
@@ -13,7 +13,7 @@ The full launch order (backup, migrations, Auth, Vercel, verification, rollback)
 | Framework | Next.js |
 | Root Directory | `frontend` |
 | Include files outside the Root Directory | **Enabled** (needed for `backend/`, `data/`, `packages/shared/`) |
-| Install Command | default (`npm install` at the repo root — npm workspaces + root lockfile) |
+| Install Command | `cd .. && npm ci` — the default installs inside `frontend/` without the root lockfile, so root dev deps (vitest) are missing and `next build`'s typecheck fails |
 | Build Command | default (`next build`) |
 | Node.js | 24.x |
 
