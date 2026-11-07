@@ -114,7 +114,7 @@ export function AppShell({
         {/* Top bar: mobile brand + global actions */}
         <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border bg-background/85 px-4 backdrop-blur-md lg:h-16 lg:px-8">
           <div className="lg:hidden">
-            <Logo href="/home" size={28} version={false} compact />
+            <Logo href="/home" size={28} compact />
           </div>
           <Suspense fallback={<div className="flex-1" />}>
             <HeaderSearch />

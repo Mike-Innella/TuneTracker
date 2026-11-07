@@ -67,6 +67,16 @@ test('music core: publish a track, a guest plays it without an account, playback
     .toBeGreaterThanOrEqual(11);
   await expect(guest.getByTestId('track-list')).toContainText('Neon Highway');
 
+  // expanded player drives the same audio: pausing there pauses the mini player, closing keeps the track
+  await mini.getByRole('button', { name: 'Expand player' }).click();
+  const sheet = guest.getByTestId('player-sheet');
+  await expect(sheet.getByRole('heading', { name: 'Neon Highway' })).toBeVisible();
+  await sheet.getByRole('button', { name: 'Pause Neon Highway' }).click();
+  await expect(sheet.getByRole('button', { name: 'Play Neon Highway' })).toBeVisible();
+  await guest.keyboard.press('Escape');
+  await expect(sheet).toBeHidden();
+  await expect(mini.getByRole('button', { name: 'Play Neon Highway' })).toBeVisible();
+
   // the listen (≥10 s) was counted once, and the artist can't inflate it
   await page.goto(url);
   await expect(page.getByText(/^Plays/).locator('..')).toContainText('1');

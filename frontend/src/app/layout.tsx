@@ -36,6 +36,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  // without cover, iOS reports env(safe-area-inset-*) as 0 and the tab bar sits under the home bar
+  viewportFit: 'cover',
   themeColor: [
     { media: '(prefers-color-scheme: dark)', color: '#060a1c' },
     { media: '(prefers-color-scheme: light)', color: '#f3f5fb' },

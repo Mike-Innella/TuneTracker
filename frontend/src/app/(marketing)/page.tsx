@@ -53,8 +53,9 @@ export default function HomePage() {
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pt-14 pb-16 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:pt-20 lg:pb-24">
           <div className="lg:col-span-5">
-            <h1 className="type-title text-[clamp(2.4rem,11vw,4.25rem)] lg:text-[clamp(2.75rem,4.4vw,4.75rem)]">
-              TuneTracker <span className="text-electric not-italic">2.0</span>
+            {/* lg cap: "TuneTracker" is ~7.5em wide and the column tops out at 483px (max-w-7xl) */}
+            <h1 className="type-title text-[clamp(2.4rem,11vw,4.25rem)] lg:text-[clamp(2.75rem,4.4vw,3.85rem)]">
+              TuneTracker
             </h1>
             {/* first viewport: start dimmed, never hidden, so the offer and action read before hydration */}
             <Effects
