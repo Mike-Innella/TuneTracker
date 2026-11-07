@@ -19,8 +19,9 @@ export function Field({
 }) {
   const message = Array.isArray(error) ? error[0] : error;
   const describedBy = message ? `${id}-error` : hint ? `${id}-hint` : undefined;
+  // content-start: when a row neighbour has a hint/error, extra height stays below the input
   return (
-    <div className={cn('grid gap-1.5', className)}>
+    <div className={cn('grid content-start gap-1.5', className)}>
       <Label htmlFor={id} className="type-role text-muted-foreground">
         {label}
       </Label>
