@@ -16,12 +16,12 @@ export function LogoMark({ size = 32, className }: { size?: number; className?: 
   );
 }
 
-export function Wordmark({ className, version = true }: { className?: string; version?: boolean }) {
+export function Wordmark({ className }: { className?: string }) {
   return (
     <span
       className={cn('type-title text-[1.15rem] leading-none tracking-[-0.02em] whitespace-nowrap', className)}
     >
-      TuneTracker{version && <span className="ml-1 text-electric not-italic"> 2.0</span>}
+      TuneTracker
     </span>
   );
 }
@@ -29,19 +29,17 @@ export function Wordmark({ className, version = true }: { className?: string; ve
 export function Logo({
   href = '/',
   size = 32,
-  version = true,
   compact = false,
 }: {
   href?: string;
   size?: number;
   /** hide the wordmark on very narrow phones (<360px) so the bar never overflows */
   compact?: boolean;
-  version?: boolean;
 }) {
   return (
     <Link href={href} className="inline-flex items-center gap-2.5 rounded-md">
       <LogoMark size={size} />
-      <Wordmark version={version} className={compact ? 'max-[359px]:sr-only' : undefined} />
+      <Wordmark className={compact ? 'max-[359px]:sr-only' : undefined} />
     </Link>
   );
 }

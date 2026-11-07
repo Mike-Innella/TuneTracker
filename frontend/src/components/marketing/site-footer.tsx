@@ -35,7 +35,7 @@ export function SiteFooter() {
       </div>
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex flex-wrap justify-between gap-2 border-t border-border py-6">
-          <p className="type-role text-ink-soft">TuneTracker 2.0 · Create · Collaborate · Share</p>
+          <p className="type-role text-ink-soft">TuneTracker · Create · Collaborate · Share</p>
           <p className="type-figure text-xs text-ink-soft">TT-2.0</p>
         </div>
       </div>
